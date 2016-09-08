@@ -1,0 +1,19 @@
+<div class="detail">
+
+
+
+
+  <div class="detail-modifiers">
+    <ul class="detail-modifiers-ul" ng-repeat="m in Detail.modifiers">
+      <p class="detail-modifiers-ul-placeholder" ng-click="showAllSelection()">{{m.title}} </p>
+
+      <div class="detail-modifiers-variations">
+        <li class="detail-modifiers-variations-li" ng-repeat="v in m.variations" ng-click="thisVariation(Detail.id , m.id, v.id, v.title); showAllSelection()" ng-show="selected==v.title || isSelectionOpen">
+          <a>{{v.title}}</a>
+        </li>
+      </div>
+
+    </ul>
+  </div>
+
+</div>

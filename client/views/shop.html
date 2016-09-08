@@ -1,0 +1,40 @@
+<div class="shop" ng-controller="shopCtrl">
+
+
+
+      <div class="shop-content">
+        <ul class="product-ul">
+          <li class="product-li" ng-repeat="p in Product">
+            <table>
+              <tr>
+                <td>
+                  <img class="product-li-img" src="{{p.images[0].url.http}}" alt="{{p.description}}" />
+                  <!-- <a class="shop-li-add" ng-click="addToCart()">add</a> -->
+                  <p class="product-price" ng-cloak>{{p.price.data.formatted.without_tax}}</p>
+                </td>
+              </tr>
+            </table>
+            <div class="product-add">
+              <p class="product-add-plus-variation hvr-bob" ng-click="addToCart(p.id)">ADD</p>
+              <!-- <p class="detail-add-plus-variation hvr-bob" ng-show="Detail.has_variation" ng-click="addVariation()" ng-class="{'activeAdd': howManyVAriationsSelected>=Detail.total_variations}">ADD</p> -->
+            </div>
+
+          </li>
+          <li class="shop-li infinite-loader" infinite-scroll="nextPage_shop()"  infinite-scroll-distance="1"></li>
+        </ul>
+
+      </div>
+
+
+      <div class="dollar" ng-cloak>
+        <a ng-click="openCart()">cart</a>
+        <p class="dollar-contents" ng-cloak>{{Cart.total_items}}</p>
+      </div>
+
+
+
+
+
+
+
+</div>
