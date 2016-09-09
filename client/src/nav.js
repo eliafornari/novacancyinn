@@ -14,6 +14,12 @@ angular.module('myApp')
     $rootScope.isNavOpen = false;
   }
 
+  $rootScope.isLocation= (location)=>{
+    if ($location.path()==location){
+      return true;
+    }else{console.log(false);return false}
+  }
+
 })
 
 

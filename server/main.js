@@ -14,8 +14,8 @@ let app = express();
 
 
 let moltin = require('moltin')({
-  publicId: '',
-  secretKey: ''
+  publicId: 'A2Stjda1dCV4GhYRsbUO7jdXJZ3jsYNA1NZQ934ukI',
+  secretKey: '1jHUHixgRJgTAq8fpocmXdbf1rbwdIYVYSeKzTgLCF'
 });
 
 

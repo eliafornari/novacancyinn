@@ -60,15 +60,20 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
 
   // $locationChangeStart
 
-  .when('shop/:product', {
+  .when('/shop/:detail', {
+    templateUrl: 'views/shop.html',
+    controller: 'detailCtrl'
+  }).when('/shop', {
     templateUrl: 'views/shop.html',
     controller: 'shopCtrl'
-  }).when('shop/', {
-    templateUrl: 'views/shop.html',
-    controller: 'shopCtrl'
-  }).when('happenings/', {
-    templateUrl: 'views/happenings.html',
-    controller: 'happeningsCtrl'
+  }).when('/about', {
+    templateUrl: 'views/about.html'
+  }).when('/contact', {
+    templateUrl: 'views/contact.html',
+    controller: 'contactCtrl'
+  }).when('/events', {
+    templateUrl: 'views/events.html',
+    controller: 'eventsCtrl'
   }).when('/privacy', {
     templateUrl: 'privacy/privacy.html',
     controller: 'privacyCtrl'
@@ -234,13 +239,24 @@ var jquerymousewheel = require('./vendor/jquery.mousewheel.js')($);
 var infiniteScroll = require("./vendor/infiniteScroll.js");
 var jqueryUI = require('./vendor/jquery-ui.min.js');
 var home = require("./home.js");
+var events = require("./events.js");
 var nav = require("./nav.js");
 var service = require("./services.js");
 var cart = require("./shop/cart.js");
 var shop = require("./shop/shop.js");
 var shop = require("./shop/checkout.js");
 
-},{"./home.js":2,"./nav.js":3,"./services.js":4,"./shop/cart.js":5,"./shop/checkout.js":6,"./shop/shop.js":7,"./vendor/infiniteScroll.js":8,"./vendor/jquery-ui.min.js":9,"./vendor/jquery.mousewheel.js":10,"angular":18,"angular-animate":12,"angular-resource":14,"angular-route":16,"jquery":19}],2:[function(require,module,exports){
+},{"./events.js":2,"./home.js":3,"./nav.js":4,"./services.js":5,"./shop/cart.js":6,"./shop/checkout.js":7,"./shop/shop.js":8,"./vendor/infiniteScroll.js":9,"./vendor/jquery-ui.min.js":10,"./vendor/jquery.mousewheel.js":11,"angular":19,"angular-animate":13,"angular-resource":15,"angular-route":17,"jquery":20}],2:[function(require,module,exports){
+'use strict';
+
+angular.module('myApp').controller('eventsCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http, $sce, $document, anchorSmoothScroll, $window) {
+
+  $rootScope.windowHeight = $window.innerHeight;
+  $rootScope.pageClass = "page-events";
+  $rootScope.Event = [];
+}); //controller
+
+},{}],3:[function(require,module,exports){
 'use strict';
 
 var Home = angular.module('myApp');
@@ -262,7 +278,7 @@ Home.controller('homeCtrl', function ($scope, $location, $rootScope, $routeParam
   $rootScope.Product = [];
 }); //controller
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 'use strict';
 
 angular.module('myApp').controller('navCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http) {
@@ -275,6 +291,14 @@ angular.module('myApp').controller('navCtrl', function ($scope, $location, $root
 
   $scope.closeNav = function () {
     $rootScope.isNavOpen = false;
+  };
+
+  $rootScope.isLocation = function (location) {
+    if ($location.path() == location) {
+      return true;
+    } else {
+      console.log(false);return false;
+    }
   };
 }).directive('logoDirective', function ($rootScope, $location, $window, $routeParams, $timeout) {
   return {
@@ -320,7 +344,7 @@ angular.module('myApp').controller('navCtrl', function ($scope, $location, $root
   };
 });
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 
 /* Services */
@@ -459,7 +483,7 @@ Service.service('anchorSmoothScroll', function () {
     };
 });
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 var Cart = angular.module('myApp');
@@ -484,6 +508,29 @@ Cart.controller('cartCtrl', function ($scope, $location, $rootScope, $timeout, $
     console.log(newValue);
     $rootScope.Cart = newValue;
   });
+
+  $rootScope.countries = [];
+
+  $rootScope.getCountries = function () {
+    $http({
+      method: 'GET',
+      url: 'assets/countries.json'
+    }).then(function successCallback(response) {
+
+      $rootScope.countries = response.data;
+      console.log(response.data);
+    }, function errorCallback(response) {
+
+      $scope.error = { value: true, text: 'countries not available, this page will be reloaded' };
+      setTimeout({
+        // $route.reload();
+      }, 2000);
+    });
+  };
+  $rootScope.getCountries();
+
+  $scope.phoneRegex = '^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$';
+  $scope.postcodeRegex = '^\\d{5}-\\d{4}|\\d{5}|[A-Z]\\d[A-Z] \\d[A-Z]\\d$';
 
   $rootScope.updateCart = function () {
     $http({
@@ -570,7 +617,7 @@ Cart.controller('cartCtrl', function ($scope, $location, $rootScope, $timeout, $
   };
 });
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 var Checkout = angular.module('myApp');
@@ -757,7 +804,7 @@ Checkout.controller('checkoutCtrl', function ($scope, $location, $rootScope, $ti
   };
 });
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 var Shop = angular.module('myApp');
@@ -765,9 +812,12 @@ var Shop = angular.module('myApp');
 Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http, $sce, $document, anchorSmoothScroll, $window, transformRequestAsFormPost) {
 
   $rootScope.pageClass = "page-shop";
-  $scope.blink = false;
+  $rootScope.isDetailOpen = false;
   $rootScope.windowHeight = $window.innerHeight;
   $rootScope.Detail = {};
+  $rootScope.openDetailFN = function () {
+    $rootScope.isDetailOpen = true;
+  };
 
   $rootScope.showCart = false;
   $rootScope.template = {};
@@ -791,25 +841,32 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
     $(".shop-content").unbind('mousewheel');
     $scope.wheel = false;
   };
+}); //controller
+
+Shop.controller('detailCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http, $sce, $document, anchorSmoothScroll, $window) {
+
+  console.log("detailCtrl");
 
   $scope.$on('$routeChangeSuccess', function () {
     // $routeParams.product
-    console.log($routeParams.product);
 
-    $rootScope.detailUpdate($routeParams.product);
+    $rootScope.openDetailFN();
+
+    $rootScope.detailUpdate($routeParams.detail);
 
     setTimeout(function () {
+      console.log('$routeParams.detail:' + $routeParams.detail);
       if (!$rootScope.Detail.id) {
-        $rootScope.detailUpdate($routeParams.product);
+        $rootScope.detailUpdate($routeParams.detail);
         $scope.$apply();
         console.log("I loaded it again");
         console.log($rootScope.Detail);
       } else {
-        console.log("Product loaded correctly");
+        console.log("detail loaded correctly");
         console.log($rootScope.Detail);
         return false;
       }
-    }, 3000);
+    }, 2000);
   });
 
   $rootScope.addToCart = function (id) {
@@ -926,40 +983,18 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
       }
     }
   };
+});
 
-  $rootScope.countries = [];
-
-  $rootScope.getCountries = function () {
-    $http({
-      method: 'GET',
-      url: 'assets/countries.json'
-    }).then(function successCallback(response) {
-
-      $rootScope.countries = response.data;
-      console.log(response.data);
-    }, function errorCallback(response) {
-
-      $scope.error = { value: true, text: 'countries not available, this page will be reloaded' };
-      setTimeout({
-        // $route.reload();
-      }, 2000);
-    });
+Shop.directive('detailDirective', function ($rootScope, $location, $window, $routeParams, $timeout) {
+  return {
+    restrict: 'E',
+    templateUrl: 'views/detail.html',
+    replace: true,
+    link: function link(scope, elem, attrs) {}
   };
-  $rootScope.getCountries();
+});
 
-  $scope.phoneRegex = '^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$';
-  $scope.postcodeRegex = '^\\d{5}-\\d{4}|\\d{5}|[A-Z]\\d[A-Z] \\d[A-Z]\\d$';
-
-  // '/^[a-z]{1,2}[0-9][a-z0-9]?\s?[0-9][a-z]{2}$/i'
-
-  setTimeout(function () {
-    $(".shop-li").draggable({
-      axis: "x"
-    });
-  }, 400);
-}); //controller
-
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 /* ng-infinite-scroll - v1.0.0 - 2013-02-23 */
@@ -1032,7 +1067,7 @@ mod.directive('infiniteScroll', ['$rootScope', '$window', '$timeout', function (
   };
 }]);
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -2164,7 +2199,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }));
 });
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -2403,7 +2438,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 });
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -6551,11 +6586,11 @@ angular.module('ngAnimate', [])
 
 })(window, window.angular);
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 require('./angular-animate');
 module.exports = 'ngAnimate';
 
-},{"./angular-animate":11}],13:[function(require,module,exports){
+},{"./angular-animate":12}],14:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -7415,11 +7450,11 @@ angular.module('ngResource', ['ng']).
 
 })(window, window.angular);
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 require('./angular-resource');
 module.exports = 'ngResource';
 
-},{"./angular-resource":13}],15:[function(require,module,exports){
+},{"./angular-resource":14}],16:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -8486,11 +8521,11 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 })(window, window.angular);
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 require('./angular-route');
 module.exports = 'ngRoute';
 
-},{"./angular-route":15}],17:[function(require,module,exports){
+},{"./angular-route":16}],18:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -39964,11 +39999,11 @@ $provide.value("$locale", {
 })(window);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":17}],19:[function(require,module,exports){
+},{"./angular":18}],20:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.0.0
  * https://jquery.com/

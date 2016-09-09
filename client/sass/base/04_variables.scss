@@ -16,7 +16,7 @@ $font-weight-regular: 400;
 // ........................................................FONT SIZES
 $font-size-nav:35px;
 $font-size-h1:35px;
-$font-size-h2:20px;
+$font-size-h2:14px;
 $font-size-paragraph: 12px;
 
 $font-size-nav-mobile:25px;
@@ -57,7 +57,8 @@ $padding-headline-bottom: 20px;
 
 // ........................................................COLORS
 $black: #000000;
-$violet: #a899c0;
+$purple: #884f9e;
+$red: #ec2224;
 $white: #FFFFFF;
 $yellow: #ede611;
 $green: #009900;
@@ -68,6 +69,7 @@ $light-light-grey: rgba(0,0,0, 0.1);
 // ........................................................MARGINS
 $margin-sides: 20px;
 $margin-bottom: 35px;
+$margin-bottom-paragraph:35px;
 $margin-top: 100px;
 $margin-top-mobile: 50px;
 $margin-sides-mobile:10px;
@@ -100,11 +102,13 @@ $z-nav: 13;
 $z-cart: 13;
 $z-back: 12;
 $z-clickOut: 12;
+$z-shop-content: 11;
 $z-shop-dollar: 11;
-$z-shop-functions: 11;
+$z-detail-functions: 11;
 $z-close:10;
 $z-home: 10;
 $z-shop-image:10;
+$z-detail:10;
 $z-price:9;
 
 

@@ -71,19 +71,28 @@ $sceProvider.enabled(false);
 
   // $locationChangeStart
 
-    .when('shop/:product', {
+    .when('/shop/:detail', {
       templateUrl: 'views/shop.html',
-      controller: 'shopCtrl',
+      controller: 'detailCtrl'
     })
 
-    .when('shop/', {
+    .when('/shop', {
       templateUrl: 'views/shop.html',
-      controller: 'shopCtrl',
+      controller: 'shopCtrl'
     })
 
-    .when('happenings/', {
-      templateUrl: 'views/happenings.html',
-      controller: 'happeningsCtrl',
+    .when('/about', {
+      templateUrl: 'views/about.html',
+    })
+
+    .when('/contact', {
+      templateUrl: 'views/contact.html',
+      controller: 'contactCtrl'
+    })
+
+    .when('/events', {
+      templateUrl: 'views/events.html',
+      controller: 'eventsCtrl'
     })
 
 
@@ -308,6 +317,7 @@ var jquerymousewheel = require('./vendor/jquery.mousewheel.js')($);
 var infiniteScroll = require("./vendor/infiniteScroll.js");
 var jqueryUI = require('./vendor/jquery-ui.min.js');
 var home = require("./home.js");
+var events = require("./events.js");
 var nav = require("./nav.js");
 var service = require("./services.js");
 var cart = require("./shop/cart.js");

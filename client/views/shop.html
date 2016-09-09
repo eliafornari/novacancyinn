@@ -2,32 +2,38 @@
 
 
 
-      <div class="shop-content">
+      <div class="shop-content" ng-class="{'openDetail': isDetailOpen}" >
         <ul class="product-ul">
-          <li class="product-li" ng-repeat="p in Product">
+          <li class="product-li" ng-repeat="p in Product" ng-click="openDetailFN()">
             <table>
               <tr>
                 <td>
+                  <a ng-href="/shop/{{p.slug}}">
                   <img class="product-li-img" src="{{p.images[0].url.http}}" alt="{{p.description}}" />
                   <!-- <a class="shop-li-add" ng-click="addToCart()">add</a> -->
-                  <p class="product-price" ng-cloak>{{p.price.data.formatted.without_tax}}</p>
+                  </a>
                 </td>
               </tr>
             </table>
-            <div class="product-add">
-              <p class="product-add-plus-variation hvr-bob" ng-click="addToCart(p.id)">ADD</p>
-              <!-- <p class="detail-add-plus-variation hvr-bob" ng-show="Detail.has_variation" ng-click="addVariation()" ng-class="{'activeAdd': howManyVAriationsSelected>=Detail.total_variations}">ADD</p> -->
-            </div>
 
           </li>
-          <li class="shop-li infinite-loader" infinite-scroll="nextPage_shop()"  infinite-scroll-distance="1"></li>
         </ul>
 
       </div>
 
 
-      <div class="dollar" ng-cloak>
-        <a ng-click="openCart()">cart</a>
+      <detail-directive></detail-directive>
+
+
+      <div class="dollar" ng-cloak ng-click="openCart()">
+        fsdad
+        <ul>
+          <li ng-repeat="c in Cart.contents">
+            <img src="{{c.images[0].url.https}}" alt="{{c.images[0].name}}" />
+          </li>
+        </ul>
+
+
         <p class="dollar-contents" ng-cloak>{{Cart.total_items}}</p>
       </div>
 

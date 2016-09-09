@@ -1,0 +1,103 @@
+
+.detail{
+  width:100vw;
+  position: relative;
+  margin-top: 30vh;
+  z-index: $z-detail;
+}
+
+
+.detail-li-img{
+  max-width: 20vw;
+  margin: auto;
+  display: block;
+  margin-top: 25vh;
+  &:nth-child(1){
+    margin-top: 10vh;
+  }
+
+  @include respond-to(phone){
+    max-width: 70vw;
+  }
+}
+
+
+.detail-table-functions{
+  position: fixed;
+  left: $margin-sides;
+  bottom: 50%;
+  width: auto;
+  margin-top:-50px;
+  height: 100px;
+  z-index: $z-detail-functions;
+  @include respond-to(phone-device){
+
+  }
+}
+
+.detail-add{
+  position: relative;
+  bottom: 0;
+  height:auto;
+  width:100%;
+  margin:0;
+  display: inline-block;
+  p{
+    display: block;
+    width:100%;
+    text-align: center;
+    vertical-align: middle;
+    margin:0;
+    @include hover-effect-color($black, $green);
+    @include paragraph();
+
+  }
+}
+
+
+.detail-price{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  height: 20px;
+  line-height: 20px;
+  vertical-align: 20px;
+  text-align: center;
+  margin-left: -25px;
+  margin-top: -10px;
+  z-index: $z-price;
+  color: $black;
+}
+
+
+.detail-modifiers{
+  position: relative;
+  // top: $margin-top-paragraph;
+  display: inline-block;
+  margin-left:$margin-left-paragraph;
+  .detail-modifiers-ul{
+    display: block;
+    width:auto;
+    .detail-modifiers-ul-placeholder{
+      width:auto;
+      display: block;
+      float:left;
+      @include paragraph();
+    }
+    .detail-modifiers-variations{
+      width:auto;
+      display: block;
+      float:left;
+      margin-left: $margin-left-paragraph;
+      .detail-modifiers-variations-li{
+        display: block;
+        clear: both;
+        a{
+          @include paragraph();
+
+        }
+      }
+    }
+  }
+}

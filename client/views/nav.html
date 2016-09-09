@@ -1,5 +1,25 @@
-<nav ng-controller="navCtrl" class="nav" ng-show="isNavOpen">
+<nav ng-controller="navCtrl" class="nav" ng-hide="isLocation('/')">
+   <!-- ng-show="isNavOpen" -->
 
+  <table>
+    <tr>
+      <td>
+        <div class="nav-container">
+          <div class="nav-container-list">
+            <a class="" href="/shop">shop</a>
+            <a class="" href="/events">events</a>
+            <a class="" href="/about">about</a>
+            <a class="" href="/contact">contact</a>
+          </div>
+
+          <div class="nav-logo">
+            <logo-directive></logo-directive>
+          </div>
+
+        </div>
+      </td>
+    </tr>
+  </table>
 
 
 </nav>
