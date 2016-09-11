@@ -6,29 +6,31 @@
   z-index: $z-detail;
 }
 
+.detail-images{
+  .detail-img{
+    max-width: 20vw;
+    margin: auto;
+    display: block;
+    margin-top: 25vh;
+    &:nth-child(1){
+      margin-top: 10vh;
+    }
 
-.detail-li-img{
-  max-width: 20vw;
-  margin: auto;
-  display: block;
-  margin-top: 25vh;
-  &:nth-child(1){
-    margin-top: 10vh;
-  }
-
-  @include respond-to(phone){
-    max-width: 70vw;
+    @include respond-to(phone){
+      max-width: 70vw;
+    }
   }
 }
 
 
-.detail-table-functions{
+
+.detail-functions{
   position: fixed;
   left: $margin-sides;
-  bottom: 50%;
+  top: 50%;
   width: auto;
-  margin-top:-50px;
-  height: 100px;
+  margin-top: -10px;
+  height: 20px;
   z-index: $z-detail-functions;
   @include respond-to(phone-device){
 
@@ -37,45 +39,43 @@
 
 .detail-add{
   position: relative;
-  bottom: 0;
+  top: 0;
+  left:0;
   height:auto;
-  width:100%;
-  margin:0;
-  display: inline-block;
+  width:auto;
+  display: block;
+  float:left;
+  margin-left: $margin-left-paragraph;
   p{
     display: block;
     width:100%;
-    text-align: center;
+    text-align: left;
     vertical-align: middle;
     margin:0;
-    @include hover-effect-color($black, $green);
     @include paragraph();
+    @include hover-effect-glow($red);
 
   }
 }
 
 
 .detail-price{
-  position: absolute;
-  top: 50%;
-  left: 50%;
+  position: fixed;
+  bottom: $margin-sides;
+  left: $margin-sides;
   width: 80px;
-  height: 20px;
-  line-height: 20px;
-  vertical-align: 20px;
-  text-align: center;
-  margin-left: -25px;
-  margin-top: -10px;
+  text-align: left;
   z-index: $z-price;
-  color: $black;
+  color: $red;
+  @include paragraph();
 }
 
 
 .detail-modifiers{
   position: relative;
   // top: $margin-top-paragraph;
-  display: inline-block;
-  margin-left:$margin-left-paragraph;
+  display: block;
+  float:left;
   .detail-modifiers-ul{
     display: block;
     width:auto;
@@ -95,7 +95,6 @@
         clear: both;
         a{
           @include paragraph();
-
         }
       }
     }

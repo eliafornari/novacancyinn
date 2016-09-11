@@ -17,8 +17,16 @@ angular.module('myApp')
   $rootScope.isLocation= (location)=>{
     if ($location.path()==location){
       return true;
-    }else{console.log(false);return false}
+    }else{return false;}
   }
+
+  $rootScope.isShopDetail = ()=>{
+    if($location.path()=='/shop/'+$routeParams.detail){
+      return true;
+    }else{return false;}
+
+  }
+
 
 })
 

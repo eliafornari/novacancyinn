@@ -13,14 +13,22 @@
   }
 }
 
+.shipment-h1{
+  @include h2();
+  position: absolute;
+  top:$margin-sides;
+  left:$margin-sides;
+
+}
+
+
 
 .customer{
-  width:30%;
+  width:35%;
   display:block;
   position: absolute;
-  left:0%;
-  top: 50px;
-  left: 50px;
+  top: $form-sides;
+  left: $form-sides;
   @include respond-to(phone){
     top: 30px;
     left:30px;
@@ -31,8 +39,8 @@
   width:35%;
   display:block;
   position: absolute;
-  left:50px;
-  top: 195px;
+  left:$form-sides;
+  top: 245px;
   @include respond-to(phone){
     top: 155px;
     left:30px;
@@ -42,11 +50,11 @@
 
 
 .billing{
-  width:50%;
+  width:35%;
   display:block;
   position: absolute;
-  left:35%;
-  top: 195px;
+  left:40%;
+  top: 245px;
   margin-left: 50px;
   @include respond-to(phone){
     top: 155px;
@@ -57,8 +65,8 @@
 
 .isBillingDifferent{
   position: absolute;
-  left: 241px;
-  top: 156px;
+  left: $form-sides;
+  top: 550px;
   height: auto;
   width: auto;
   margin-bottom: 20px;
@@ -69,10 +77,10 @@
   }
   label{
     @include paragraph();
-    color: #FFFFFF;
+    color: $red;
   }
   input{
     @include paragraph();
-    color: #FFFFFF;
+    color: $red;
   }
 }

@@ -8,7 +8,7 @@
 }
 
 .nav-container{
-  height:200px;
+  height:400px;
   width:120px;
   position: relative;
   .nav-logo{
@@ -19,6 +19,19 @@
       width:100%;
       height:auto;
       display: block;
+      position: absolute;
+      z-index:11;
+    }
+    .nav-logo-blur{
+      width:100%;
+      display: block;
+      opacity:0;
+      z-index:10;
+      -webkit-transition: opacity $transition-medium;
+      -moz-transition: opacity $transition-medium;
+      -ms-transition: opacity $transition-medium;
+      transition: opacity $transition-medium;
+
     }
   }
   .nav-container-list{
@@ -33,4 +46,24 @@
     }
   }
 
+}
+
+
+.nav-logo-blur.blur{
+  opacity:1 !important;
+}
+.nav-logo-blur.blur-add.blur-add-active{
+
+
+
+}
+
+
+
+.nav-logo svg:hover #glow { // stroke works fine, filter doesn't work
+  stroke: white;
+  filter: url(#blur-filter);
+}
+.nav-logo svg:hover #color {
+  stroke: white;
 }

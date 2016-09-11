@@ -76,6 +76,7 @@
 <body>
 
 
+
     <nav-directive></nav-directive>
 
   <div ng-show="pageLoading" class="page-loader-div">
@@ -84,10 +85,17 @@
   </div>
 
 
-  <div class="clickOut" ng-click="closeCart()" ng-show="showCart" ng-cloak>
+  <!-- <div class="clickOut" ng-click="closeCart()" ng-show="showCart" ng-cloak>
+  </div> -->
+
+  <div class="cart-close" ng-click="closeCart()" ng-show="showCart" ng-cloak>
+    <ex-directive></ex-directive>
   </div>
 
   <div class="cart" ng-include="template.url" ng-show="showCart" ng-controller="cartCtrl">
+    <div class="cart-close" ng-click="closeCart()">
+      <ex-directive></ex-directive>
+    </div>
   </div>
 
 

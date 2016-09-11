@@ -73,12 +73,14 @@ $sceProvider.enabled(false);
 
     .when('/shop/:detail', {
       templateUrl: 'views/shop.html',
-      controller: 'detailCtrl'
+      controller: 'detailCtrl',
+      reloadOnSearch: false
     })
 
     .when('/shop', {
       templateUrl: 'views/shop.html',
-      controller: 'shopCtrl'
+      controller: 'shopCtrl',
+      reloadOnSearch: false
     })
 
     .when('/about', {
@@ -86,8 +88,7 @@ $sceProvider.enabled(false);
     })
 
     .when('/contact', {
-      templateUrl: 'views/contact.html',
-      controller: 'contactCtrl'
+      templateUrl: 'views/contact.html'
     })
 
     .when('/events', {

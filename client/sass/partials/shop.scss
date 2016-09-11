@@ -1,7 +1,7 @@
 
 .shop{
   width:100vw;
-  height:auto;
+  height:100vh;
   background-color: #FFFFFF;
 }
 
@@ -9,7 +9,19 @@
   height:20vh;
   position: fixed;
   top:0;
-  z-index: $z-shop-content;
+  // z-index: $z-shop-content;
+  -webkit-transition: cominUp $transition-medium $animation-bezier;
+  -moz-transition: cominUp $transition-medium $animation-bezier;
+  -ms-transition: cominUp $transition-medium $animation-bezier;
+  transition: cominUp $transition-medium $animation-bezier;
+}
+
+.product-li-img.opacityProducts{
+  opacity:0.2;
+  -webkit-transition: opacity $transition-medium;
+  -moz-transition: opacity $transition-medium;
+  -ms-transition: opacity $transition-medium;
+  transition: opacity $transition-medium;
 }
 
 
@@ -57,17 +69,23 @@
   position: fixed;
   bottom:$margin-sides;;
   right:$margin-sides;
-  height:50px;
-  width:auto;
+  height:100px;
+  width:100px;
   z-index: $z-shop-dollar;
-  a{
+  .dollar-ul{
+    width:100%;
+    height:100%;
     position: relative;
-    display: inline-block;
-    width:auto;
-    height: 50px;
-    line-height: 50px;
-    @include hover-effect-color(#000000, $green);
-
+    .dollar-li{
+      width:60%;
+      height:auto;
+      position: absolute;
+      img{
+        width:100%;
+        height:auto;
+        display:block;
+      }
+    }
   }
   .dollar-contents{
     display: inline-block;
@@ -76,4 +94,81 @@
     display: inline-block;
     top: 0;
   }
+}
+
+
+#dollar-li-1{
+  right:0;
+  bottom:0;
+}
+#dollar-li-2{
+  left:50%;
+  top:0;
+}
+#dollar-li-3{
+  left:0%;
+  bottom:0%;
+}
+
+
+
+.shop-content.openDetail-add.openDetail-add-active{
+    -webkit-animation: cominUp $transition-fast $animation-bezier;
+    -moz-animation: cominUp $transition-fast $animation-bezier;
+    -ms-animation: cominUp $transition-fast $animation-bezier;
+    animation: cominUp $transition-fast $animation-bezier;
+}
+
+
+
+@keyframes cominUp {
+  0% { height:100vh; }
+  100% { height:20vh; }
+}
+
+@-webkit-keyframes cominUp {
+  0% { height:100vh; }
+  100% { height:20vh; }
+}
+
+@-moz-keyframes cominUp {
+  0% { height:100vh; }
+  100% { height:20vh; }
+}
+
+@-ms-keyframes cominUp {
+  0% { height:100vh; }
+  100% { height:20vh; }
+}
+
+@-o-keyframes cominUp {
+  0% { height:100vh; }
+  100% { height:20vh; }
+}
+
+
+
+@keyframes cominDown {
+  0% { height:20vh; }
+  100% { height:100vh; }
+}
+
+@-webkit-keyframes cominDown {
+  0% { height:20vh; }
+  100% { height:100vh; }
+}
+
+@-moz-keyframes cominDown {
+  0% { height:20vh; }
+  100% { height:100vh; }
+}
+
+@-ms-keyframes cominDown {
+  0% { height:20vh; }
+  100% { height:100vh; }
+}
+
+@-o-keyframes cominDown {
+  0% { height:20vh; }
+  100% { height:100vh; }
 }

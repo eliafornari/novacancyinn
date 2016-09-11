@@ -48,6 +48,8 @@ $line-height-h1-mobile: 40px;
 $line-height-h2-mobile: 24px;
 $line-height-paragraph-mobile: 18px;
 
+$button-height:50px;
+
 // ........................................................TEXT PADDINGS
 $padding-text: 5px;
 $padding-left: 0px;
@@ -73,8 +75,10 @@ $margin-bottom-paragraph:35px;
 $margin-top: 100px;
 $margin-top-mobile: 50px;
 $margin-sides-mobile:10px;
-$margin-left-paragraph:5px;
+$margin-left-paragraph:10px;
 $margin-top-paragraph:10px;
+$margin-top-li:30px;
+$margin-right-p:40px;
 
 // ........................................................TRANSITION TIMINGS
 $transition-extreme-slow: 1.4s;
@@ -82,7 +86,7 @@ $transition-slow: .6s;
 $transition-medium: .4s;
 $transition-fast: .2s;
 
-
+$animation-bezier: cubic-bezier(.17,.67,.91,.6);
 
 // ........................................................COLOR CHANGES
 
@@ -96,12 +100,13 @@ $smooth-scroll-timing: 1.4s;
 
 
 $z-header: 13;
-$z-logo:15;
-$z-loader: 14;
+$z-logo:16;
+$z-loader: 15;
+$z-clickOut: 14;
 $z-nav: 13;
 $z-cart: 13;
 $z-back: 12;
-$z-clickOut: 12;
+
 $z-shop-content: 11;
 $z-shop-dollar: 11;
 $z-detail-functions: 11;

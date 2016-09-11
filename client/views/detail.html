@@ -1,18 +1,17 @@
 <div class="detail">
 
-  <img class="detail-li-img" ng-repeat="i in Detail.images" src="{{i.url.http}}" alt="{{p.description}}" />
+  <div class="detail-images">
+    <img class="detail-img" ng-repeat="i in Detail.images" src="{{i.url.http}}" alt="{{p.description}}" />
+  </div>
 
 
 
-  <p class="detail-price" ng-cloak>{{p.price.data.formatted.without_tax}}</p>
+
+  <p class="detail-price" ng-cloak>{{Detail.price.data.formatted.without_tax}}</p>
 
 
 
-  <div class="detail-table-functions">
-    <div class="detail-add">
-      <!-- <p class="detail-add-plus-variation hvr-bob" ng-hide="Detail.has_variation" ng-click="addToCart(Detail.id)">ADD</p> -->
-      <p class="detail-add-plus-variation hvr-bob" ng-show="Detail.has_variation" ng-click="addVariation()" ng-class="{'activeAdd': howManyVAriationsSelected>=Detail.total_variations}">ADD</p>
-    </div>
+  <div class="detail-functions">
 
       <div class="detail-modifiers">
         <ul class="detail-modifiers-ul" ng-repeat="m in Detail.modifiers">
@@ -24,6 +23,10 @@
             </li>
           </div>
         </ul>
+      </div>
+      <div class="detail-add">
+        <p class="detail-add-plus-variation" ng-hide="Detail.has_variation" ng-click="addToCart(Detail.id)">ADD</p>
+        <p class="detail-add-plus-variation" ng-show="Detail.has_variation" ng-click="addVariation()" ng-class="{'activeAdd': howManyVAriationsSelected>=Detail.total_variations}">ADD</p>
       </div>
   </div>
 

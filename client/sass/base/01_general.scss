@@ -20,15 +20,6 @@
 
 
 
-/*.....................ACTIVE CLASSES......................*/
-
-.active{
-  color: #FF0000 !important;
-  pointer-events: none;
-}
-
-/*.........................................................*/
-
 
 
 
@@ -95,9 +86,13 @@ body {
 
 
 p, a, li {
-  font-size: $font-size-paragraph;
   list-style-type: none;
   letter-spacing:$letter-spacing;
+}
+
+p{
+  @include paragraph();
+  color:$red;
 }
 
 /*........................A.................................*/
@@ -115,16 +110,19 @@ a{
   cursor: pointer;
   color: $purple;
   @include h2();
-  &:hover{
-    text-shadow: 0 0 3px $purple;
-  }
+  @include hover-effect-glow($purple);
 }
 
 
+/*.....................ACTIVE CLASSES......................*/
+
+.active{
+  text-shadow: 0 0 3px $purple;
+  pointer-events: none;
+}
 
 input, textarea, select, a, li {
   text-decoration: none;
-
 }
 
 

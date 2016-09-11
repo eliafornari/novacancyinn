@@ -239,6 +239,27 @@ $transition-slow: 1s;
   }
 }
 
+@mixin hover-effect-glow($color){
+  text-shadow: 0 0 0px $color;
+  transition:         text-shadow $transition-fast ease;
+  -webkit-transition: text-shadow $transition-fast ease;
+  -moz-transition:    text-shadow $transition-fast ease;
+  -ms-transition:     text-shadow $transition-fast ease;
+  &:hover{
+    text-shadow: 0 0 3px $color;
+    @include respond-to(phone-device) {
+        color: $color !important;
+    }
+    @include respond-to(tablet-portrait-device) {
+        color: $color !important;
+    }
+    @include respond-to(tablet-landscape-device) {
+        color: $color !important;
+    }
+  }
+
+}
+
 @mixin transform-transition($duration: $transition-slow){
   transition:         transform $duration ease-in-out;
   -webkit-transition: -webkit-transform $duration ease-in-out;

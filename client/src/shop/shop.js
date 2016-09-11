@@ -6,8 +6,18 @@ $rootScope.pageClass = "page-shop";
 $rootScope.isDetailOpen = false;
 $rootScope.windowHeight = $window.innerHeight;
 $rootScope.Detail = {};
-$rootScope.openDetailFN = ()=>{
-  $rootScope.isDetailOpen = true;
+$rootScope.openDetailFN = (slug)=>{
+  if($rootScope.isDetailOpen == true){
+    $location.path('/shop/'+slug, true);
+  }else{
+    $rootScope.isDetailOpen = true;
+    setTimeout(function(){
+      $location.path('/shop/'+slug, true);
+      $rootScope.$apply();
+    }, 200);
+
+  }
+
 }
 
 
@@ -53,20 +63,18 @@ $scope.stopWheel_shop = ()=>{
 
 });//controller
 
-Shop.controller('detailCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, $sce, $document, anchorSmoothScroll, $window){
-
-console.log("detailCtrl");
+Shop.controller('detailCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, $sce, $document, anchorSmoothScroll, $window, transformRequestAsFormPost){
 
   $scope.$on('$routeChangeSuccess', function(){
-    // $routeParams.product
 
-
-    $rootScope.openDetailFN();
-
+    // $rootScope.openDetailFN();
+    $rootScope.isDetailOpen = true;
+    console.log($routeParams.detail);
     $rootScope.detailUpdate($routeParams.detail);
+    $rootScope.updateCart();
 
     setTimeout(function(){
-          console.log('$routeParams.detail:'+$routeParams.detail);
+      console.log('$routeParams.detail:'+$routeParams.detail);
       if(!$rootScope.Detail.id){
         $rootScope.detailUpdate($routeParams.detail);
         $scope.$apply();
@@ -77,7 +85,7 @@ console.log("detailCtrl");
         console.log($rootScope.Detail);
         return false
       }
-    },2000);
+    },3000);
 
 
   });
@@ -98,7 +106,7 @@ console.log("detailCtrl");
                     access_token:"helloooo"
                   }
           }).then(function(response){
-            $rootScope.Cart = response;
+            // $rootScope.Cart = response;
             $rootScope.updateCart();
             $rootScope.pageLoading = false;
             console.log(response);
@@ -163,21 +171,18 @@ console.log("detailCtrl");
     $rootScope.Detail.total_variations=0;
 
     for (var i in $rootScope.Product){
-      console.log($rootScope.Product[i].slug);
       if ($rootScope.Product[i].slug == slug){
-        console.log('slug: '+slug);
         $rootScope.Detail=$rootScope.Product[i];
         $rootScope.Detail.total_variations=0;
-        console.log("detail:", $rootScope.Detail);
         $rootScope.Detail.has_variation = $rootScope.has_variation;
 
         var go = true;
         //has variation
         for (i in $rootScope.Detail.modifiers){
           $rootScope.Detail.total_variations =$rootScope.Detail.total_variations+1;
-          console.log($rootScope.Detail.total_variations);
           // if($rootScope.Detail.modifiers[i].id){$rootScope.has_variation=true;}else{$rootScope.has_variation=false;}
           $rootScope.Detail.has_variation = true;
+          $rootScope.showSelection($rootScope.Detail.modifiers[i].id);
             go = false;
         }
 
