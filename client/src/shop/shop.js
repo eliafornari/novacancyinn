@@ -69,12 +69,10 @@ Shop.controller('detailCtrl', function($scope, $location, $rootScope, $routePara
 
     // $rootScope.openDetailFN();
     $rootScope.isDetailOpen = true;
-    console.log($routeParams.detail);
     $rootScope.detailUpdate($routeParams.detail);
     $rootScope.updateCart();
 
     setTimeout(function(){
-      console.log('$routeParams.detail:'+$routeParams.detail);
       if(!$rootScope.Detail.id){
         $rootScope.detailUpdate($routeParams.detail);
         $scope.$apply();
@@ -179,6 +177,7 @@ Shop.controller('detailCtrl', function($scope, $location, $rootScope, $routePara
         var go = true;
         //has variation
         for (i in $rootScope.Detail.modifiers){
+          $rootScope.Detail.modifiers[i].open = false;
           $rootScope.Detail.total_variations =$rootScope.Detail.total_variations+1;
           // if($rootScope.Detail.modifiers[i].id){$rootScope.has_variation=true;}else{$rootScope.has_variation=false;}
           $rootScope.Detail.has_variation = true;
@@ -189,6 +188,10 @@ Shop.controller('detailCtrl', function($scope, $location, $rootScope, $routePara
         if(go==true){
           //does not have variation
           $rootScope.Detail.has_variation = false;
+          for (i in $rootScope.Detail.modifiers){
+
+          }
+
         }
 
       }
@@ -199,9 +202,10 @@ Shop.controller('detailCtrl', function($scope, $location, $rootScope, $routePara
 
 
   $rootScope.showSelection = function(modifier_id){
+    console.log('modifier_id',modifier_id);
     for (var m in $rootScope.Detail.modifiers){
       if($rootScope.Detail.modifiers[m].id == modifier_id){
-        $rootScope.Detail.modifiers[m].open= !$rootScope.Detail.modifiers[m].open
+        $rootScope.Detail.modifiers[m].open = !$rootScope.Detail.modifiers[m].open;
       }
     }
   }
@@ -211,7 +215,7 @@ Shop.controller('detailCtrl', function($scope, $location, $rootScope, $routePara
   $rootScope.thisVariation = function(id, modifier_id, modifier_title, variation_id, variation_title){
     var i=0;
     for ( i in $rootScope.Detail.modifiers){
-      $rootScope.Detail.modifiers.open =false;
+
       if($rootScope.Detail.modifiers[i].id==modifier_id){
         $rootScope.selectedVariation[i] =
           {

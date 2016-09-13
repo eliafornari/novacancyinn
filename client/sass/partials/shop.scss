@@ -42,7 +42,7 @@
   .product-li{
     margin-right: 2vw;
     margin-left: 2vw;
-    width:auto;
+    width:12vw;
     height:100%;
     display:inline-block;
     position: relative;
@@ -52,7 +52,7 @@
     }
 
     .product-li-img{
-      max-width: 12vw;
+      width:80%;
       margin: auto;
       display: block;
 
@@ -72,6 +72,11 @@
   height:100px;
   width:100px;
   z-index: $z-shop-dollar;
+  p{
+    position: absolute;
+    right:0;
+    bottom:0;
+  }
   .dollar-ul{
     width:100%;
     height:100%;
@@ -108,6 +113,14 @@
 #dollar-li-3{
   left:0%;
   bottom:0%;
+}
+#dollar-li-3{
+  right:0%;
+  bottom:0%;
+}
+#dollar-li-3{
+  right:30%;
+  bottom:10%;
 }
 
 

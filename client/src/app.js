@@ -4,7 +4,7 @@ import 'angular'
 import 'angular-route'
 import 'angular-animate'
 import 'angular-resource'
-// import Prismic from 'prismic.io'
+import Prismic from 'prismic.io'
 import jQuery from "jquery"
 
 angular.module('myApp', [
@@ -91,9 +91,9 @@ $sceProvider.enabled(false);
       templateUrl: 'views/contact.html'
     })
 
-    .when('/events', {
-      templateUrl: 'views/events.html',
-      controller: 'eventsCtrl'
+    .when('/event', {
+      templateUrl: 'views/event.html',
+      controller: 'eventCtrl'
     })
 
 
@@ -137,8 +137,8 @@ $sceProvider.enabled(false);
 
 $rootScope.location = $location.path();
 $rootScope.firstLoading = true;
-$rootScope.Story, $rootScope.totalPages;
 $rootScope.pageClass = "page-home";
+$rootScope.Home;
 
 
 
@@ -309,6 +309,87 @@ $rootScope.pageClass = "page-home";
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+var eventRan = false;
+var homeRan = false;
+
+    $rootScope.getContentType = function(type, orderField){
+
+          Prismic.Api('https://novacancyinn.cdn.prismic.io/api', function (err, Api) {
+              Api.form('everything')
+                  .ref(Api.master())
+
+                  .query(Prismic.Predicates.at("document.type", type))
+                  .orderings('['+orderField+']')
+                  .pageSize(100)
+                  .submit(function (err, response) {
+
+                      var Data = response;
+
+                      // setTimeout(function(){
+                      //   $rootScope.firstLoading = false;
+                      //   $scope.$apply();
+                      // }, 3000);
+
+
+                      if (type =='event'){
+                        $rootScope.Event = response.results;
+                        console.log("event");
+                        console.log(response.results);
+                        if(eventRan == false){
+                          console.log("eventReady");
+                          eventRan = true;
+                          $rootScope.$broadcast('eventReady');
+
+                        }else{ return false; }
+
+                      }else if(type =='home'){
+                        $rootScope.Home = response.results;
+                        console.log("home");
+                        console.log(response.results);
+                        if(homeRan == false){
+                          console.log("homeReady");
+                          homeRan = true;
+                          $rootScope.$broadcast('homeReady');
+
+                        }else{ return false; }
+                      }
+
+                      // The documents object contains a Response object with all documents of type "product".
+                      var page = response.page; // The current page number, the first one being 1
+                      var results = response.results; // An array containing the results of the current page;
+                      // you may need to retrieve more pages to get all results
+                      var prev_page = response.prev_page; // the URL of the previous page (may be null)
+                      var next_page = response.next_page; // the URL of the next page (may be null)
+                      var results_per_page = response.results_per_page; // max number of results per page
+                      var results_size = response.results_size; // the size of the current page
+                      var total_pages = response.total_pages; // the number of pages
+                      var total_results_size = response.total_results_size; // the total size of results across all pages
+                        return results;
+                  });
+            });
+
+
+    };
+
+
+
+
+
+
+
+
+
 });//......end of the route controller
 
 
@@ -318,7 +399,7 @@ var jquerymousewheel = require('./vendor/jquery.mousewheel.js')($);
 var infiniteScroll = require("./vendor/infiniteScroll.js");
 var jqueryUI = require('./vendor/jquery-ui.min.js');
 var home = require("./home.js");
-var events = require("./events.js");
+var event = require("./event.js");
 var nav = require("./nav.js");
 var service = require("./services.js");
 var cart = require("./shop/cart.js");

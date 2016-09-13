@@ -56,3 +56,22 @@
     color: $purple;
   }
 }
+
+
+
+
+
+
+
+//image
+.home-image{
+  width:30vw;
+  height:30vw;
+  position: fixed;
+  left:$margin-sides;
+  bottom:$margin-sides;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+
+}

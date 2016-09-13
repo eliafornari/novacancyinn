@@ -1,0 +1,142 @@
+.event{
+  width: 100vw;
+  height:100vh;
+}
+
+.event-ul{
+  width:55vw;
+  margin:auto;
+  .event-li{
+    width:55vw;
+    clear:both;
+    margin: auto;
+    height:$line-height-h1;
+    line-height: $line-height-h1;
+    vertical-align: middle;
+    position: relative;
+    &:nth-child(1){
+      margin-top: 0;
+    }
+    .event-date{
+      width:55vw;
+      margin: auto;
+      span{
+        width:20%;
+        text-align: center;
+        float:left;
+        height:$line-height-h1;
+        line-height: $line-height-h1;
+      }
+    }
+  }
+}
+
+.event-info-left{
+  position: absolute;
+  left:0;
+  height:$line-height-h1;
+  line-height: $line-height-h1;
+  vertical-align: middle;
+  a{
+    @include paragraph();
+    color:$red;
+    @include hover-effect-glow($red);
+  }
+  span{
+    @include paragraph();
+  }
+}
+.event-info-right{
+  position: absolute;
+  right:0;
+  height:$line-height-h1;
+  line-height: $line-height-h1;
+  vertical-align: middle;
+  span{
+    @include paragraph();
+  }
+}
+
+.event-image{
+  position: fixed;
+  left:$margin-sides;
+  bottom:$margin-sides;
+  width:250px;
+  img{
+    width:100%;
+  }
+}
+
+
+.event-date.shrinkDate{
+  width:8vw !important;
+}
+
+
+.event-date.shrinkDate-add.shrinkDate-add-active{
+  -webkit-animation: shrink $transition-fast $animation-bezier;
+  -moz-animation: shrink $transition-fast $animation-bezier;
+  -ms-animation: shrink $transition-fast $animation-bezier;
+  animation: shrink $transition-fast $animation-bezier;
+}
+
+.event-date.shrinkDate-remove.shrinkDate-remove-active{
+  -webkit-animation: unShrink $transition-fast $animation-bezier;
+  -moz-animation: unShrink $transition-fast $animation-bezier;
+  -ms-animation: unShrink $transition-fast $animation-bezier;
+  animation: unShrink $transition-fast $animation-bezier;
+}
+
+
+
+@keyframes shrink {
+  0% { width:55vw; }
+  100% { width:8vw; }
+}
+
+@-webkit-keyframes shrink {
+  0% { width:55vw; }
+  100% { width:8vw; }
+}
+
+@-moz-keyframes shrink {
+  0% { width:55vw; }
+  100% { width:8vw; }
+}
+
+@-ms-keyframes shrink {
+  0% { width:55vw; }
+  100% { width:8vw; }
+}
+
+@-o-keyframes shrink {
+  0% { width:55vw; }
+  100% { width:8vw; }
+}
+
+
+
+@keyframes unShrink {
+  0% { width:8vw;  }
+  100% { width:55vw; }
+}
+
+@-webkit-keyframes unShrink {
+  0% { width:8vw;  }
+  100% { width:55vw; }
+}
+
+@-moz-keyframes unShrink {
+  0% { width:8vw;  }
+  100% { width:55vw; }
+}
+
+@-ms-keyframes unShrink {
+  0% { width:8vw;  }
+  100% { width:55vw; }
+}
+
+@-o-keyframes unShrink {
+  0% { width:8vw;  }
+  100% { width:55vw; }
+}
