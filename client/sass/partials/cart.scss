@@ -244,6 +244,7 @@ select{
   appearance: none;
   box-shadow: none;
   border-radius: none;
+  line-height: normal;
 
   &::-webkit-input-placeholder {
      color: $red;
@@ -267,5 +268,5 @@ select{
 // .ng-valid .ng-pending .ng-pristine .ng-submitted
 
 input.ng-dirty.ng-invalid , select.ng-dirty.ng-invalid{
-  border: 1px solid #FFFF00;
+  border-bottom: 1px solid #FFFF00;
 }

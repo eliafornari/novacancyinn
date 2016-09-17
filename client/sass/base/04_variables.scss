@@ -40,8 +40,8 @@ $font-family-paragraph: helvetica;
 
 // ........................................................FONT LINEHEIGHTS
 $line-height-h1: 50px;
-$line-height-h2: 30px;
-$line-height-paragraph: 22px;
+$line-height-h2: 35px;
+$line-height-paragraph: 30px;
 
 
 $line-height-h1-mobile: 40px;
@@ -100,15 +100,17 @@ $smooth-scroll-timing: 1.4s;
 
 
 $z-header: 13;
-$z-logo:16;
-$z-loader: 15;
-$z-clickOut: 14;
+$z-logo:17;
+$z-loader: 16;
+$z-clickOut: 16;
+$z-cart: 15;
+$z-shop-dollar: 14;
 $z-nav: 13;
-$z-cart: 13;
+
 $z-back: 12;
 
 $z-shop-content: 11;
-$z-shop-dollar: 11;
+
 $z-detail-functions: 11;
 $z-close:10;
 $z-home: 10;

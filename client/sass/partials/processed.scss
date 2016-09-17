@@ -3,6 +3,7 @@
   width: 100%;
   top:0;
   left:0;
+  position: fixed;
 }
 
 .processed-error{
@@ -11,10 +12,12 @@
 
 
 .processed-thankyou{
-  width:100%;
+  width:35%;
   height:auto;
-  margin-top: $margin-top;
+  margin-top: $form-sides;
+  margin-left: $form-sides;
   p{
+    width:80%;
     @include paragraph();
   }
 

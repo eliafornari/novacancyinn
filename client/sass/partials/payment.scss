@@ -2,6 +2,8 @@
 .payment{
   width:100%;
   height:100%;
+  position: fixed;
+  top: 0;
 }
 
 
@@ -9,11 +11,11 @@
   width:100%;
   height:100%;
   .payment-form-div{
-    width:30%;
+    width:35%;
+    height:200px;
     display:block;
     position: relative;
-    left:0%;
-    top: $form-sides;
+    margin-top: $form-sides;
     left: $form-sides;
   }
 }
@@ -24,14 +26,13 @@
     position: relative;
     left:$form-sides;
     height: 70px;
+    width:35%;
     margin-top: $margin-top-li;
     margin-bottom: $margin-sides;
     background-color: transparent;
     p{
       @include paragraph();
-      width:100%;
-      height: 70px;
-      line-height: 70px;
+      width:80%;
       span{
         float:right;
         @include paragraph();

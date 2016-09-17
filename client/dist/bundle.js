@@ -72,6 +72,11 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
     templateUrl: 'views/shop.html',
     controller: 'shopCtrl',
     reloadOnSearch: false
+  }).when('/radio', {
+    templateUrl: 'views/radio.html',
+    controller: 'radioCtrl'
+  }).when('/archive', {
+    templateUrl: 'views/archive.html'
   }).when('/about', {
     templateUrl: 'views/about.html'
   }).when('/contact', {
@@ -145,6 +150,23 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
   setTimeout(function () {
     $rootScope.authentication();
   }, 600);
+
+  $rootScope.backgroundColor = '#000000';
+  $rootScope.cartColor = 'rgba(0,0,0,0.96)';
+
+  document.addEventListener("keydown", function (event) {
+    console.log(event.which);
+    var key = event.which;
+
+    if (key == 66) {
+      $rootScope.backgroundColor = '#000000';
+      $rootScope.cartColor = 'rgba(0,0,0,0.96)';
+    } else if (key == 87) {
+      $rootScope.backgroundColor = '#FFFFFF';
+      $rootScope.cartColor = 'rgba(255,255,255,0.96)';
+    }
+    $rootScope.$apply();
+  });
 
   $rootScope.windowHeight = $window.innerHeight;
 
@@ -238,8 +260,11 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
 
   $scope.landscapeFunction();
 
+  $rootScope.Event = [];
+  $rootScope.Radio = [];
   var eventRan = false;
   var homeRan = false;
+  var radioRan = false;
 
   $rootScope.getContentType = function (type, orderField) {
 
@@ -275,6 +300,16 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
           } else {
             return false;
           }
+        } else if (type == 'radio') {
+          $rootScope.Radio = response.results;
+          console.log(response.results);
+          if (radioRan == false) {
+            console.log("radioReady");
+            radioRan = true;
+            $rootScope.$broadcast('radioReady');
+          } else {
+            return false;
+          }
         }
 
         // The documents object contains a Response object with all documents of type "product".
@@ -297,14 +332,15 @@ var jquerymousewheel = require('./vendor/jquery.mousewheel.js')($);
 var infiniteScroll = require("./vendor/infiniteScroll.js");
 var jqueryUI = require('./vendor/jquery-ui.min.js');
 var home = require("./home.js");
-var event = require("./event.js");
+var events = require("./event.js");
+var radio = require("./radio.js");
 var nav = require("./nav.js");
 var service = require("./services.js");
 var cart = require("./shop/cart.js");
 var shop = require("./shop/shop.js");
 var shop = require("./shop/checkout.js");
 
-},{"./event.js":2,"./home.js":3,"./nav.js":4,"./services.js":5,"./shop/cart.js":6,"./shop/checkout.js":7,"./shop/shop.js":8,"./vendor/infiniteScroll.js":9,"./vendor/jquery-ui.min.js":10,"./vendor/jquery.mousewheel.js":11,"angular":19,"angular-animate":13,"angular-resource":15,"angular-route":17,"jquery":32,"prismic.io":40}],2:[function(require,module,exports){
+},{"./event.js":2,"./home.js":3,"./nav.js":4,"./radio.js":5,"./services.js":6,"./shop/cart.js":7,"./shop/checkout.js":8,"./shop/shop.js":9,"./vendor/infiniteScroll.js":10,"./vendor/jquery-ui.min.js":11,"./vendor/jquery.mousewheel.js":12,"angular":20,"angular-animate":14,"angular-resource":16,"angular-route":18,"jquery":33,"prismic.io":41}],2:[function(require,module,exports){
 'use strict';
 
 angular.module('myApp')
@@ -332,8 +368,7 @@ angular.module('myApp')
 .controller('eventCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http, $sce, $document, anchorSmoothScroll, $window) {
 
   $rootScope.windowHeight = $window.innerHeight;
-  $rootScope.pageClass = "page-events";
-  $rootScope.Event = [];
+  $rootScope.pageClass = "page-event";
   $rootScope.selectedEvent = {};
 
   //..........................................................GET
@@ -400,7 +435,6 @@ Home.controller('homeCtrl', function ($scope, $location, $rootScope, $routeParam
 
   $scope.assignimage = function (i) {
     $scope.currentImage = $scope.homeImages[i];
-    console.log($scope.currentImage);
   };
 
   // Returns a random integer between min (included) and max (included)
@@ -427,17 +461,18 @@ Home.controller('homeCtrl', function ($scope, $location, $rootScope, $routeParam
     var diffX = Math.abs(prev.x - mloc.x);
     var diffY = Math.abs(prev.y - mloc.y);
 
-    console.log(diffX, diffY);
-
     prev = mloc;
 
     if (diffX > 1 || diffY > 1) {
       var number = getRandomIntInclusive(0, 42);
-      console.log(number);
       $scope.assignimage(number);
       $scope.$apply();
     }
   });
+
+  // $(document).addEventListener("keydown", function(event) {
+  //   console.log(event.which);
+  // }
 }); //controller
 
 },{}],4:[function(require,module,exports){
@@ -515,6 +550,29 @@ angular.module('myApp').controller('navCtrl', function ($scope, $location, $root
 });
 
 },{}],5:[function(require,module,exports){
+'use strict';
+
+angular.module('myApp').controller('radioCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http, $sce, $document, anchorSmoothScroll, $window) {
+
+  $rootScope.windowHeight = $window.innerHeight;
+  $rootScope.pageClass = "page-radio";
+  $rootScope.selectedRadio = {};
+
+  //..........................................................GET
+
+  $rootScope.getContentType('radio', 'my.radio.index');
+
+  $rootScope.$on('radioReady', function () {
+
+    $scope.$apply();
+  });
+
+  $scope.thisRadio = function (e) {
+    $rootScope.selectedRadio = e;
+  };
+}); //controller
+
+},{}],6:[function(require,module,exports){
 "use strict";
 
 /* Services */
@@ -653,7 +711,7 @@ Service.service('anchorSmoothScroll', function () {
     };
 });
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 var Cart = angular.module('myApp');
@@ -787,7 +845,7 @@ Cart.controller('cartCtrl', function ($scope, $location, $rootScope, $timeout, $
   };
 });
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 var Checkout = angular.module('myApp');
@@ -811,7 +869,7 @@ Checkout.controller('checkoutCtrl', function ($scope, $location, $rootScope, $ti
       last_name: '',
       email: ''
     },
-    shipment_method: '1301792307242074821',
+    shipment_method: '1336838094099317449',
     shipment: { first_name: '',
       last_name: '',
       address_1: '',
@@ -838,6 +896,7 @@ Checkout.controller('checkoutCtrl', function ($scope, $location, $rootScope, $ti
     $rootScope.template = $rootScope.templates[2];
 
     $http.post('/cartToOrder', $rootScope.checkout).then(function (data) {
+      console.log(data);
 
       $rootScope.Totals = data.data;
       $rootScope.payment.id = $rootScope.Totals.id;
@@ -954,10 +1013,10 @@ Checkout.controller('checkoutCtrl', function ($scope, $location, $rootScope, $ti
 
     console.log('country: ' + $rootScope.checkout.shipment.country);
     if ($rootScope.checkout.shipment.country == 'US') {
-      $rootScope.checkout.shipment_method = '1301792307242074821';
+      $rootScope.checkout.shipment_method = '1336838094099317449';
       console.log('US');
     } else {
-      $rootScope.checkout.shipment_method = '1314165476770709929';
+      $rootScope.checkout.shipment_method = '1336838640038314698';
       console.log('INT');
     }
   }, true);
@@ -974,7 +1033,7 @@ Checkout.controller('checkoutCtrl', function ($scope, $location, $rootScope, $ti
   };
 });
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 var Shop = angular.module('myApp');
@@ -985,6 +1044,7 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
   $rootScope.isDetailOpen = false;
   $rootScope.windowHeight = $window.innerHeight;
   $rootScope.Detail = {};
+
   $rootScope.openDetailFN = function (slug) {
     if ($rootScope.isDetailOpen == true) {
       $location.path('/shop/' + slug, true);
@@ -1169,7 +1229,7 @@ Shop.directive('detailDirective', function ($rootScope, $location, $window, $rou
   };
 });
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 /* ng-infinite-scroll - v1.0.0 - 2013-02-23 */
@@ -1242,7 +1302,7 @@ mod.directive('infiniteScroll', ['$rootScope', '$window', '$timeout', function (
   };
 }]);
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -2374,7 +2434,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }));
 });
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -2613,7 +2673,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 });
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -6761,11 +6821,11 @@ angular.module('ngAnimate', [])
 
 })(window, window.angular);
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 require('./angular-animate');
 module.exports = 'ngAnimate';
 
-},{"./angular-animate":12}],14:[function(require,module,exports){
+},{"./angular-animate":13}],15:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -7625,11 +7685,11 @@ angular.module('ngResource', ['ng']).
 
 })(window, window.angular);
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 require('./angular-resource');
 module.exports = 'ngResource';
 
-},{"./angular-resource":14}],16:[function(require,module,exports){
+},{"./angular-resource":15}],17:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -8696,11 +8756,11 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 })(window, window.angular);
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 require('./angular-route');
 module.exports = 'ngRoute';
 
-},{"./angular-route":16}],18:[function(require,module,exports){
+},{"./angular-route":17}],19:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -40174,11 +40234,11 @@ $provide.value("$locale", {
 })(window);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":18}],20:[function(require,module,exports){
+},{"./angular":19}],21:[function(require,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -40304,9 +40364,9 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	exports.fromByteArray = uint8ToBase64
 }(typeof exports === 'undefined' ? (this.base64js = {}) : exports))
 
-},{}],21:[function(require,module,exports){
-
 },{}],22:[function(require,module,exports){
+
+},{}],23:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -40418,7 +40478,7 @@ exports.allocUnsafeSlow = function allocUnsafeSlow(size) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"buffer":23}],23:[function(require,module,exports){
+},{"buffer":24}],24:[function(require,module,exports){
 (function (global){
 /*!
  * The buffer module from node.js, for the browser.
@@ -41970,7 +42030,7 @@ function blitBuffer (src, dst, offset, length) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"base64-js":20,"ieee754":28,"isarray":31}],24:[function(require,module,exports){
+},{"base64-js":21,"ieee754":29,"isarray":32}],25:[function(require,module,exports){
 module.exports = {
   "100": "Continue",
   "101": "Switching Protocols",
@@ -42035,7 +42095,7 @@ module.exports = {
   "511": "Network Authentication Required"
 }
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 (function (Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -42146,7 +42206,7 @@ function objectToString(o) {
 }
 
 }).call(this,{"isBuffer":require("../../is-buffer/index.js")})
-},{"../../is-buffer/index.js":30}],26:[function(require,module,exports){
+},{"../../is-buffer/index.js":31}],27:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -42450,7 +42510,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 var http = require('http');
 
 var https = module.exports;
@@ -42466,7 +42526,7 @@ https.request = function (params, cb) {
     return http.request.call(this, params, cb);
 }
 
-},{"http":49}],28:[function(require,module,exports){
+},{"http":50}],29:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = nBytes * 8 - mLen - 1
@@ -42552,7 +42612,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -42577,7 +42637,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 /**
  * Determine if an object is Buffer
  *
@@ -42596,14 +42656,14 @@ module.exports = function (obj) {
     ))
 }
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 var toString = {}.toString;
 
 module.exports = Array.isArray || function (arr) {
   return toString.call(arr) == '[object Array]';
 };
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.0.0
  * https://jquery.com/
@@ -52642,7 +52702,7 @@ if ( !noGlobal ) {
 return jQuery;
 } ) );
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -53443,7 +53503,7 @@ module.exports = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./cache":34,"./documents":35,"./experiments":36,"./predicates":39,"./requests":41}],34:[function(require,module,exports){
+},{"./cache":35,"./documents":36,"./experiments":37,"./predicates":40,"./requests":42}],35:[function(require,module,exports){
 
 "use strict";
 
@@ -53498,7 +53558,7 @@ ApiCache.prototype = {
 
 module.exports = ApiCache;
 
-},{"./lru":38}],35:[function(require,module,exports){
+},{"./lru":39}],36:[function(require,module,exports){
 "use strict";
 
 /**
@@ -54084,7 +54144,7 @@ module.exports = {
   GroupDoc: GroupDoc
 };
 
-},{"./fragments":37}],36:[function(require,module,exports){
+},{"./fragments":38}],37:[function(require,module,exports){
 
 "use strict";
 
@@ -54169,7 +54229,7 @@ module.exports = {
   Variation: Variation
 };
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 "use strict";
 
 var documents = require('./documents');
@@ -55423,7 +55483,7 @@ module.exports = {
   insertSpans: insertSpans
 };
 
-},{"./documents":35}],38:[function(require,module,exports){
+},{"./documents":36}],39:[function(require,module,exports){
 
 /**
  * A doubly linked list-based Least Recently Used (LRU) cache. Will keep most
@@ -55676,7 +55736,7 @@ LRUCache.prototype.toString = function() {
 
 module.exports = LRUCache;
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 
 "use strict";
 
@@ -55958,7 +56018,7 @@ module.exports = {
 
 };
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 "use strict";
 
 var experiments = require('./experiments'),
@@ -56036,7 +56096,7 @@ module.exports = {
 
 module.exports.Prismic = module.exports; // Backward compatibility
 
-},{"./api":33,"./documents":35,"./experiments":36,"./fragments":37,"./predicates":39}],41:[function(require,module,exports){
+},{"./api":34,"./documents":36,"./experiments":37,"./fragments":38,"./predicates":40}],42:[function(require,module,exports){
 (function (process){
 
 "use strict";
@@ -56277,7 +56337,7 @@ module.exports = {
 };
 
 }).call(this,require('_process'))
-},{"../package.json":42,"_process":44,"http":49,"https":27,"url":61}],42:[function(require,module,exports){
+},{"../package.json":43,"_process":45,"http":50,"https":28,"url":62}],43:[function(require,module,exports){
 module.exports={
   "name": "prismic.io",
   "description": "JavaScript development kit for prismic.io",
@@ -56368,7 +56428,7 @@ module.exports={
   "readme": "ERROR: No README data found!"
 }
 
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -56415,7 +56475,7 @@ function nextTick(fn, arg1, arg2, arg3) {
 }
 
 }).call(this,require('_process'))
-},{"_process":44}],44:[function(require,module,exports){
+},{"_process":45}],45:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -56536,7 +56596,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 (function (global){
 /*! https://mths.be/punycode v1.4.1 by @mathias */
 ;(function(root) {
@@ -57073,7 +57133,7 @@ process.umask = function() { return 0; };
 }(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],46:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -57159,7 +57219,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],47:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -57246,13 +57306,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":46,"./encode":47}],49:[function(require,module,exports){
+},{"./decode":47,"./encode":48}],50:[function(require,module,exports){
 (function (global){
 var ClientRequest = require('./lib/request')
 var extend = require('xtend')
@@ -57334,7 +57394,7 @@ http.METHODS = [
 	'UNSUBSCRIBE'
 ]
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./lib/request":51,"builtin-status-codes":24,"url":61,"xtend":64}],50:[function(require,module,exports){
+},{"./lib/request":52,"builtin-status-codes":25,"url":62,"xtend":65}],51:[function(require,module,exports){
 (function (global){
 exports.fetch = isFunction(global.fetch) && isFunction(global.ReadableByteStream)
 
@@ -57378,7 +57438,7 @@ function isFunction (value) {
 xhr = null // Help gc
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 (function (process,global,Buffer){
 var capability = require('./capability')
 var inherits = require('inherits')
@@ -57659,7 +57719,7 @@ var unsafeHeaders = [
 ]
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
-},{"./capability":50,"./response":52,"_process":44,"buffer":23,"inherits":29,"readable-stream":58,"to-arraybuffer":60}],52:[function(require,module,exports){
+},{"./capability":51,"./response":53,"_process":45,"buffer":24,"inherits":30,"readable-stream":59,"to-arraybuffer":61}],53:[function(require,module,exports){
 (function (process,global,Buffer){
 var capability = require('./capability')
 var inherits = require('inherits')
@@ -57843,7 +57903,7 @@ IncomingMessage.prototype._onXHRProgress = function () {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
-},{"./capability":50,"_process":44,"buffer":23,"inherits":29,"readable-stream":58}],53:[function(require,module,exports){
+},{"./capability":51,"_process":45,"buffer":24,"inherits":30,"readable-stream":59}],54:[function(require,module,exports){
 // a duplex stream is just a stream that is both readable and writable.
 // Since JS doesn't have multiple prototypal inheritance, this class
 // prototypally inherits from Readable, and then parasitically from
@@ -57919,7 +57979,7 @@ function forEach(xs, f) {
     f(xs[i], i);
   }
 }
-},{"./_stream_readable":55,"./_stream_writable":57,"core-util-is":25,"inherits":29,"process-nextick-args":43}],54:[function(require,module,exports){
+},{"./_stream_readable":56,"./_stream_writable":58,"core-util-is":26,"inherits":30,"process-nextick-args":44}],55:[function(require,module,exports){
 // a passthrough stream.
 // basically just the most minimal sort of Transform stream.
 // Every written chunk gets output as-is.
@@ -57946,7 +58006,7 @@ function PassThrough(options) {
 PassThrough.prototype._transform = function (chunk, encoding, cb) {
   cb(null, chunk);
 };
-},{"./_stream_transform":56,"core-util-is":25,"inherits":29}],55:[function(require,module,exports){
+},{"./_stream_transform":57,"core-util-is":26,"inherits":30}],56:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -58842,7 +58902,7 @@ function indexOf(xs, x) {
   return -1;
 }
 }).call(this,require('_process'))
-},{"./_stream_duplex":53,"_process":44,"buffer":23,"buffer-shims":22,"core-util-is":25,"events":26,"inherits":29,"isarray":31,"process-nextick-args":43,"string_decoder/":59,"util":21}],56:[function(require,module,exports){
+},{"./_stream_duplex":54,"_process":45,"buffer":24,"buffer-shims":23,"core-util-is":26,"events":27,"inherits":30,"isarray":32,"process-nextick-args":44,"string_decoder/":60,"util":22}],57:[function(require,module,exports){
 // a transform stream is a readable/writable stream where you do
 // something with the data.  Sometimes it's called a "filter",
 // but that's not a great name for it, since that implies a thing where
@@ -59023,7 +59083,7 @@ function done(stream, er) {
 
   return stream.push(null);
 }
-},{"./_stream_duplex":53,"core-util-is":25,"inherits":29}],57:[function(require,module,exports){
+},{"./_stream_duplex":54,"core-util-is":26,"inherits":30}],58:[function(require,module,exports){
 (function (process){
 // A bit simpler than readable streams.
 // Implement an async ._write(chunk, encoding, cb), and it'll handle all
@@ -59552,7 +59612,7 @@ function CorkedRequest(state) {
   };
 }
 }).call(this,require('_process'))
-},{"./_stream_duplex":53,"_process":44,"buffer":23,"buffer-shims":22,"core-util-is":25,"events":26,"inherits":29,"process-nextick-args":43,"util-deprecate":63}],58:[function(require,module,exports){
+},{"./_stream_duplex":54,"_process":45,"buffer":24,"buffer-shims":23,"core-util-is":26,"events":27,"inherits":30,"process-nextick-args":44,"util-deprecate":64}],59:[function(require,module,exports){
 (function (process){
 var Stream = (function (){
   try {
@@ -59572,7 +59632,7 @@ if (!process.browser && process.env.READABLE_STREAM === 'disable' && Stream) {
 }
 
 }).call(this,require('_process'))
-},{"./lib/_stream_duplex.js":53,"./lib/_stream_passthrough.js":54,"./lib/_stream_readable.js":55,"./lib/_stream_transform.js":56,"./lib/_stream_writable.js":57,"_process":44}],59:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":54,"./lib/_stream_passthrough.js":55,"./lib/_stream_readable.js":56,"./lib/_stream_transform.js":57,"./lib/_stream_writable.js":58,"_process":45}],60:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -59795,7 +59855,7 @@ function base64DetectIncompleteChar(buffer) {
   this.charLength = this.charReceived ? 3 : 0;
 }
 
-},{"buffer":23}],60:[function(require,module,exports){
+},{"buffer":24}],61:[function(require,module,exports){
 var Buffer = require('buffer').Buffer
 
 module.exports = function (buf) {
@@ -59824,7 +59884,7 @@ module.exports = function (buf) {
 	}
 }
 
-},{"buffer":23}],61:[function(require,module,exports){
+},{"buffer":24}],62:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -60558,7 +60618,7 @@ Url.prototype.parseHost = function() {
   if (host) this.hostname = host;
 };
 
-},{"./util":62,"punycode":45,"querystring":48}],62:[function(require,module,exports){
+},{"./util":63,"punycode":46,"querystring":49}],63:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -60576,7 +60636,7 @@ module.exports = {
   }
 };
 
-},{}],63:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 (function (global){
 
 /**
@@ -60647,7 +60707,7 @@ function config (name) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],64:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 module.exports = extend
 
 var hasOwnProperty = Object.prototype.hasOwnProperty;

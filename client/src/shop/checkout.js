@@ -20,7 +20,7 @@ $rootScope.checkout={
              last_name: '',
               email:''
            },
-          shipment_method: '1301792307242074821',
+          shipment_method: '1336838094099317449',
           shipment:
                    { first_name: '',
                      last_name: '',
@@ -51,6 +51,7 @@ $rootScope.checkout={
 
     $http.post('/cartToOrder', $rootScope.checkout)
     .then(function(data) {
+      console.log(data);
 
       $rootScope.Totals=data.data;
       $rootScope.payment.id = $rootScope.Totals.id;
@@ -186,10 +187,10 @@ $scope.$watch('checkout', function(value){
 
   console.log('country: '+$rootScope.checkout.shipment.country);
   if($rootScope.checkout.shipment.country=='US'){
-    $rootScope.checkout.shipment_method='1301792307242074821'
+    $rootScope.checkout.shipment_method='1336838094099317449'
     console.log('US');
   }else{
-    $rootScope.checkout.shipment_method='1314165476770709929'
+    $rootScope.checkout.shipment_method='1336838640038314698'
     console.log('INT');
   }
 }, true)

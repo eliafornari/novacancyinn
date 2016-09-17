@@ -24,8 +24,7 @@ angular.module('myApp')
 .controller('eventCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, $sce, $document, anchorSmoothScroll, $window){
 
 $rootScope.windowHeight = $window.innerHeight;
-$rootScope.pageClass = "page-events";
-$rootScope.Event = [];
+$rootScope.pageClass = "page-event";
 $rootScope.selectedEvent = {};
 
 

@@ -2,18 +2,19 @@
   z-index:$z-nav;
   position: fixed;
   right:0;
-  height:200px;
-  top:50%;
-  margin-top: -100px;
+}
+
+.table-nav{
+  height:100vh;
 }
 
 .nav-container{
-  height:400px;
+  height:auto;
   width:120px;
   position: relative;
   .nav-logo{
     width:100%;
-    position: absolute;
+    position: relative;
     right:$margin-sides;
     svg{
       width:100%;
@@ -35,14 +36,19 @@
     }
   }
   .nav-container-list{
-    position: absolute;
-    top:-150px;
+    position: relative;
     right:0;
     width:100%;
     a{
       width: 100%;
       display: block;
       text-align: center;
+    }
+    &.top{
+      padding-bottom: 15px;
+    }
+    &.bottom{
+      padding-top: 15px;
     }
   }
 

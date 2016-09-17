@@ -1,0 +1,27 @@
+<div class="radio" ng-controller="radioCtrl">
+
+<table>
+  <tr>
+    <td>
+      <ul class="radio-ul">
+        <li class="radio-li" ng-repeat="r in Radio" ng-mouseenter="radioHovered=true; thisRadio(r)" ng-mouseleave="radioHovered=false">
+          <a href="{{r.data['radio.link'].value.url}}" target="_blank">
+            <p class="radio-li-date">{{r.data['radio.date'].value}}</p>
+            <p class="radio-li-title">{{r.data['radio.title'].value}}</p>
+          </a>
+        </li>
+      </ul>
+
+    </td>
+  </tr>
+</table>
+
+
+
+<div class="radio-image" ng-if="selectedRadio.data['radio.cover'].value.main.url">
+  <img src="{{selectedRadio.data['radio.cover'].value.main.url}}" alt="{{selectedRadio.data['radio.name'].value}}"/>
+</div>
+
+
+
+</div>

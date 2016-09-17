@@ -1,4 +1,4 @@
-<div class="home" summary="home" ng-controller="homeCtrl" ng-class="{'blink': blink}">
+<div class="home" summary="home" ng-controller="homeCtrl" ng-class="{'blink': blink}" >
 
   <table>
     <tr>
@@ -6,7 +6,7 @@
         <div class="home-container">
           <div class="home-nav-left">
             <a class="home-nav-left-a" href="/shop">shop</a>
-            <!-- <a class="home-nav-left-a" href="/drops">drops</a> -->
+            <a class="home-nav-left-a" href="/archive">archive</a>
             <a class="home-nav-left-a" href="/event">events</a>
           </div>
           <div class="home-logo">
@@ -15,7 +15,7 @@
 
 
           <div class="home-nav-right">
-            <!-- <a class="home-nav-right-a" href="/radio">radio</a> -->
+            <a class="home-nav-right-a" href="/radio">radio</a>
             <a class="home-nav-right-a" href="/about">about</a>
             <a class="home-nav-right-a" href="/contact">contact</a>
           </div>
@@ -26,7 +26,13 @@
   </table>
 
 
-<div class="home-image" style="background-image: url('{{currentImage.image_small.value.main.url}}')">
+<ul class="home-social">
+  <li class="home-social-li"><a href="https://www.instagram.com/novacancyinn/" target="_blank">IG</a></li>
+  <li class="home-social-li"><a href="https://soundcloud.com/novacancyinn" target="_blank">SC</a></li>
+</ul>
+
+
+<div class="home-image" style="background-image: url('{{currentImage.image_small.value.main.url}}')" ng-if="currentImage.image_small.value.main.url">
 
 </div>
 

@@ -68,6 +68,14 @@
 }
 
 
+
+.event-description{
+  position: fixed;
+  right:$margin-sides;
+  bottom:$margin-sides;
+}
+
+
 .event-date.shrinkDate{
   width:8vw !important;
 }

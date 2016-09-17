@@ -99,11 +99,10 @@ p{
 
 
 a:active {
-    color: $yellow;
+  text-shadow: 0 0 3px $purple;
 }
 .ng-click-active{
-  color:$yellow;
-  stroke: $yellow;
+  text-shadow: 0 0 3px $purple;
 }
 
 a{
@@ -123,6 +122,10 @@ a{
 
 input, textarea, select, a, li {
   text-decoration: none;
+}
+
+select, input, textarea{
+  line-height: normal;
 }
 
 

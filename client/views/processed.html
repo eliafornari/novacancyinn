@@ -12,12 +12,15 @@
       {{Processed.data.order.ship_to.data.country.value}}
       {{Processed.data.order.ship_to.data.country.value}}
     </p>
-    <a class="" href="https://www.instagram.com/alifeinadiary/">@</a>
+    <a class="" href="https://www.instagram.com/novacancyinn/">@</a>
+    <!-- <audio src="/assets/audio/youaresobeautiful.mp3" autoplay>
+      <source src="/assets/audio/youaresobeautiful.mp3" type="audio/mpeg">
+    </audio> -->
   </div>
 
 
 
-  <div class="cart-back" ng-click="backFromProcessed()">
+  <div class="cart-back" ng-click="backFromProcessed()" ng-hide="Processed.status==200 || Processed==false">
     <p class="hvr-color">back</p>
   </div>
 </div>

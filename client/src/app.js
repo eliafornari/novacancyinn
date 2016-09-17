@@ -83,8 +83,18 @@ $sceProvider.enabled(false);
       reloadOnSearch: false
     })
 
+    .when('/radio', {
+      templateUrl: 'views/radio.html',
+      controller: 'radioCtrl'
+    })
+
+    .when('/archive', {
+      templateUrl: 'views/archive.html'
+    })
+
+
     .when('/about', {
-      templateUrl: 'views/about.html',
+      templateUrl: 'views/about.html'
     })
 
     .when('/contact', {
@@ -207,6 +217,50 @@ $rootScope.Home;
 
 
 
+
+
+
+
+
+
+
+
+  $rootScope.backgroundColor = '#000000';
+  $rootScope.cartColor = 'rgba(0,0,0,0.96)';
+
+  document.addEventListener("keydown", function(event) {
+    console.log(event.which);
+    var key = event.which
+
+    if(key == 66){
+      $rootScope.backgroundColor = '#000000';
+      $rootScope.cartColor = 'rgba(0,0,0,0.96)'
+    }else if(key == 87){
+      $rootScope.backgroundColor = '#FFFFFF';
+      $rootScope.cartColor = 'rgba(255,255,255,0.96)'
+    }
+    $rootScope.$apply();
+  })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     $rootScope.windowHeight = $window.innerHeight;
 
     jQuery($window).resize(function(){
@@ -318,10 +372,11 @@ $rootScope.Home;
 
 
 
-
-
+$rootScope.Event = [];
+$rootScope.Radio = [];
 var eventRan = false;
 var homeRan = false;
+var radioRan = false;
 
     $rootScope.getContentType = function(type, orderField){
 
@@ -363,6 +418,16 @@ var homeRan = false;
                           $rootScope.$broadcast('homeReady');
 
                         }else{ return false; }
+
+                      }else if(type =='radio'){
+                        $rootScope.Radio = response.results;
+                        console.log(response.results);
+                        if(radioRan == false){
+                          console.log("radioReady");
+                          radioRan = true;
+                          $rootScope.$broadcast('radioReady');
+
+                        }else{ return false; }
                       }
 
                       // The documents object contains a Response object with all documents of type "product".
@@ -399,7 +464,8 @@ var jquerymousewheel = require('./vendor/jquery.mousewheel.js')($);
 var infiniteScroll = require("./vendor/infiniteScroll.js");
 var jqueryUI = require('./vendor/jquery-ui.min.js');
 var home = require("./home.js");
-var event = require("./event.js");
+var events = require("./event.js");
+var radio = require("./radio.js");
 var nav = require("./nav.js");
 var service = require("./services.js");
 var cart = require("./shop/cart.js");

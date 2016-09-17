@@ -32,17 +32,18 @@
 
       </div>
     </div>
-    <button type="submit" class="checkout-button hvr-sweep-to-right" ng-disabled="paymentForm.$invalid">PAY</button>
+    <div class="payment-total" >
+      <p>SHIPPING <span>{{Totals.totals.shipping_price.formatted}}</span></p>
+      <!-- <p>TAX <span>10%</span></p> -->
+      <p>TOTAL <span>{{Totals.totals.total.formatted}}</span></p>
+    </div>
+    <button type="submit" class="checkout-button hvr-sweep-to-right" ng-disabled="paymentForm.$invalid">COMPLETE ORDER</button>
     <!-- hvr-sweep-to-right -->
 
   </form>
 
 
-  <div class="payment-total" >
-    <p>SHIPPING <span>{{Totals.totals.shipping_price.formatted}}</span></p>
-    <!-- <p>TAX <span>10%</span></p> -->
-    <p>TOTAL <span>{{Totals.totals.total.formatted}}</span></p>
-  </div>
+
 
 
 

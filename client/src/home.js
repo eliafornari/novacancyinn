@@ -37,7 +37,6 @@ $scope.currentImage;
 
   $scope.assignimage = (i)=>{
     $scope.currentImage = $scope.homeImages[i];
-    console.log($scope.currentImage);
   }
 
       // Returns a random integer between min (included) and max (included)
@@ -66,19 +65,19 @@ var prev ={
     var diffX = Math.abs(prev.x - mloc.x);
     var diffY = Math.abs(prev.y - mloc.y);
 
-    console.log(diffX, diffY);
-
     prev=mloc;
 
     if((diffX > 1) || (diffY > 1)){
       var number = getRandomIntInclusive(0, 42);
-      console.log(number);
       $scope.assignimage(number);
       $scope.$apply();
     }
 
-
-
 });
+
+
+// $(document).addEventListener("keydown", function(event) {
+//   console.log(event.which);
+// }
 
 });//controller

@@ -6,6 +6,7 @@ $rootScope.pageClass = "page-shop";
 $rootScope.isDetailOpen = false;
 $rootScope.windowHeight = $window.innerHeight;
 $rootScope.Detail = {};
+
 $rootScope.openDetailFN = (slug)=>{
   if($rootScope.isDetailOpen == true){
     $location.path('/shop/'+slug, true);
@@ -15,9 +16,7 @@ $rootScope.openDetailFN = (slug)=>{
       $location.path('/shop/'+slug, true);
       $rootScope.$apply();
     }, 200);
-
   }
-
 }
 
 

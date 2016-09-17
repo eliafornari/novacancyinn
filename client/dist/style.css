@@ -57,18 +57,18 @@ table {
 .nav {
   z-index: 13;
   position: fixed;
-  right: 0;
-  height: 200px;
-  top: 50%;
-  margin-top: -100px; }
+  right: 0; }
+
+.table-nav {
+  height: 100vh; }
 
 .nav-container {
-  height: 400px;
+  height: auto;
   width: 120px;
   position: relative; }
   .nav-container .nav-logo {
     width: 100%;
-    position: absolute;
+    position: relative;
     right: 20px; }
     .nav-container .nav-logo svg {
       width: 100%;
@@ -86,14 +86,17 @@ table {
       -ms-transition: opacity 0.4s;
       transition: opacity 0.4s; }
   .nav-container .nav-container-list {
-    position: absolute;
-    top: -150px;
+    position: relative;
     right: 0;
     width: 100%; }
     .nav-container .nav-container-list a {
       width: 100%;
       display: block;
       text-align: center; }
+    .nav-container .nav-container-list.top {
+      padding-bottom: 15px; }
+    .nav-container .nav-container-list.bottom {
+      padding-top: 15px; }
 
 .nav-logo-blur.blur {
   opacity: 1 !important; }
@@ -170,23 +173,22 @@ p, a, li {
 
 p {
   font-size: 12px;
-  line-height: 22px;
+  line-height: 30px;
   font-family: helvetica;
   color: #ec2224; }
 
 /*........................A.................................*/
 a:active {
-  color: #ede611; }
+  text-shadow: 0 0 3px #884f9e; }
 
 .ng-click-active {
-  color: #ede611;
-  stroke: #ede611; }
+  text-shadow: 0 0 3px #884f9e; }
 
 a {
   cursor: pointer;
   color: #884f9e;
   font-size: 14px;
-  line-height: 30px;
+  line-height: 35px;
   font-family: helvetica;
   text-shadow: 0 0 0px #884f9e;
   transition: text-shadow 0.2s ease;
@@ -222,6 +224,9 @@ a {
 input, textarea, select, a, li {
   text-decoration: none; }
 
+select, input, textarea {
+  line-height: normal; }
+
 table {
   width: 100%;
   height: 100%; }
@@ -249,8 +254,7 @@ main {
 
 .shop {
   width: 100vw;
-  height: 100vh;
-  background-color: #FFFFFF; }
+  height: 100vh; }
 
 .shop-content.openDetail {
   height: 20vh;
@@ -307,7 +311,7 @@ main {
   right: 20px;
   height: 100px;
   width: 100px;
-  z-index: 11; }
+  z-index: 14; }
   .dollar p {
     position: absolute;
     right: 0;
@@ -413,7 +417,9 @@ main {
   margin-top: 30vh;
   z-index: 10; }
 
-.detail-images .detail-img {
+.detail-images .detail-images-single:nth-child(1) {
+  margin-top: 10vh; }
+.detail-images .detail-images-single .detail-img {
   max-width: 20vw;
   margin: auto;
   display: block;
@@ -421,11 +427,18 @@ main {
   /*  @if $media == large-desktop {
       @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
     }*/ }
-  .detail-images .detail-img:nth-child(1) {
-    margin-top: 10vh; }
   @media only screen and (min-width: 0px) and (max-width: 767px) {
-    .detail-images .detail-img {
+    .detail-images .detail-images-single .detail-img {
       max-width: 70vw; } }
+
+.detail-images.zoom {
+  width: 100vw;
+  height: auto; }
+  .detail-images.zoom .detail-images-single {
+    width: 100vw;
+    height: 100vh; }
+    .detail-images.zoom .detail-images-single img {
+      max-width: 80vw !important; }
 
 .detail-functions {
   position: fixed;
@@ -433,7 +446,7 @@ main {
   top: 50%;
   width: auto;
   margin-top: -10px;
-  height: 20px;
+  height: auto;
   z-index: 11;
   /*  @if $media == large-desktop {
       @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
@@ -455,7 +468,7 @@ main {
     vertical-align: middle;
     margin: 0;
     font-size: 12px;
-    line-height: 22px;
+    line-height: 30px;
     font-family: helvetica;
     text-shadow: 0 0 0px #ec2224;
     transition: text-shadow 0.2s ease;
@@ -484,16 +497,21 @@ main {
           color: #ec2224 !important; } }
 
 .detail-price {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  width: 80px;
-  text-align: left;
-  z-index: 9;
-  color: #ec2224;
-  font-size: 12px;
-  line-height: 22px;
-  font-family: helvetica; }
+  position: absolute;
+  display: block;
+  height: 30px;
+  width: 100%;
+  bottom: -28px;
+  left: 0;
+  float: none; }
+  .detail-price p {
+    height: 100%;
+    width: 100%;
+    color: #ec2224;
+    text-align: left;
+    font-size: 12px;
+    line-height: 30px;
+    font-family: helvetica; }
 
 .detail-modifiers {
   position: relative;
@@ -507,7 +525,7 @@ main {
       display: block;
       float: left;
       font-size: 12px;
-      line-height: 22px;
+      line-height: 30px;
       font-family: helvetica; }
     .detail-modifiers .detail-modifiers-ul .detail-modifiers-variations {
       width: auto;
@@ -519,7 +537,7 @@ main {
         clear: both; }
         .detail-modifiers .detail-modifiers-ul .detail-modifiers-variations .detail-modifiers-variations-li a {
           font-size: 12px;
-          line-height: 22px;
+          line-height: 30px;
           font-family: helvetica; }
 
 .about {
@@ -542,7 +560,7 @@ main {
   display: block;
   text-align: center;
   font-size: 12px;
-  line-height: 22px;
+  line-height: 30px;
   font-family: helvetica;
   color: #ec2224;
   text-shadow: 0 0 0px #ec2224;
@@ -606,7 +624,7 @@ main {
   vertical-align: middle; }
   .event-info-left a {
     font-size: 12px;
-    line-height: 22px;
+    line-height: 30px;
     font-family: helvetica;
     color: #ec2224;
     text-shadow: 0 0 0px #ec2224;
@@ -636,7 +654,7 @@ main {
           color: #ec2224 !important; } }
   .event-info-left span {
     font-size: 12px;
-    line-height: 22px;
+    line-height: 30px;
     font-family: helvetica; }
 
 .event-info-right {
@@ -647,7 +665,7 @@ main {
   vertical-align: middle; }
   .event-info-right span {
     font-size: 12px;
-    line-height: 22px;
+    line-height: 30px;
     font-family: helvetica; }
 
 .event-image {
@@ -657,6 +675,11 @@ main {
   width: 250px; }
   .event-image img {
     width: 100%; }
+
+.event-description {
+  position: fixed;
+  right: 20px;
+  bottom: 20px; }
 
 .event-date.shrinkDate {
   width: 8vw !important; }
@@ -771,8 +794,8 @@ main {
     color: #884f9e; }
 
 .home-image {
-  width: 30vw;
-  height: 30vw;
+  width: 23vw;
+  height: 23vw;
   position: fixed;
   left: 20px;
   bottom: 20px;
@@ -780,11 +803,71 @@ main {
   background-repeat: no-repeat;
   background-size: contain; }
 
+.home-social {
+  position: fixed;
+  right: 20px;
+  bottom: 20px; }
+  .home-social .home-social-li {
+    display: inline-block;
+    margin-left: 10px; }
+    .home-social .home-social-li a {
+      display: block; }
+
+.radio {
+  width: 100vw;
+  height: 100vh; }
+
+.radio-ul {
+  width: 55vw;
+  margin: auto; }
+  .radio-ul .radio-li {
+    width: 55vw;
+    clear: both;
+    margin: auto;
+    height: 50px;
+    line-height: 50px;
+    vertical-align: middle;
+    position: relative; }
+    .radio-ul .radio-li:nth-child(1) {
+      margin-top: 0; }
+    .radio-ul .radio-li .radio-li-date {
+      width: 20%;
+      display: inline-block;
+      text-align: left;
+      float: left; }
+    .radio-ul .radio-li .radio-li-title {
+      width: 70%;
+      display: inline-block;
+      margin-left: 10%;
+      float: left; }
+
+.radio-image {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  width: 250px; }
+  .radio-image img {
+    width: 100%; }
+
+.archive {
+  width: 100vw;
+  height: 100vh; }
+
+.archive-p {
+  width: 200px;
+  margin: auto;
+  display: block;
+  text-align: center;
+  font-size: 12px;
+  line-height: 30px;
+  font-family: helvetica;
+  color: #ec2224; }
+
 .cart {
   position: fixed;
   height: 100vh;
   width: 100vw;
-  z-index: 13;
+  z-index: 15;
   background-color: rgba(255, 255, 255, 0.96);
   /*  @if $media == large-desktop {
       @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
@@ -806,7 +889,7 @@ main {
   top: 20px;
   width: 40px;
   height: 40px;
-  z-index: 14; }
+  z-index: 16; }
   .cart-close svg {
     width: 100%;
     height: 100%; }
@@ -844,7 +927,7 @@ main {
     .cart-ul .cart-li .cart-remove {
       float: right;
       font-size: 12px;
-      line-height: 22px;
+      line-height: 30px;
       font-family: helvetica;
       position: absolute;
       right: 0;
@@ -877,7 +960,7 @@ main {
             color: #ec2224 !important; } }
     .cart-ul .cart-li p {
       font-size: 12px;
-      line-height: 22px;
+      line-height: 30px;
       font-family: helvetica;
       float: left;
       line-height: 70px;
@@ -891,13 +974,13 @@ main {
   margin-top: 30px; }
   .cart-total .cart-total-tax {
     font-size: 12px;
-    line-height: 22px;
+    line-height: 30px;
     font-family: helvetica;
     height: 70px;
     line-height: 70px; }
   .cart-total .cart-total-amount {
     font-size: 12px;
-    line-height: 22px;
+    line-height: 30px;
     font-family: helvetica;
     height: 70px;
     line-height: 70px; }
@@ -906,7 +989,7 @@ main {
 
 .form-title {
   font-size: 14px;
-  line-height: 30px;
+  line-height: 35px;
   font-family: helvetica;
   color: #ec2224; }
 
@@ -922,7 +1005,7 @@ main {
   background-color: transparent;
   border-bottom: 2px solid #ec2224;
   font-size: 14px;
-  line-height: 30px;
+  line-height: 35px;
   font-family: helvetica;
   text-shadow: 0 0 0px #ec2224;
   transition: text-shadow 0.2s ease;
@@ -968,7 +1051,7 @@ main {
   .cart-back p {
     height: 100%;
     font-size: 14px;
-    line-height: 30px;
+    line-height: 35px;
     font-family: helvetica;
     text-shadow: 0 0 0px #ec2224;
     transition: text-shadow 0.2s ease;
@@ -1021,7 +1104,7 @@ main {
     -webkit-border-radius: 0%;
     -moz-border-radius: 0%;
     font-size: 12px;
-    line-height: 22px;
+    line-height: 30px;
     font-family: helvetica;
     /*  @if $media == large-desktop {
         @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
@@ -1056,7 +1139,7 @@ select {
   text-align: left;
   outline: 0;
   font-size: 12px;
-  line-height: 22px;
+  line-height: 30px;
   font-family: helvetica;
   border-radius: 0%;
   -webkit-border-radius: 0%;
@@ -1065,7 +1148,8 @@ select {
   -webkit-appearance: none;
   appearance: none;
   box-shadow: none;
-  border-radius: none; }
+  border-radius: none;
+  line-height: normal; }
   select::-webkit-input-placeholder {
     color: #ec2224; }
   select:-moz-placeholder {
@@ -1078,47 +1162,48 @@ select {
     color: #ec2224; }
 
 input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
-  border: 1px solid #FFFF00; }
+  border-bottom: 1px solid #FFFF00; }
 
 .payment {
   width: 100%;
-  height: 100%; }
+  height: 100%;
+  position: fixed;
+  top: 0; }
 
 .payment-form {
   width: 100%;
   height: 100%; }
   .payment-form .payment-form-div {
-    width: 30%;
+    width: 35%;
+    height: 200px;
     display: block;
     position: relative;
-    left: 0%;
-    top: 100px;
+    margin-top: 100px;
     left: 100px; }
 
 .payment-total {
   position: relative;
   left: 100px;
   height: 70px;
+  width: 35%;
   margin-top: 30px;
   margin-bottom: 20px;
   background-color: transparent; }
   .payment-total p {
     font-size: 12px;
-    line-height: 22px;
+    line-height: 30px;
     font-family: helvetica;
-    width: 100%;
-    height: 70px;
-    line-height: 70px; }
+    width: 80%; }
     .payment-total p span {
       float: right;
       font-size: 12px;
-      line-height: 22px;
+      line-height: 30px;
       font-family: helvetica;
       margin-left: 100px; }
 
 .payment-header {
   font-size: 14px;
-  line-height: 30px;
+  line-height: 35px;
   font-family: helvetica; }
 
 .shipment {
@@ -1134,7 +1219,7 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
 
 .shipment-h1 {
   font-size: 14px;
-  line-height: 30px;
+  line-height: 35px;
   font-family: helvetica;
   position: absolute;
   top: 20px;
@@ -1201,12 +1286,12 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
       margin-left: 30px; } }
   .isBillingDifferent label {
     font-size: 12px;
-    line-height: 22px;
+    line-height: 30px;
     font-family: helvetica;
     color: #ec2224; }
   .isBillingDifferent input {
     font-size: 12px;
-    line-height: 22px;
+    line-height: 30px;
     font-family: helvetica;
     color: #ec2224; }
 
@@ -1214,15 +1299,18 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
   height: 100%;
   width: 100%;
   top: 0;
-  left: 0; }
+  left: 0;
+  position: fixed; }
 
 .processed-thankyou {
-  width: 100%;
+  width: 35%;
   height: auto;
-  margin-top: 100px; }
+  margin-top: 100px;
+  margin-left: 100px; }
   .processed-thankyou p {
+    width: 80%;
     font-size: 12px;
-    line-height: 22px;
+    line-height: 30px;
     font-family: helvetica; }
   .processed-thankyou a {
     width: 50px;
@@ -1234,5 +1322,5 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
     margin: auto;
     margin-top: 100px;
     font-size: 12px;
-    line-height: 22px;
+    line-height: 30px;
     font-family: helvetica; }

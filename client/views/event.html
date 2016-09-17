@@ -8,7 +8,7 @@
 
           <p class="event-info-left" ng-show="eventHovered">
             <span>{{e.data['event.name'].value}}</span>
-            <a href="{{e.data['event.link'].value.url}}" target="_blank">link</a>
+            <a href="{{e.data['event.link'].value.url}}" target="_blank" ng-if="e.data['event.link'].value.url">link</a>
           </p>
 
           <p class="event-date" ng-class="{'shrinkDate': eventHovered}">
@@ -34,9 +34,11 @@
 
 
 
+<!-- <div class="event-description" ng-if="selectedEvent.data['event.description'].value">
+  <h2>"{{selectedEvent.data['event.description'].value}}"</h2>
+</div> -->
 
-
-<div class="event-image">
+<div class="event-image" ng-if="selectedEvent.data['event.flyer'].value.main.url">
   <img src="{{selectedEvent.data['event.flyer'].value.main.url}}" alt="{{selectedEvent.data['event.name'].value}}"/>
 </div>
 
