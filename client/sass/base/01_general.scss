@@ -20,8 +20,31 @@
 
 
 
+span::-moz-selection {
+    background: transparent;
+    color: $red;
+    text-shadow: none;
+}
 
 
+span::selection {
+    background: transparent;
+    color: $red;
+    text-shadow: none;
+}
+
+a::-moz-selection {
+    background: transparent;
+    color: $purple;
+    text-shadow: none;
+}
+
+
+a::selection {
+    background: transparent;
+    color: $purple;
+    text-shadow: none;
+}
 
 
 
@@ -90,7 +113,7 @@ p, a, li {
   letter-spacing:$letter-spacing;
 }
 
-p{
+p, span{
   @include paragraph();
   color:$red;
 }

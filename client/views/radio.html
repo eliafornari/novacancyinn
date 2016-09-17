@@ -6,8 +6,8 @@
       <ul class="radio-ul">
         <li class="radio-li" ng-repeat="r in Radio" ng-mouseenter="radioHovered=true; thisRadio(r)" ng-mouseleave="radioHovered=false">
           <a href="{{r.data['radio.link'].value.url}}" target="_blank">
-            <p class="radio-li-date">{{r.data['radio.date'].value}}</p>
-            <p class="radio-li-title">{{r.data['radio.title'].value}}</p>
+            <span class="radio-li-date">{{r.data['radio.date'].value}}</span>
+            <span class="radio-li-title">{{r.data['radio.title'].value}}</span>
           </a>
         </li>
       </ul>
