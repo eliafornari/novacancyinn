@@ -31,7 +31,7 @@ $rootScope.selectedEvent = {};
 //..........................................................GET
 
 
-  $rootScope.getContentType('event', 'my.event.index');
+  $rootScope.getContentType('event', 'my.event.date desc');
 
   $rootScope.$on('eventReady', function(){
 
@@ -42,7 +42,7 @@ $rootScope.selectedEvent = {};
         // item = item.replace(/-/g, '.');
         var year = item.substring(0, 4);
         var month = item.substring(5, 7);
-        var day = item.substring(8, 9);
+        var day = item.substring(8, 10);
 
         console.log('year: '+year);
         console.log('month: '+month);
