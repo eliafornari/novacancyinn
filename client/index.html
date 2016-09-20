@@ -37,6 +37,7 @@
 <meta property="og:site_name" content="novacancyinn">
 
 
+<link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
 
   <meta name=“author” title=“Elia Fornari | Qual Agency”>
 
@@ -49,15 +50,13 @@
 
     Chapter | 2016
 
-    Designed and developed by Elia Fornari | Qual Agency
+    Designed and developed by Elia Fornari | ELIA LLC.
 
     sowftware is how we make art
 
 =======================================================================
 
 -->
-
-
 
   <base href="/">
 
@@ -73,9 +72,31 @@
 
 <!-- .................................. Body ...............................-->
 
-<body style="background-color: {{backgroundColor}}">
+<body style="background-color: {{backgroundColor}}; font-family: {{font}}">
 
 
+  <div class="elia" ng-show="elia">
+    <style media="screen">
+      .elia{
+
+        font-weight: 700;
+        position: fixed;
+        top:50px;
+        left:50px;
+        z-index: 100;
+      }
+      .elia > a{
+        font-family:helvetica;
+        font-size: 20px;
+        color: #FFFFFF;
+        letter-spacing: 3px;
+      }
+      a:hover{
+        
+      }
+    </style>
+    <a href="http://eliafornari.com" target="_blank">elia</a>
+  </div>
 
     <nav-directive></nav-directive>
 

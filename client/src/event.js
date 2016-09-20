@@ -38,25 +38,23 @@ $rootScope.selectedEvent = {};
 
       for (var i in $rootScope.Event){
         var item = $rootScope.Event[i].data['event.date'].value
-        console.log(item);
+        console.log(i);
         // item = item.replace(/-/g, '.');
         var year = item.substring(0, 4);
         var month = item.substring(5, 7);
         var day = item.substring(8, 10);
 
-        console.log('year: '+year);
-        console.log('month: '+month);
-        console.log('day: '+day);
+        // console.log('year: '+year);
+        // console.log('month: '+month);
+        // console.log('day: '+day);
         item = {'year':year, 'month':month, 'day':day};
 
         console.log(item);
         $rootScope.Event[i].data['event.date'].value = item;
 
 
-
-
       }
-      $scope.$apply();
+      $rootScope.$apply();
 
   });
 

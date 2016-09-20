@@ -46,8 +46,14 @@ table {
   border-spacing: 0; }
 
 @font-face {
-  font-family: Delantic;
-  src: url("/assets/fonts/721.woff") format("woff"), url("/assets/fonts/721.eot") format("eot"), url("/assets/fonts/721.ttf") format("ttf"); }
+  font-family: folio;
+  src: url("/assets/fonts/folio.woff") format("woff"); }
+@font-face {
+  font-family: basil;
+  src: url("/assets/fonts/BasilQT-Regular.otf") format("woff"); }
+@font-face {
+  font-family: graebenbach;
+  src: url("/assets/fonts/gbcamweba-webfont.woff") format("woff"); }
 /*....................................SCSS VARIABLES..................................*/
 /*....................................................................................*/
 /*.................................................................................*/
@@ -150,7 +156,6 @@ a::selection {
 /*.....................GENERAL STYLES......................*/
 html {
   box-sizing: border-box;
-  font-family: helvetica;
   width: 100%;
   height: auto;
   margin: 0, 0;
@@ -194,7 +199,6 @@ p, a, li {
 p, span {
   font-size: 12px;
   line-height: 30px;
-  font-family: helvetica;
   color: #ec2224; }
 
 /*........................A.................................*/
@@ -209,14 +213,13 @@ a {
   color: #884f9e;
   font-size: 14px;
   line-height: 35px;
-  font-family: helvetica;
   text-shadow: 0 0 0px #884f9e;
   transition: text-shadow 0.2s ease;
   -webkit-transition: text-shadow 0.2s ease;
   -moz-transition: text-shadow 0.2s ease;
   -ms-transition: text-shadow 0.2s ease; }
   a:hover {
-    text-shadow: 0 0 3px #884f9e;
+    text-shadow: 3px 3px 7px #884f9e;
     /*  @if $media == large-desktop {
         @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
       }*/
@@ -489,14 +492,13 @@ main {
     margin: 0;
     font-size: 12px;
     line-height: 30px;
-    font-family: helvetica;
     text-shadow: 0 0 0px #ec2224;
     transition: text-shadow 0.2s ease;
     -webkit-transition: text-shadow 0.2s ease;
     -moz-transition: text-shadow 0.2s ease;
     -ms-transition: text-shadow 0.2s ease; }
     .detail-add p:hover {
-      text-shadow: 0 0 3px #ec2224;
+      text-shadow: 3px 3px 7px #ec2224;
       /*  @if $media == large-desktop {
           @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
         }*/
@@ -530,8 +532,7 @@ main {
     color: #ec2224;
     text-align: left;
     font-size: 12px;
-    line-height: 30px;
-    font-family: helvetica; }
+    line-height: 30px; }
 
 .detail-modifiers {
   position: relative;
@@ -545,8 +546,7 @@ main {
       display: block;
       float: left;
       font-size: 12px;
-      line-height: 30px;
-      font-family: helvetica; }
+      line-height: 30px; }
     .detail-modifiers .detail-modifiers-ul .detail-modifiers-variations {
       width: auto;
       display: block;
@@ -557,8 +557,7 @@ main {
         clear: both; }
         .detail-modifiers .detail-modifiers-ul .detail-modifiers-variations .detail-modifiers-variations-li a {
           font-size: 12px;
-          line-height: 30px;
-          font-family: helvetica; }
+          line-height: 30px; }
 
 .about {
   height: 100vh;
@@ -581,7 +580,6 @@ main {
   text-align: center;
   font-size: 12px;
   line-height: 30px;
-  font-family: helvetica;
   color: #ec2224;
   text-shadow: 0 0 0px #ec2224;
   transition: text-shadow 0.2s ease;
@@ -589,7 +587,7 @@ main {
   -moz-transition: text-shadow 0.2s ease;
   -ms-transition: text-shadow 0.2s ease; }
   .contact-a:hover {
-    text-shadow: 0 0 3px #ec2224;
+    text-shadow: 3px 3px 7px #ec2224;
     /*  @if $media == large-desktop {
         @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
       }*/
@@ -646,7 +644,6 @@ main {
   .event-info-left a {
     font-size: 12px;
     line-height: 30px;
-    font-family: helvetica;
     color: #ec2224;
     text-shadow: 0 0 0px #ec2224;
     transition: text-shadow 0.2s ease;
@@ -654,7 +651,7 @@ main {
     -moz-transition: text-shadow 0.2s ease;
     -ms-transition: text-shadow 0.2s ease; }
     .event-info-left a:hover {
-      text-shadow: 0 0 3px #ec2224;
+      text-shadow: 3px 3px 7px #ec2224;
       /*  @if $media == large-desktop {
           @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
         }*/
@@ -675,8 +672,7 @@ main {
           color: #ec2224 !important; } }
   .event-info-left span {
     font-size: 12px;
-    line-height: 30px;
-    font-family: helvetica; }
+    line-height: 30px; }
 
 .event-info-right {
   position: absolute;
@@ -686,8 +682,7 @@ main {
   vertical-align: middle; }
   .event-info-right span {
     font-size: 12px;
-    line-height: 30px;
-    font-family: helvetica; }
+    line-height: 30px; }
 
 .event-image {
   position: fixed;
@@ -851,6 +846,32 @@ main {
     position: relative; }
     .radio-ul .radio-li:nth-child(1) {
       margin-top: 0; }
+    .radio-ul .radio-li span {
+      text-shadow: 0 0 0px #ec2224;
+      transition: text-shadow 0.2s ease;
+      -webkit-transition: text-shadow 0.2s ease;
+      -moz-transition: text-shadow 0.2s ease;
+      -ms-transition: text-shadow 0.2s ease; }
+      .radio-ul .radio-li span:hover {
+        text-shadow: 3px 3px 7px #ec2224;
+        /*  @if $media == large-desktop {
+            @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
+          }*/
+        /*  @if $media == large-desktop {
+            @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
+          }*/
+        /*  @if $media == large-desktop {
+            @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
+          }*/ }
+        @media only screen and (min-width: 0px) and (max-device-width: 767px) {
+          .radio-ul .radio-li span:hover {
+            color: #ec2224 !important; } }
+        @media only screen and (min-device-width: 768px) and (max-device-width: 1022px) and (orientation: portrait) {
+          .radio-ul .radio-li span:hover {
+            color: #ec2224 !important; } }
+        @media only screen and (min-device-width: 768px) and (max-device-width: 1022px) and (orientation: landscape) {
+          .radio-ul .radio-li span:hover {
+            color: #ec2224 !important; } }
     .radio-ul .radio-li .radio-li-date {
       width: 20%;
       display: inline-block;
@@ -870,6 +891,16 @@ main {
   .radio-image img {
     width: 100%; }
 
+.radio-soundcloud {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  width: 250px;
+  height: 250px; }
+  .radio-soundcloud iframe {
+    width: 100%;
+    height: 100%; }
+
 .archive {
   width: 100vw;
   height: 100vh; }
@@ -881,7 +912,6 @@ main {
   text-align: center;
   font-size: 12px;
   line-height: 30px;
-  font-family: helvetica;
   color: #ec2224; }
 
 .cart {
@@ -949,7 +979,6 @@ main {
       float: right;
       font-size: 12px;
       line-height: 30px;
-      font-family: helvetica;
       position: absolute;
       right: 0;
       line-height: 70px;
@@ -960,7 +989,7 @@ main {
       -moz-transition: text-shadow 0.2s ease;
       -ms-transition: text-shadow 0.2s ease; }
       .cart-ul .cart-li .cart-remove:hover {
-        text-shadow: 0 0 3px #ec2224;
+        text-shadow: 3px 3px 7px #ec2224;
         /*  @if $media == large-desktop {
             @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
           }*/
@@ -982,7 +1011,6 @@ main {
     .cart-ul .cart-li p {
       font-size: 12px;
       line-height: 30px;
-      font-family: helvetica;
       float: left;
       line-height: 70px;
       height: 70px; }
@@ -996,13 +1024,11 @@ main {
   .cart-total .cart-total-tax {
     font-size: 12px;
     line-height: 30px;
-    font-family: helvetica;
     height: 70px;
     line-height: 70px; }
   .cart-total .cart-total-amount {
     font-size: 12px;
     line-height: 30px;
-    font-family: helvetica;
     height: 70px;
     line-height: 70px; }
     .cart-total .cart-total-amount span {
@@ -1011,7 +1037,6 @@ main {
 .form-title {
   font-size: 14px;
   line-height: 35px;
-  font-family: helvetica;
   color: #ec2224; }
 
 .checkout-button {
@@ -1027,7 +1052,6 @@ main {
   border-bottom: 2px solid #ec2224;
   font-size: 14px;
   line-height: 35px;
-  font-family: helvetica;
   text-shadow: 0 0 0px #ec2224;
   transition: text-shadow 0.2s ease;
   -webkit-transition: text-shadow 0.2s ease;
@@ -1041,7 +1065,7 @@ main {
       @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
     }*/ }
   .checkout-button:hover {
-    text-shadow: 0 0 3px #ec2224;
+    text-shadow: 3px 3px 7px #ec2224;
     /*  @if $media == large-desktop {
         @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
       }*/
@@ -1073,7 +1097,6 @@ main {
     height: 100%;
     font-size: 14px;
     line-height: 35px;
-    font-family: helvetica;
     text-shadow: 0 0 0px #ec2224;
     transition: text-shadow 0.2s ease;
     -webkit-transition: text-shadow 0.2s ease;
@@ -1081,7 +1104,7 @@ main {
     -ms-transition: text-shadow 0.2s ease;
     line-height: normal; }
     .cart-back p:hover {
-      text-shadow: 0 0 3px #ec2224;
+      text-shadow: 3px 3px 7px #ec2224;
       /*  @if $media == large-desktop {
           @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
         }*/
@@ -1126,7 +1149,6 @@ main {
     -moz-border-radius: 0%;
     font-size: 12px;
     line-height: 30px;
-    font-family: helvetica;
     /*  @if $media == large-desktop {
         @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
       }*/ }
@@ -1161,7 +1183,6 @@ select {
   outline: 0;
   font-size: 12px;
   line-height: 30px;
-  font-family: helvetica;
   border-radius: 0%;
   -webkit-border-radius: 0%;
   -moz-border-radius: 0%;
@@ -1213,19 +1234,16 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
   .payment-total p {
     font-size: 12px;
     line-height: 30px;
-    font-family: helvetica;
     width: 80%; }
     .payment-total p span {
       float: right;
       font-size: 12px;
       line-height: 30px;
-      font-family: helvetica;
       margin-left: 100px; }
 
 .payment-header {
   font-size: 14px;
-  line-height: 35px;
-  font-family: helvetica; }
+  line-height: 35px; }
 
 .shipment {
   width: 100%;
@@ -1241,7 +1259,6 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
 .shipment-h1 {
   font-size: 14px;
   line-height: 35px;
-  font-family: helvetica;
   position: absolute;
   top: 20px;
   left: 20px; }
@@ -1308,12 +1325,10 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
   .isBillingDifferent label {
     font-size: 12px;
     line-height: 30px;
-    font-family: helvetica;
     color: #ec2224; }
   .isBillingDifferent input {
     font-size: 12px;
     line-height: 30px;
-    font-family: helvetica;
     color: #ec2224; }
 
 .processed {
@@ -1331,8 +1346,7 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
   .processed-thankyou p {
     width: 80%;
     font-size: 12px;
-    line-height: 30px;
-    font-family: helvetica; }
+    line-height: 30px; }
   .processed-thankyou a {
     width: 50px;
     height: 50px;
@@ -1343,5 +1357,4 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
     margin: auto;
     margin-top: 100px;
     font-size: 12px;
-    line-height: 30px;
-    font-family: helvetica; }
+    line-height: 30px; }

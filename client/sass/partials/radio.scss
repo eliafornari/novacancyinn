@@ -17,6 +17,9 @@
     &:nth-child(1){
       margin-top: 0;
     }
+    span{
+      @include hover-effect-glow($red);
+    }
     .radio-li-date{
       width:20%;
       display: inline-block;
@@ -40,5 +43,17 @@
   width:250px;
   img{
     width:100%;
+  }
+}
+
+.radio-soundcloud{
+  position: fixed;
+  left: $margin-sides;
+  bottom: $margin-sides;
+  width:250px;
+  height:250px;
+  iframe{
+    width:100%;
+    height:100%;
   }
 }

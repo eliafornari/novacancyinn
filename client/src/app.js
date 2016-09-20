@@ -155,11 +155,6 @@ $rootScope.Home;
 
 
 
-
-
-
-
-
   $rootScope.Auth;
     $rootScope.authentication = function(){
 
@@ -227,6 +222,9 @@ $rootScope.Home;
 
   $rootScope.backgroundColor = '#000000';
   $rootScope.cartColor = 'rgba(0,0,0,0.96)';
+  $rootScope.font = 'folio';
+  $rootScope.elia = false;
+
 
   document.addEventListener("keydown", function(event) {
     console.log(event.which);
@@ -238,6 +236,23 @@ $rootScope.Home;
     }else if(key == 87){
       $rootScope.backgroundColor = '#FFFFFF';
       $rootScope.cartColor = 'rgba(255,255,255,0.96)'
+    }else if(key == 49){
+      $rootScope.font = 'folio';
+    }else if(key == 50){
+      $rootScope.font = 'basil';
+    }else if(key == 51){
+      $rootScope.font = 'graebenbach';
+    }
+
+
+
+    if(key == 69){
+      $rootScope.elia = true;
+      setTimeout(function() {
+        $rootScope.elia = false;
+        console.log($rootScope.elia);
+        $rootScope.$apply();
+      }, 3000);
     }
     $rootScope.$apply();
   })
@@ -404,7 +419,10 @@ var radioRan = false;
                         if(eventRan == false){
                           console.log("eventReady");
                           eventRan = true;
-                          $rootScope.$broadcast('eventReady');
+                          setTimeout(function(){
+                            $rootScope.$broadcast('eventReady');
+
+                          }, 900);
 
                         }else{ return false; }
 

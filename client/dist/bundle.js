@@ -153,6 +153,8 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
 
   $rootScope.backgroundColor = '#000000';
   $rootScope.cartColor = 'rgba(0,0,0,0.96)';
+  $rootScope.font = 'folio';
+  $rootScope.elia = false;
 
   document.addEventListener("keydown", function (event) {
     console.log(event.which);
@@ -164,6 +166,21 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
     } else if (key == 87) {
       $rootScope.backgroundColor = '#FFFFFF';
       $rootScope.cartColor = 'rgba(255,255,255,0.96)';
+    } else if (key == 49) {
+      $rootScope.font = 'folio';
+    } else if (key == 50) {
+      $rootScope.font = 'basil';
+    } else if (key == 51) {
+      $rootScope.font = 'graebenbach';
+    }
+
+    if (key == 69) {
+      $rootScope.elia = true;
+      setTimeout(function () {
+        $rootScope.elia = false;
+        console.log($rootScope.elia);
+        $rootScope.$apply();
+      }, 3000);
     }
     $rootScope.$apply();
   });
@@ -285,7 +302,9 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
           if (eventRan == false) {
             console.log("eventReady");
             eventRan = true;
-            $rootScope.$broadcast('eventReady');
+            setTimeout(function () {
+              $rootScope.$broadcast('eventReady');
+            }, 900);
           } else {
             return false;
           }
@@ -379,21 +398,21 @@ angular.module('myApp')
 
     for (var i in $rootScope.Event) {
       var item = $rootScope.Event[i].data['event.date'].value;
-      console.log(item);
+      console.log(i);
       // item = item.replace(/-/g, '.');
       var year = item.substring(0, 4);
       var month = item.substring(5, 7);
       var day = item.substring(8, 10);
 
-      console.log('year: ' + year);
-      console.log('month: ' + month);
-      console.log('day: ' + day);
+      // console.log('year: '+year);
+      // console.log('month: '+month);
+      // console.log('day: '+day);
       item = { 'year': year, 'month': month, 'day': day };
 
       console.log(item);
       $rootScope.Event[i].data['event.date'].value = item;
     }
-    $scope.$apply();
+    $rootScope.$apply();
   });
 
   $scope.thisEvent = function (e) {
@@ -552,7 +571,16 @@ angular.module('myApp').controller('navCtrl', function ($scope, $location, $root
 },{}],5:[function(require,module,exports){
 'use strict';
 
-angular.module('myApp').controller('radioCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http, $sce, $document, anchorSmoothScroll, $window) {
+angular.module('myApp').filter('turnIntoSoundcloud', function ($sce) {
+  return function (id) {
+    if (id) {
+
+      id = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/' + id + '&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true';
+      console.log(id);
+      return $sce.trustAsResourceUrl(id);
+    }
+  };
+}).controller('radioCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http, $sce, $document, anchorSmoothScroll, $window) {
 
   $rootScope.windowHeight = $window.innerHeight;
   $rootScope.pageClass = "page-radio";
@@ -570,6 +598,14 @@ angular.module('myApp').controller('radioCtrl', function ($scope, $location, $ro
   $scope.thisRadio = function (e) {
     $rootScope.selectedRadio = e;
   };
+
+  $rootScope.isSoundOpen = false;
+
+  $rootScope.openSound = function () {
+    $rootScope.isSoundOpen = !$rootScope.isSoundOpen;
+  };
+
+  $scope.radioHovered = false;
 }); //controller
 
 },{}],6:[function(require,module,exports){
