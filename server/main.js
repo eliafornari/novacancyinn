@@ -83,24 +83,18 @@ app.get('/authenticate', function(req, res){
       console.log('request =' + JSON.stringify(req.body))
 
       var variationArray = req.body
-
       for (var i in variationArray){
         var id = variationArray[i].id;
         var modifier = variationArray[i].modifier_id
         var variation = variationArray[i].variation_id
-
         // console.log('variationArray[i]: '+variationArray[i]);
         // console.log('id: '+id);
         // console.log('modifier: '+variationArray[i].modifier_id);
         // console.log('variation: '+variationArray[i].variation_id);
         var obj={};
-
         var objArray = [];
-
         obj[modifier] = variation
-
         objArray.push(obj);
-
         console.log(objArray);
 
       }

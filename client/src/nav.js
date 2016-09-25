@@ -28,6 +28,14 @@ angular.module('myApp')
   }
 
 
+  $scope.$on('$routeChangeSuccess', function(){
+    if($location.path() != '/'){
+      console.log('not home');
+      $rootScope.backgroundColor = '#FFFFFF';
+    }
+  })
+
+
 })
 
 

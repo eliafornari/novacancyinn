@@ -524,6 +524,13 @@ angular.module('myApp').controller('navCtrl', function ($scope, $location, $root
       return false;
     }
   };
+
+  $scope.$on('$routeChangeSuccess', function () {
+    if ($location.path() != '/') {
+      console.log('not home');
+      $rootScope.backgroundColor = '#FFFFFF';
+    }
+  });
 }).directive('logoDirective', function ($rootScope, $location, $window, $routeParams, $timeout) {
   return {
     restrict: 'E',
