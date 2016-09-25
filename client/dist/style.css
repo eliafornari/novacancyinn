@@ -643,9 +643,7 @@ main {
     width: 55vw;
     clear: both;
     margin: auto;
-    height: 50px;
-    line-height: 50px;
-    vertical-align: middle;
+    height: 100px;
     position: relative; }
     .event-ul .event-li:nth-child(1) {
       margin-top: 0; }
@@ -655,15 +653,12 @@ main {
       .event-ul .event-li .event-date span {
         width: 20%;
         text-align: center;
-        float: left;
-        height: 50px;
-        line-height: 50px; }
+        float: left; }
 
 .event-info-left {
   position: absolute;
   left: 0;
-  height: 50px;
-  line-height: 50px;
+  width: 200px;
   vertical-align: middle; }
   .event-info-left a {
     font-size: 12px;
@@ -701,10 +696,12 @@ main {
 .event-info-right {
   position: absolute;
   right: 0;
-  height: 50px;
-  line-height: 50px;
-  vertical-align: middle; }
+  width: 200px;
+  vertical-align: middle;
+  text-align: right; }
   .event-info-right span {
+    width: 100%;
+    text-align: right;
     font-size: 12px;
     line-height: 30px; }
 

@@ -49,9 +49,7 @@ app.get('/profile', function(req, res){
 app.get('/authenticate', function(req, res){
 
   moltin.Authenticate(function(data) {
-
     console.log(data);
-
     if(data){
       res.status(200);
       res.json(data);
@@ -188,7 +186,6 @@ app.get('/authenticate', function(req, res){
 
 
     function getCart(req, res){
-
         moltin.Cart.Contents(function(items) {
           // res.writeHead(200, {'Content-Type': 'application/json'});
           res.json(items);
@@ -201,11 +198,12 @@ app.get('/authenticate', function(req, res){
     }
 
 
-
+    var Product=[];
     function getProduct(req, res){
-        moltin.Product.List(null, function(product) {
-          console.log(product);
-            res.json(product);
+        moltin.Product.List(null, function(data) {
+          console.log(data);
+          Product = data;
+            res.json(data);
 
         }, function(error) {
             // Something went wrong...
@@ -313,67 +311,65 @@ app.get('/authenticate', function(req, res){
 
 
     app.post('/updatestock', function(req, res){
-      updateOverallStockFN(req, res);
+      searchProduct(req, res);
     });
 
 
-    function updateOverallStockFN(req, res){
-      var contents = req.body.data.result;
+    function searchProduct(req, res){
+      var contents = req.body.contents;
       console.log("updateOverallStockFN");
       console.log(contents);
 
         for (var i in contents){
-          var id = contents[i].product.data.id;
-          console.log("id: "+contents[i].product.data.id);
-          var newStock = contents[i].product.data.stock_level - 1;
-          console.log("contents[i].stock_level: "+contents[i].product.data.stock_level);
-          console.log("newStock: "+newStock);
+          for(var m in contents[i].modifiers){
+            var modifier_id = contents[i].modifiers[m].id;
+            for (var p in Product){
+              for(var v in Product[p].modifiers){
+                console.log('modifier_id: '+modifier_id);
+                console.log('this one: '+Product[p].modifiers[v].id);
+                if(modifier_id == Product[p].modifiers[v].id){
 
-          moltin.Product.Update(id, {
-              stock_level:  newStock
-          }, function(product) {
+                  var thisProduct = Product[p].id;
+                  var quantity = contents[i].quantity;
+                  var stock = Product[p].stock_level - contents[i].quantity;
+                  console.log('thisProduct: '+thisProduct);
+                  updateProductStock(thisProduct, stock);
+                }
+              }
 
-              console.log(product);
-              console.log("overall stock update successful");
-              res.status(200).json(product);
+            }
 
-          }, function(error, response, c) {
-            console.log("payment failed!");
-            console.log("response: "+response);
-            console.log("c: "+c);
-            console.log("error: "+error);
-            res.status(c).json(response);
-              // Something went wrong...
-          });
+          }
+
 
         }//for loop
-      // }, function(error) {
-      //     // Something went wrong...
-      // });
 
 
-    //   for (var i in contents){
-    //     var id = contents[i].id;
-    //     var newStock = contents[i].stock_level - 1;
-    //
-    //     moltin.Product.Update(id, {
-    //         stock_level:  newStock
-    //     }, function(product) {
-    //
-    //         console.log(product);
-    //         console.log("overall stock update successful");
-    //         res.status(200).json(product);
-    //
-    //     }, function(error, response, c) {
-    //       console.log("payment failed!");
-    //       console.log("response: "+response);
-    //       console.log("c: "+c);
-    //       console.log("error: "+error);
-    //       res.status(c).json(response);
-    //         // Something went wrong...
-    //     });
-    //
-    //   }//for loop
+    }
+
+
+
+
+    function updateProductStock(id, stock){
+
+      console.log("newStock: "+stock);
+
+      moltin.Product.Update(id, {
+          stock_level:  stock
+      }, function(product) {
+
+          console.log(product);
+          console.log("overall stock update successful");
+          res.status(200).json(product);
+
+      }, function(error, response, c) {
+        console.log("payment failed!");
+        console.log("response: "+response);
+        console.log("c: "+c);
+        console.log("error: "+error);
+        res.status(c).json(response);
+          // Something went wrong...
+      });
 
     }
 

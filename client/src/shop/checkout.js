@@ -91,6 +91,7 @@ $rootScope.checkout={
               $rootScope.cartLoading = false;
               $rootScope.Processed = response;
               console.log(response.data);
+              $scope.updatestock($rootScope.Cart);
               $scope.emptyCart();
             }else{
               console.log('paid false');
@@ -116,26 +117,24 @@ $rootScope.checkout={
     var data = contents.data;
     data['auth'] = $rootScope.Auth;
     console.log(data);
-
   }
 
 
-$scope.emptyCart = ()=>{
-  var req = {
-   method: 'GET',
-   url: 'https://api.molt.in/'+'v1/orders/'+data.order.id+'/items',
-   headers: {
-     'Authorization': "Bearer "+data.auth.access_token
-   }
-  }
-  $http(req).then(function(response){
-    console.log(response);
-    $scope.updatestock(response);
-    $scope.emptyCart();
-  }, function(response){
-    console.log(response);
-  });
-}
+// $scope.getOrders = ()=>{
+//   var req = {
+//    method: 'GET',
+//    url: 'https://api.molt.in/'+'v1/orders/'+data.order.id+'/items',
+//    headers: {
+//      'Authorization': "Bearer "+data.auth.access_token
+//    }
+//   }
+//   $http(req).then(function(response){
+//     console.log(response);
+//     $scope.updatestock(response);
+//   }, function(response){
+//     console.log(response);
+//   });
+// }
 
 $scope.updatestock = function(data){
   $http.post('/updatestock', data)

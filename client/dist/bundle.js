@@ -831,20 +831,20 @@ Cart.controller('cartCtrl', function ($scope, $location, $rootScope, $timeout, $
       $rootScope.pageLoading = false;
       console.log(response);
 
-      if (!$rootScope.Cart.total_items == 0) {
-        console.log("cart has some stuff");
-        $rootScope.attachItemID($rootScope.Cart.contents);
-      }
+      // if(!$rootScope.Cart.total_items==0){
+      //   console.log("cart has some stuff");
+      //   $rootScope.attachItemID($rootScope.Cart.contents);
+      // }
     });
   }; //updateCart
 
   //attaching item function
-  $rootScope.attachItemID = function (obj) {
-    Object.getOwnPropertyNames(obj).forEach(function (val, idx, array) {
-      $rootScope.Cart.contents[val].item = val;
-      // console.log(val + ' -> ' + obj[val]);
-    });
-  };
+  // $rootScope.attachItemID=function(obj){
+  //     Object.getOwnPropertyNames(obj).forEach(function(val, idx, array) {
+  //       $rootScope.Cart.contents[val].item=val;
+  //       // console.log(val + ' -> ' + obj[val]);
+  //     });
+  // }
 
   $rootScope.removeItem = function (id) {
 
@@ -988,6 +988,7 @@ Checkout.controller('checkoutCtrl', function ($scope, $location, $rootScope, $ti
         $rootScope.cartLoading = false;
         $rootScope.Processed = response;
         console.log(response.data);
+        $scope.updatestock($rootScope.Cart);
         $scope.emptyCart();
       } else {
         console.log('paid false');
@@ -1011,22 +1012,21 @@ Checkout.controller('checkoutCtrl', function ($scope, $location, $rootScope, $ti
     console.log(data);
   };
 
-  $scope.emptyCart = function () {
-    var req = {
-      method: 'GET',
-      url: 'https://api.molt.in/' + 'v1/orders/' + data.order.id + '/items',
-      headers: {
-        'Authorization': "Bearer " + data.auth.access_token
-      }
-    };
-    $http(req).then(function (response) {
-      console.log(response);
-      $scope.updatestock(response);
-      $scope.emptyCart();
-    }, function (response) {
-      console.log(response);
-    });
-  };
+  // $scope.getOrders = ()=>{
+  //   var req = {
+  //    method: 'GET',
+  //    url: 'https://api.molt.in/'+'v1/orders/'+data.order.id+'/items',
+  //    headers: {
+  //      'Authorization': "Bearer "+data.auth.access_token
+  //    }
+  //   }
+  //   $http(req).then(function(response){
+  //     console.log(response);
+  //     $scope.updatestock(response);
+  //   }, function(response){
+  //     console.log(response);
+  //   });
+  // }
 
   $scope.updatestock = function (data) {
     $http.post('/updatestock', data).success(function (data, status, headers, config) {

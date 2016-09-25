@@ -67,10 +67,10 @@ Cart.controller('cartCtrl', function($scope, $location, $rootScope, $timeout,	$h
           $rootScope.pageLoading = false;
           console.log(response);
 
-          if(!$rootScope.Cart.total_items==0){
-            console.log("cart has some stuff");
-            $rootScope.attachItemID($rootScope.Cart.contents);
-          }
+          // if(!$rootScope.Cart.total_items==0){
+          //   console.log("cart has some stuff");
+          //   $rootScope.attachItemID($rootScope.Cart.contents);
+          // }
         });
   }//updateCart
 
@@ -78,12 +78,12 @@ Cart.controller('cartCtrl', function($scope, $location, $rootScope, $timeout,	$h
 
 
   //attaching item function
-    $rootScope.attachItemID=function(obj){
-        Object.getOwnPropertyNames(obj).forEach(function(val, idx, array) {
-          $rootScope.Cart.contents[val].item=val;
-          // console.log(val + ' -> ' + obj[val]);
-        });
-    }
+    // $rootScope.attachItemID=function(obj){
+    //     Object.getOwnPropertyNames(obj).forEach(function(val, idx, array) {
+    //       $rootScope.Cart.contents[val].item=val;
+    //       // console.log(val + ' -> ' + obj[val]);
+    //     });
+    // }
 
 
 

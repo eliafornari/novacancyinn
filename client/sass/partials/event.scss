@@ -11,9 +11,7 @@
     width:55vw;
     clear:both;
     margin: auto;
-    height:$line-height-h1;
-    line-height: $line-height-h1;
-    vertical-align: middle;
+    height:100px;
     position: relative;
     &:nth-child(1){
       margin-top: 0;
@@ -25,8 +23,8 @@
         width:20%;
         text-align: center;
         float:left;
-        height:$line-height-h1;
-        line-height: $line-height-h1;
+        // height:$line-height-h1;
+        // line-height: $line-height-h1;
       }
     }
   }
@@ -35,8 +33,9 @@
 .event-info-left{
   position: absolute;
   left:0;
-  height:$line-height-h1;
-  line-height: $line-height-h1;
+  width:200px;
+  // height:$line-height-h1;
+  // line-height: $line-height-h1;
   vertical-align: middle;
   a{
     @include paragraph();
@@ -50,10 +49,14 @@
 .event-info-right{
   position: absolute;
   right:0;
-  height:$line-height-h1;
-  line-height: $line-height-h1;
+  width:200px;
+  // height:$line-height-h1;
+  // line-height: $line-height-h1;
   vertical-align: middle;
+  text-align: right;
   span{
+    width:100%;
+    text-align: right;
     @include paragraph();
   }
 }
