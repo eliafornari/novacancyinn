@@ -1,4 +1,4 @@
-<div class="detail">
+<div class="detail" ng-show="isShopDetail()">
 
   <div class="detail-images" ng-init="zoomImage=false" ng-click="zoomImage=!zoomImage" ng-class="{'zoom': zoomImage}">
     <div class="detail-images-single" ng-repeat="i in Detail.images">

@@ -527,7 +527,12 @@ angular.module('myApp').controller('navCtrl', function ($scope, $location, $root
   };
 
   $scope.$on('$routeChangeStart', function () {
-    $rootScope.pageLoading = true;
+    if ($location.path() == '/shop' || $location.path() == '/shop/' + $routeParams.detail) {
+      console.log("isShop");
+      $rootScope.pageLoading = false;
+    } else {
+      $rootScope.pageLoading = true;
+    }
   });
 
   $scope.$on('$routeChangeSuccess', function () {
