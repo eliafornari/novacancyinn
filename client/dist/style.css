@@ -81,7 +81,7 @@ table {
     right: 20px; }
     .nav-container .nav-logo svg {
       width: 100%;
-      height: auto;
+      height: 100%;
       display: block;
       position: absolute;
       z-index: 11; }
@@ -180,6 +180,7 @@ a::selection {
 /*.....................GENERAL STYLES......................*/
 html {
   box-sizing: border-box;
+  font-family: "folio";
   width: 100%;
   height: auto;
   margin: 0, 0;
@@ -223,6 +224,7 @@ p, a, li {
 p, span {
   font-size: 12px;
   line-height: 30px;
+  font-weight: 700;
   color: #ec2224; }
 
 /*........................A.................................*/
@@ -237,13 +239,14 @@ a {
   color: #884f9e;
   font-size: 14px;
   line-height: 35px;
+  font-weight: 700;
   text-shadow: 0 0 0px #884f9e;
   transition: text-shadow 0.2s ease;
   -webkit-transition: text-shadow 0.2s ease;
   -moz-transition: text-shadow 0.2s ease;
   -ms-transition: text-shadow 0.2s ease; }
   a:hover {
-    text-shadow: 3px 3px 7px #884f9e;
+    text-shadow: 2px 2px 7px #884f9e;
     /*  @if $media == large-desktop {
         @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
       }*/
@@ -516,13 +519,14 @@ main {
     margin: 0;
     font-size: 12px;
     line-height: 30px;
+    font-weight: 700;
     text-shadow: 0 0 0px #ec2224;
     transition: text-shadow 0.2s ease;
     -webkit-transition: text-shadow 0.2s ease;
     -moz-transition: text-shadow 0.2s ease;
     -ms-transition: text-shadow 0.2s ease; }
     .detail-add p:hover {
-      text-shadow: 3px 3px 7px #ec2224;
+      text-shadow: 2px 2px 7px #ec2224;
       /*  @if $media == large-desktop {
           @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
         }*/
@@ -556,7 +560,8 @@ main {
     color: #ec2224;
     text-align: left;
     font-size: 12px;
-    line-height: 30px; }
+    line-height: 30px;
+    font-weight: 700; }
 
 .detail-modifiers {
   position: relative;
@@ -570,7 +575,8 @@ main {
       display: block;
       float: left;
       font-size: 12px;
-      line-height: 30px; }
+      line-height: 30px;
+      font-weight: 700; }
     .detail-modifiers .detail-modifiers-ul .detail-modifiers-variations {
       width: auto;
       display: block;
@@ -581,7 +587,8 @@ main {
         clear: both; }
         .detail-modifiers .detail-modifiers-ul .detail-modifiers-variations .detail-modifiers-variations-li a {
           font-size: 12px;
-          line-height: 30px; }
+          line-height: 30px;
+          font-weight: 700; }
 
 .about {
   height: 100vh;
@@ -604,6 +611,7 @@ main {
   text-align: center;
   font-size: 12px;
   line-height: 30px;
+  font-weight: 700;
   color: #ec2224;
   text-shadow: 0 0 0px #ec2224;
   transition: text-shadow 0.2s ease;
@@ -611,7 +619,7 @@ main {
   -moz-transition: text-shadow 0.2s ease;
   -ms-transition: text-shadow 0.2s ease; }
   .contact-a:hover {
-    text-shadow: 3px 3px 7px #ec2224;
+    text-shadow: 2px 2px 7px #ec2224;
     /*  @if $media == large-desktop {
         @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
       }*/
@@ -663,6 +671,7 @@ main {
   .event-info-left a {
     font-size: 12px;
     line-height: 30px;
+    font-weight: 700;
     color: #ec2224;
     text-shadow: 0 0 0px #ec2224;
     transition: text-shadow 0.2s ease;
@@ -670,7 +679,7 @@ main {
     -moz-transition: text-shadow 0.2s ease;
     -ms-transition: text-shadow 0.2s ease; }
     .event-info-left a:hover {
-      text-shadow: 3px 3px 7px #ec2224;
+      text-shadow: 2px 2px 7px #ec2224;
       /*  @if $media == large-desktop {
           @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
         }*/
@@ -691,7 +700,8 @@ main {
           color: #ec2224 !important; } }
   .event-info-left span {
     font-size: 12px;
-    line-height: 30px; }
+    line-height: 30px;
+    font-weight: 700; }
 
 .event-info-right {
   position: absolute;
@@ -703,7 +713,8 @@ main {
     width: 100%;
     text-align: right;
     font-size: 12px;
-    line-height: 30px; }
+    line-height: 30px;
+    font-weight: 700; }
 
 .event-image {
   position: fixed;
@@ -784,7 +795,7 @@ main {
   100% {
     width: 55vw; } }
 .home {
-  position: relative;
+  position: fixed;
   width: 100vw;
   height: 100vh; }
 
@@ -796,12 +807,12 @@ main {
 
 .home-logo {
   width: 200px;
-  height: auto;
+  height: 500px;
   margin: auto; }
   .home-logo svg {
     display: block;
     width: 100%;
-    height: auto; }
+    height: 100%; }
 
 .home-nav-left {
   position: absolute;
@@ -874,7 +885,7 @@ main {
       -moz-transition: text-shadow 0.2s ease;
       -ms-transition: text-shadow 0.2s ease; }
       .radio-ul .radio-li p:hover {
-        text-shadow: 3px 3px 7px #ec2224;
+        text-shadow: 2px 2px 7px #ec2224;
         /*  @if $media == large-desktop {
             @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
           }*/
@@ -933,6 +944,7 @@ main {
   text-align: center;
   font-size: 12px;
   line-height: 30px;
+  font-weight: 700;
   color: #ec2224; }
 
 .cart {
@@ -1000,6 +1012,7 @@ main {
       float: right;
       font-size: 12px;
       line-height: 30px;
+      font-weight: 700;
       position: absolute;
       right: 0;
       line-height: 70px;
@@ -1010,7 +1023,7 @@ main {
       -moz-transition: text-shadow 0.2s ease;
       -ms-transition: text-shadow 0.2s ease; }
       .cart-ul .cart-li .cart-remove:hover {
-        text-shadow: 3px 3px 7px #ec2224;
+        text-shadow: 2px 2px 7px #ec2224;
         /*  @if $media == large-desktop {
             @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
           }*/
@@ -1032,6 +1045,7 @@ main {
     .cart-ul .cart-li p {
       font-size: 12px;
       line-height: 30px;
+      font-weight: 700;
       float: left;
       line-height: 70px;
       height: 70px; }
@@ -1045,11 +1059,13 @@ main {
   .cart-total .cart-total-tax {
     font-size: 12px;
     line-height: 30px;
+    font-weight: 700;
     height: 70px;
     line-height: 70px; }
   .cart-total .cart-total-amount {
     font-size: 12px;
     line-height: 30px;
+    font-weight: 700;
     height: 70px;
     line-height: 70px; }
     .cart-total .cart-total-amount span {
@@ -1058,6 +1074,7 @@ main {
 .form-title {
   font-size: 14px;
   line-height: 35px;
+  font-weight: 700;
   color: #ec2224; }
 
 .checkout-button {
@@ -1073,6 +1090,7 @@ main {
   border-bottom: 2px solid #ec2224;
   font-size: 14px;
   line-height: 35px;
+  font-weight: 700;
   text-shadow: 0 0 0px #ec2224;
   transition: text-shadow 0.2s ease;
   -webkit-transition: text-shadow 0.2s ease;
@@ -1086,7 +1104,7 @@ main {
       @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
     }*/ }
   .checkout-button:hover {
-    text-shadow: 3px 3px 7px #ec2224;
+    text-shadow: 2px 2px 7px #ec2224;
     /*  @if $media == large-desktop {
         @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
       }*/
@@ -1118,6 +1136,7 @@ main {
     height: 100%;
     font-size: 14px;
     line-height: 35px;
+    font-weight: 700;
     text-shadow: 0 0 0px #ec2224;
     transition: text-shadow 0.2s ease;
     -webkit-transition: text-shadow 0.2s ease;
@@ -1125,7 +1144,7 @@ main {
     -ms-transition: text-shadow 0.2s ease;
     line-height: normal; }
     .cart-back p:hover {
-      text-shadow: 3px 3px 7px #ec2224;
+      text-shadow: 2px 2px 7px #ec2224;
       /*  @if $media == large-desktop {
           @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
         }*/
@@ -1170,6 +1189,7 @@ main {
     -moz-border-radius: 0%;
     font-size: 12px;
     line-height: 30px;
+    font-weight: 700;
     /*  @if $media == large-desktop {
         @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
       }*/ }
@@ -1204,6 +1224,7 @@ select {
   outline: 0;
   font-size: 12px;
   line-height: 30px;
+  font-weight: 700;
   border-radius: 0%;
   -webkit-border-radius: 0%;
   -moz-border-radius: 0%;
@@ -1255,16 +1276,19 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
   .payment-total p {
     font-size: 12px;
     line-height: 30px;
+    font-weight: 700;
     width: 80%; }
     .payment-total p span {
       float: right;
       font-size: 12px;
       line-height: 30px;
+      font-weight: 700;
       margin-left: 100px; }
 
 .payment-header {
   font-size: 14px;
-  line-height: 35px; }
+  line-height: 35px;
+  font-weight: 700; }
 
 .shipment {
   width: 100%;
@@ -1280,6 +1304,7 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
 .shipment-h1 {
   font-size: 14px;
   line-height: 35px;
+  font-weight: 700;
   position: absolute;
   top: 20px;
   left: 20px; }
@@ -1346,10 +1371,12 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
   .isBillingDifferent label {
     font-size: 12px;
     line-height: 30px;
+    font-weight: 700;
     color: #ec2224; }
   .isBillingDifferent input {
     font-size: 12px;
     line-height: 30px;
+    font-weight: 700;
     color: #ec2224; }
 
 .processed {
@@ -1367,7 +1394,8 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
   .processed-thankyou p {
     width: 80%;
     font-size: 12px;
-    line-height: 30px; }
+    line-height: 30px;
+    font-weight: 700; }
   .processed-thankyou a {
     width: 50px;
     height: 50px;
@@ -1378,4 +1406,5 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
     margin: auto;
     margin-top: 100px;
     font-size: 12px;
-    line-height: 30px; }
+    line-height: 30px;
+    font-weight: 700; }
