@@ -26,11 +26,9 @@ $rootScope.selectedRadio = {};
   $rootScope.getContentType('radio', 'my.radio.index');
 
   $rootScope.$on('radioReady', function(){
-
+      $rootScope.pageLoading = false;
       $scope.$apply();
-
   });
-
 
 
   $scope.thisRadio = (e)=>{

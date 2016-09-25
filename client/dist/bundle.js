@@ -412,6 +412,7 @@ angular.module('myApp')
       console.log(item);
       $rootScope.Event[i].data['event.date'].value = item;
     }
+    $rootScope.pageLoading = false;
     $rootScope.$apply();
   });
 
@@ -525,11 +526,19 @@ angular.module('myApp').controller('navCtrl', function ($scope, $location, $root
     }
   };
 
+  $scope.$on('$routeChangeStart', function () {
+    $rootScope.pageLoading = true;
+  });
+
   $scope.$on('$routeChangeSuccess', function () {
     if ($location.path() != '/') {
       console.log('not home');
       $rootScope.backgroundColor = '#FFFFFF';
     }
+    setTimeout(function () {
+      $rootScope.pageLoading = false;
+      $rootScope.$apply();
+    }, 1000);
   });
 }).directive('logoDirective', function ($rootScope, $location, $window, $routeParams, $timeout) {
   return {
@@ -598,7 +607,7 @@ angular.module('myApp').filter('turnIntoSoundcloud', function ($sce) {
   $rootScope.getContentType('radio', 'my.radio.index');
 
   $rootScope.$on('radioReady', function () {
-
+    $rootScope.pageLoading = false;
     $scope.$apply();
   });
 

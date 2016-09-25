@@ -114,6 +114,27 @@ table {
 .nav-logo svg:hover #color {
   stroke: white; }
 
+.blink-infinite {
+  animation: blink 0.2s steps(5, start) infinite;
+  -webkit-animation: blink 0.2s steps(5, start) infinite;
+  -moz-animation: blink 0.2s steps(5, start) infinite;
+  -ms-animation: blink 0.2s steps(5, start) infinite;
+  -o-animation: blink 0.2s steps(5, start) infinite; }
+
+.blink {
+  animation: blink 0.2s steps(5, start) 3;
+  -webkit-animation: blink 0.2s steps(5, start) 3; }
+
+.blink-once {
+  animation: blink 0.2s steps(5, start) 1;
+  -webkit-animation: blink 0.2s steps(5, start) 1; }
+
+@keyframes blink {
+  to {
+    opacity: 1; } }
+@-webkit-keyframes blink {
+  to {
+    opacity: 1; } }
 /*....................................General settings..................................*/
 /*.....................TEXT MARK STYLES......................*/
 ::-moz-selection {

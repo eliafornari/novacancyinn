@@ -27,12 +27,19 @@ angular.module('myApp')
 
   }
 
+  $scope.$on('$routeChangeStart', function(){
+    $rootScope.pageLoading = true;
+  })
 
   $scope.$on('$routeChangeSuccess', function(){
     if($location.path() != '/'){
       console.log('not home');
       $rootScope.backgroundColor = '#FFFFFF';
     }
+    setTimeout(function(){
+      $rootScope.pageLoading = false;
+      $rootScope.$apply();
+    }, 1000);
   })
 
 

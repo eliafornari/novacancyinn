@@ -54,6 +54,7 @@ $rootScope.selectedEvent = {};
 
 
       }
+      $rootScope.pageLoading = false;
       $rootScope.$apply();
 
   });
