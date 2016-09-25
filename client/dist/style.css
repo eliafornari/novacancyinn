@@ -61,12 +61,15 @@ table {
 /*$break-infinite: 500000px;*/
 /*....................................SCSS MIXINS..................................*/
 .nav {
-  z-index: 13;
   position: fixed;
-  right: 0; }
+  right: 0;
+  top: 50%;
+  z-index: 13;
+  height: 400px;
+  margin-top: -200px; }
 
 .table-nav {
-  height: 100vh; }
+  height: 100%; }
 
 .nav-container {
   height: auto;

@@ -1,17 +1,21 @@
 .nav{
-  z-index:$z-nav;
   position: fixed;
   right:0;
+  top:50%;
+  z-index:$z-nav;
+  height:400px;
+  margin-top: -200px;
 }
 
 .table-nav{
-  height:100vh;
+  height:100%;
 }
 
 .nav-container{
   height:auto;
   width:120px;
   position: relative;
+
   .nav-logo{
     width:100%;
     position: relative;
