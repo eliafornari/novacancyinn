@@ -4,20 +4,20 @@
 }
 
 .event-ul{
-  width:55vw;
+  width:400px;
   margin:auto;
   margin-top: $margin-top;
   .event-li{
-    width:55vw;
+    width:400px;
     clear:both;
     margin: auto;
-    height:100px;
+    height:50px;
     position: relative;
     &:nth-child(1){
       margin-top: 0;
     }
     .event-date{
-      width:55vw;
+      width:400px;
       margin: auto;
       span{
         width:20%;
