@@ -71,48 +71,6 @@ $sceProvider.enabled(false);
 
   // $locationChangeStart
 
-    .when('/shop/:detail', {
-      templateUrl: 'views/shop.html',
-      controller: 'detailCtrl',
-      reloadOnSearch: false
-    })
-
-    .when('/shop', {
-      templateUrl: 'views/shop.html',
-      controller: 'shopCtrl',
-      reloadOnSearch: false
-    })
-
-    .when('/radio', {
-      templateUrl: 'views/radio.html',
-      controller: 'radioCtrl'
-    })
-
-    .when('/archive', {
-      templateUrl: 'views/archive.html'
-    })
-
-
-    .when('/about', {
-      templateUrl: 'views/about.html'
-    })
-
-    .when('/contact', {
-      templateUrl: 'views/contact.html'
-    })
-
-    .when('/event', {
-      templateUrl: 'views/event.html',
-      controller: 'eventCtrl'
-    })
-
-
-
-    .when('/privacy', {
-      templateUrl: 'privacy/privacy.html',
-      controller: 'privacyCtrl'
-    })
-
 
     .when('/client/assets/images/profile.jpg', {
 
@@ -151,100 +109,12 @@ $rootScope.pageClass = "page-home";
 $rootScope.Home;
 
 
-
-
-
-
-  $rootScope.Auth;
-    $rootScope.authentication = function(){
-
-          // Simple GET request example:
-          $http({
-            method: 'GET',
-            url: '/authenticate'
-          }).then(function successCallback(response) {
-
-            if(response.data.access_token){
-                console.log("auth");
-                console.log(response);
-                // this callback will be called asynchronously
-                // when the response is available
-                $rootScope.Auth = response.data;
-                var expires = response.data.expires;
-                var identifier = response.data.identifier;
-                var expires_in = response.data.expires_in;
-                var access_token = response.data.access_token;
-                var type = response.data.token_type;
-
-
-
-
-            }
-            $rootScope.getProductsFN();
-
-            }, function errorCallback(response) {
-              // called asynchronously if an error occurs
-              // or server returns response with an error status.
-            });
-
-    }//addToCart
-
-    $rootScope.getProductsFN=function(){
-      $http({method: 'GET', url: '/getProducts'}).then(function(response){
-        console.log("product: ");
-        console.log(response);
-        $rootScope.Product = response.data;
-        console.log(response.data);
-        $rootScope.pageLoading = false;
-      }).then(function(){
-        console.log("an error occurred");
-      })
-    }
-
-
-
-
-  setTimeout(function(){
-    $rootScope.authentication();
-  }, 600);
-
-
-
-
-
-
-
-
-
-
-
-
-
-  $rootScope.backgroundColor = '#000000';
-  $rootScope.cartColor = 'rgba(0,0,0,0.96)';
-  $rootScope.font = 'folio';
   $rootScope.elia = false;
 
 
   document.addEventListener("keydown", function(event) {
     console.log(event.which);
     var key = event.which
-
-    if(key == 66){
-      $rootScope.backgroundColor = '#000000';
-      $rootScope.cartColor = 'rgba(0,0,0,0.96)'
-    }else if(key == 87){
-      $rootScope.backgroundColor = '#FFFFFF';
-      $rootScope.cartColor = 'rgba(255,255,255,0.96)'
-    }else if(key == 49){
-      $rootScope.font = 'folio';
-    }else if(key == 50){
-      $rootScope.font = 'basil';
-    }else if(key == 51){
-      $rootScope.font = 'graebenbach';
-    }
-
-
 
     if(key == 69){
       $rootScope.elia = true;
@@ -287,7 +157,7 @@ $rootScope.Home;
 
 
 
-    //..............................................................................mobile
+    //..............................................................................MOBILE
     //....this is the function that checks the header of the browser and sees what device it is
     $rootScope.isMobile, $rootScope.isDevice, $rootScope.isMobileDevice;
     $rootScope.checkSize = function(){
@@ -468,6 +338,17 @@ var radioRan = false;
 
 
 
+  $scope.hideNav = true;
+
+  //MOBILE
+  $scope.openMenu_m=()=>{
+    $scope.hideNav = !$scope.hideNav;
+  }
+  $scope.closeNav_m=()=>{
+    if($rootScope.isMobile){
+      $scope.hideNav = true;
+    }
+  }
 
 
 
@@ -481,11 +362,5 @@ var radioRan = false;
 var jquerymousewheel = require('./vendor/jquery.mousewheel.js')($);
 var infiniteScroll = require("./vendor/infiniteScroll.js");
 var jqueryUI = require('./vendor/jquery-ui.min.js');
-var home = require("./home.js");
-var events = require("./event.js");
-var radio = require("./radio.js");
-var nav = require("./nav.js");
 var service = require("./services.js");
-var cart = require("./shop/cart.js");
-var shop = require("./shop/shop.js");
-var shop = require("./shop/checkout.js");
+var home = require("./home.js");

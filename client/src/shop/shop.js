@@ -8,6 +8,7 @@ $rootScope.windowHeight = $window.innerHeight;
 $rootScope.Detail = {};
 
 $rootScope.openDetailFN = (slug)=>{
+  $scope.scrollHere(slug);
   if($rootScope.isDetailOpen == true){
     $location.path('/shop/'+slug, true);
   }else{
@@ -33,28 +34,28 @@ $rootScope.template = $rootScope.templates[0];
 
 
 
-$scope.wheel;
+// $scope.wheel;
+// $scope.startWheel_shop = ()=>{
+//   $(".shop-content").bind('mousewheel', function(event, delta) {
+//      // console.log(event.deltaX, event.deltaY, event.deltaFactor);
+//      this.scrollLeft -= (delta * 0.4);
+//      event.preventDefault();
+//      $scope.wheel=true;
+//   });
+// }
+//
+// $scope.startWheel_shop();
+//
+// $scope.stopWheel_shop = ()=>{
+//   $(".shop-content").unbind('mousewheel');
+//   $scope.wheel=false;
+// }
+//
 
-$scope.startWheel_shop = ()=>{
-  $(".shop-content").bind('mousewheel', function(event, delta) {
-     // console.log(event.deltaX, event.deltaY, event.deltaFactor);
-     this.scrollLeft -= (delta * 0.4);
-     event.preventDefault();
-     $scope.wheel=true;
-  });
+
+$scope.scrollHere = (slug)=>{
+  anchorSmoothScroll.scrollTo('product-li-'+slug, 'shop-content');
 }
-
-$scope.startWheel_shop();
-
-
-$scope.stopWheel_shop = ()=>{
-  $(".shop-content").unbind('mousewheel');
-  $scope.wheel=false;
-}
-
-
-
-
 
 
 
@@ -231,6 +232,11 @@ Shop.controller('detailCtrl', function($scope, $location, $rootScope, $routePara
 
     }
   }
+
+
+
+
+
 
 
 });

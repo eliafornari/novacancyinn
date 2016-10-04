@@ -112,7 +112,16 @@ angular.module('myApp')
   };
 })
 
+.directive('navmobileDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+  return {
+    restrict: 'E',
+    templateUrl: 'views/nav-mobile.html',
+    replace: true,
+    link: function(scope, elem, attrs) {
 
+    }
+  };
+})
 
 
 .directive('navDirective', function($rootScope, $location, $window, $routeParams, $timeout) {

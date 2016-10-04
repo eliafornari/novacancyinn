@@ -64,30 +64,7 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
 
   // $locationChangeStart
 
-  .when('/shop/:detail', {
-    templateUrl: 'views/shop.html',
-    controller: 'detailCtrl',
-    reloadOnSearch: false
-  }).when('/shop', {
-    templateUrl: 'views/shop.html',
-    controller: 'shopCtrl',
-    reloadOnSearch: false
-  }).when('/radio', {
-    templateUrl: 'views/radio.html',
-    controller: 'radioCtrl'
-  }).when('/archive', {
-    templateUrl: 'views/archive.html'
-  }).when('/about', {
-    templateUrl: 'views/about.html'
-  }).when('/contact', {
-    templateUrl: 'views/contact.html'
-  }).when('/event', {
-    templateUrl: 'views/event.html',
-    controller: 'eventCtrl'
-  }).when('/privacy', {
-    templateUrl: 'privacy/privacy.html',
-    controller: 'privacyCtrl'
-  }).when('/client/assets/images/profile.jpg', {})
+  .when('/client/assets/images/profile.jpg', {})
 
   /*............................. Take-all routing ........................*/
 
@@ -107,72 +84,11 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
   $rootScope.pageClass = "page-home";
   $rootScope.Home;
 
-  $rootScope.Auth;
-  $rootScope.authentication = function () {
-
-    // Simple GET request example:
-    $http({
-      method: 'GET',
-      url: '/authenticate'
-    }).then(function successCallback(response) {
-
-      if (response.data.access_token) {
-        console.log("auth");
-        console.log(response);
-        // this callback will be called asynchronously
-        // when the response is available
-        $rootScope.Auth = response.data;
-        var expires = response.data.expires;
-        var identifier = response.data.identifier;
-        var expires_in = response.data.expires_in;
-        var access_token = response.data.access_token;
-        var type = response.data.token_type;
-      }
-      $rootScope.getProductsFN();
-    }, function errorCallback(response) {
-      // called asynchronously if an error occurs
-      // or server returns response with an error status.
-    });
-  }; //addToCart
-
-  $rootScope.getProductsFN = function () {
-    $http({ method: 'GET', url: '/getProducts' }).then(function (response) {
-      console.log("product: ");
-      console.log(response);
-      $rootScope.Product = response.data;
-      console.log(response.data);
-      $rootScope.pageLoading = false;
-    }).then(function () {
-      console.log("an error occurred");
-    });
-  };
-
-  setTimeout(function () {
-    $rootScope.authentication();
-  }, 600);
-
-  $rootScope.backgroundColor = '#000000';
-  $rootScope.cartColor = 'rgba(0,0,0,0.96)';
-  $rootScope.font = 'folio';
   $rootScope.elia = false;
 
   document.addEventListener("keydown", function (event) {
     console.log(event.which);
     var key = event.which;
-
-    if (key == 66) {
-      $rootScope.backgroundColor = '#000000';
-      $rootScope.cartColor = 'rgba(0,0,0,0.96)';
-    } else if (key == 87) {
-      $rootScope.backgroundColor = '#FFFFFF';
-      $rootScope.cartColor = 'rgba(255,255,255,0.96)';
-    } else if (key == 49) {
-      $rootScope.font = 'folio';
-    } else if (key == 50) {
-      $rootScope.font = 'basil';
-    } else if (key == 51) {
-      $rootScope.font = 'graebenbach';
-    }
 
     if (key == 69) {
       $rootScope.elia = true;
@@ -194,7 +110,7 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
     $scope.$apply();
   });
 
-  //..............................................................................mobile
+  //..............................................................................MOBILE
   //....this is the function that checks the header of the browser and sees what device it is
   $rootScope.isMobile, $rootScope.isDevice, $rootScope.isMobileDevice;
   $rootScope.checkSize = function () {
@@ -345,83 +261,27 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
       });
     });
   };
+
+  $scope.hideNav = true;
+
+  //MOBILE
+  $scope.openMenu_m = function () {
+    $scope.hideNav = !$scope.hideNav;
+  };
+  $scope.closeNav_m = function () {
+    if ($rootScope.isMobile) {
+      $scope.hideNav = true;
+    }
+  };
 }); //......end of the route controller
 
 var jquerymousewheel = require('./vendor/jquery.mousewheel.js')($);
 var infiniteScroll = require("./vendor/infiniteScroll.js");
 var jqueryUI = require('./vendor/jquery-ui.min.js');
-var home = require("./home.js");
-var events = require("./event.js");
-var radio = require("./radio.js");
-var nav = require("./nav.js");
 var service = require("./services.js");
-var cart = require("./shop/cart.js");
-var shop = require("./shop/shop.js");
-var shop = require("./shop/checkout.js");
+var home = require("./home.js");
 
-},{"./event.js":2,"./home.js":3,"./nav.js":4,"./radio.js":5,"./services.js":6,"./shop/cart.js":7,"./shop/checkout.js":8,"./shop/shop.js":9,"./vendor/infiniteScroll.js":10,"./vendor/jquery-ui.min.js":11,"./vendor/jquery.mousewheel.js":12,"angular":20,"angular-animate":14,"angular-resource":16,"angular-route":18,"jquery":33,"prismic.io":41}],2:[function(require,module,exports){
-'use strict';
-
-angular.module('myApp')
-
-// .filter('replaceDash', function($location, $rootScope, $routeParams, $sce){
-// return function(item){
-//   item = item.replace(/-/g, '.');
-//   var year = item.substring(0, 4);
-//   var month = item.substring(5, 7);
-//   var day = item.substring(8, 9);
-//
-//   console.log('year: '+year);
-//   console.log('month: '+month);
-//   console.log('day: '+day);
-//
-//   // item = '<span>'+month+'</span>'+'.'+'<span>'+day+'</span>'+'.'+'<span>'+year+'</span>'
-//   item = {'year':year, 'month':month, 'day':day};
-//   console.log(item);
-//   return item
-// }
-//
-//
-// })
-
-.controller('eventCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http, $sce, $document, anchorSmoothScroll, $window) {
-
-  $rootScope.windowHeight = $window.innerHeight;
-  $rootScope.pageClass = "page-event";
-  $rootScope.selectedEvent = {};
-
-  //..........................................................GET
-
-  $rootScope.getContentType('event', 'my.event.date desc');
-
-  $rootScope.$on('eventReady', function () {
-
-    for (var i in $rootScope.Event) {
-      var item = $rootScope.Event[i].data['event.date'].value;
-      console.log(i);
-      // item = item.replace(/-/g, '.');
-      var year = item.substring(0, 4);
-      var month = item.substring(5, 7);
-      var day = item.substring(8, 10);
-
-      // console.log('year: '+year);
-      // console.log('month: '+month);
-      // console.log('day: '+day);
-      item = { 'year': year, 'month': month, 'day': day };
-
-      console.log(item);
-      $rootScope.Event[i].data['event.date'].value = item;
-    }
-    $rootScope.pageLoading = false;
-    $rootScope.$apply();
-  });
-
-  $scope.thisEvent = function (e) {
-    $rootScope.selectedEvent = e;
-  };
-}); //controller
-
-},{}],3:[function(require,module,exports){
+},{"./home.js":2,"./services.js":3,"./vendor/infiniteScroll.js":4,"./vendor/jquery-ui.min.js":5,"./vendor/jquery.mousewheel.js":6,"angular":14,"angular-animate":8,"angular-resource":10,"angular-route":12,"jquery":27,"prismic.io":35}],2:[function(require,module,exports){
 'use strict';
 
 var Home = angular.module('myApp');
@@ -496,798 +356,263 @@ Home.controller('homeCtrl', function ($scope, $location, $rootScope, $routeParam
   // }
 }); //controller
 
-},{}],4:[function(require,module,exports){
-'use strict';
-
-angular.module('myApp').controller('navCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http) {
-
-  $rootScope.isNavOpen = false;
-
-  $scope.openNav = function () {
-    $rootScope.isNavOpen = !$rootScope.isNavOpen;
-  };
-
-  $scope.closeNav = function () {
-    $rootScope.isNavOpen = false;
-  };
-
-  $rootScope.isLocation = function (location) {
-    if ($location.path() == location) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  $rootScope.isShopDetail = function () {
-    if ($location.path() == '/shop/' + $routeParams.detail) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  $scope.$on('$routeChangeStart', function () {
-    if ($location.path() == '/shop' || $location.path() == '/shop/' + $routeParams.detail) {
-      console.log("isShop");
-      $rootScope.pageLoading = false;
-    } else {
-      $rootScope.pageLoading = true;
-    }
-  });
-
-  $scope.$on('$routeChangeSuccess', function () {
-    if ($location.path() != '/') {
-      console.log('not home');
-      $rootScope.backgroundColor = '#FFFFFF';
-    }
-    setTimeout(function () {
-      $rootScope.pageLoading = false;
-      $rootScope.$apply();
-    }, 1000);
-  });
-}).directive('logoDirective', function ($rootScope, $location, $window, $routeParams, $timeout) {
-  return {
-    restrict: 'E',
-    templateUrl: 'views/icon/logo.html',
-    replace: true,
-    link: function link(scope, elem, attrs) {}
-  };
-}).directive('logoBlackDirective', function ($rootScope, $location, $window, $routeParams, $timeout) {
-  return {
-    restrict: 'E',
-    templateUrl: 'views/icon/logo-black.html',
-    replace: true,
-    link: function link(scope, elem, attrs) {}
-  };
-}).directive('exDirective', function ($rootScope, $location, $window, $routeParams, $timeout) {
-  return {
-    restrict: 'E',
-    templateUrl: 'views/icon/ex.html',
-    replace: true,
-    link: function link(scope, elem, attrs) {}
-  };
-}).directive('mailDirective', function ($rootScope, $location, $window, $routeParams, $timeout) {
-  return {
-    restrict: 'E',
-    templateUrl: 'views/icon/mail-icon.html',
-    replace: true,
-    link: function link(scope, elem, attrs) {}
-  };
-}).directive('menuIconDirective', function ($rootScope, $location, $window, $routeParams, $timeout) {
-  return {
-    restrict: 'E',
-    templateUrl: 'views/icon/menu-icon.html',
-    replace: true,
-    link: function link(scope, elem, attrs) {}
-  };
-}).directive('navDirective', function ($rootScope, $location, $window, $routeParams, $timeout) {
-  return {
-    restrict: 'E',
-    templateUrl: 'views/nav.html',
-    replace: true,
-    link: function link(scope, elem, attrs) {}
-  };
-});
-
-},{}],5:[function(require,module,exports){
-'use strict';
-
-angular.module('myApp').filter('turnIntoSoundcloud', function ($sce) {
-  return function (id) {
-    if (id) {
-
-      id = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/' + id + '&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true';
-      console.log(id);
-      return $sce.trustAsResourceUrl(id);
-    }
-  };
-}).controller('radioCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http, $sce, $document, anchorSmoothScroll, $window) {
-
-  $rootScope.windowHeight = $window.innerHeight;
-  $rootScope.pageClass = "page-radio";
-  $rootScope.selectedRadio = {};
-
-  //..........................................................GET
-
-  $rootScope.getContentType('radio', 'my.radio.index');
-
-  $rootScope.$on('radioReady', function () {
-    $rootScope.pageLoading = false;
-    $scope.$apply();
-  });
-
-  $scope.thisRadio = function (e) {
-    $rootScope.selectedRadio = e;
-  };
-
-  $rootScope.isSoundOpen = false;
-
-  $rootScope.openSound = function () {
-    $rootScope.isSoundOpen = !$rootScope.isSoundOpen;
-  };
-
-  $scope.radioHovered = false;
-}); //controller
-
-},{}],6:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 "use strict";
 
 /* Services */
 var Service = angular.module('myApp');
 
 Service.factory("transformRequestAsFormPost", function () {
-    // I prepare the request data for the form post.
-    function transformRequest(data, getHeaders) {
-        var headers = getHeaders();
-        headers["Content-type"] = "application/x-www-form-urlencoded; charset=utf-8";
-        return serializeData(data);
+  // I prepare the request data for the form post.
+  function transformRequest(data, getHeaders) {
+    var headers = getHeaders();
+    headers["Content-type"] = "application/x-www-form-urlencoded; charset=utf-8";
+    return serializeData(data);
+  }
+  // Return the factory value.
+  return transformRequest;
+  // ---
+  // PRVIATE METHODS.
+  // ---
+  // I serialize the given Object into a key-value pair string. This
+  // method expects an object and will default to the toString() method.
+  // --
+  // NOTE: This is an atered version of the jQuery.param() method which
+  // will serialize a data collection for Form posting.
+  // --
+  // https://github.com/jquery/jquery/blob/master/src/serialize.js#L45
+  function serializeData(data) {
+    // If this is not an object, defer to native stringification.
+    if (!angular.isObject(data)) {
+      return data == null ? "" : data.toString();
     }
-    // Return the factory value.
-    return transformRequest;
-    // ---
-    // PRVIATE METHODS.
-    // ---
-    // I serialize the given Object into a key-value pair string. This
-    // method expects an object and will default to the toString() method.
-    // --
-    // NOTE: This is an atered version of the jQuery.param() method which
-    // will serialize a data collection for Form posting.
-    // --
-    // https://github.com/jquery/jquery/blob/master/src/serialize.js#L45
-    function serializeData(data) {
-        // If this is not an object, defer to native stringification.
-        if (!angular.isObject(data)) {
-            return data == null ? "" : data.toString();
-        }
-        var buffer = [];
-        // Serialize each key in the object.
-        for (var name in data) {
-            if (!data.hasOwnProperty(name)) {
-                continue;
-            }
-            var value = data[name];
-            buffer.push(encodeURIComponent(name) + "=" + encodeURIComponent(value == null ? "" : value));
-        }
-        // Serialize the buffer and clean it up for transportation.
-        var source = buffer.join("&").replace(/%20/g, "+");
-        return source;
+    var buffer = [];
+    // Serialize each key in the object.
+    for (var name in data) {
+      if (!data.hasOwnProperty(name)) {
+        continue;
+      }
+      var value = data[name];
+      buffer.push(encodeURIComponent(name) + "=" + encodeURIComponent(value == null ? "" : value));
     }
+    // Serialize the buffer and clean it up for transportation.
+    var source = buffer.join("&").replace(/%20/g, "+");
+    return source;
+  }
 });
 
 //.................................................google SEO
 
 Service.service('PageTitle', function () {
-    var _title = 'Angel Sanchez';
-    return {
-        title: function title() {
-            return _title;
-        },
-        setTitle: function setTitle(newTitle) {
-            _title = newTitle;
-        }
-    };
+  var _title = 'Angel Sanchez';
+  return {
+    title: function title() {
+      return _title;
+    },
+    setTitle: function setTitle(newTitle) {
+      _title = newTitle;
+    }
+  };
 });
 
 Service.service('MetaInformation', function () {
-    var _metaDescription = '';
-    var _metaKeywords = '';
-    return {
-        metaDescription: function metaDescription() {
-            return _metaDescription;
-        },
-        metaKeywords: function metaKeywords() {
-            return _metaKeywords;
-        },
-        reset: function reset() {
-            _metaDescription = '';
-            _metaKeywords = '';
-        },
-        setMetaDescription: function setMetaDescription(newMetaDescription) {
-            _metaDescription = newMetaDescription;
-        },
-        appendMetaKeywords: function appendMetaKeywords(newKeywords) {
-            for (var key in newKeywords) {
-                if (_metaKeywords === '') {
-                    _metaKeywords += newKeywords[key].name;
-                } else {
-                    _metaKeywords += ', ' + newKeywords[key].name;
-                }
-            }
-        }
-    };
-});
-
-Service.service('anchorSmoothScroll', function () {
-
-    this.scrollTo = function (eID) {
-
-        // This scrolling function
-        // is from http://www.itnewb.com/tutorial/Creating-the-Smooth-Scroll-Effect-with-JavaScript
-
-        var startY = currentYPosition();
-        var stopY = elmYPosition(eID);
-        var distance = stopY > startY ? stopY - startY : startY - stopY;
-        if (distance < 100) {
-            scrollTo(0, stopY);return;
-        }
-        var speed = Math.round(distance / 100);
-        if (speed >= 20) speed = 20;
-        var step = Math.round(distance / 25);
-        var leapY = stopY > startY ? startY + step : startY - step;
-        var timer = 0;
-        if (stopY > startY) {
-            for (var i = startY; i < stopY; i += step) {
-                setTimeout("window.scrollTo(0, " + leapY + ")", timer * speed);
-                leapY += step;if (leapY > stopY) leapY = stopY;timer++;
-            }return;
-        }
-        for (var i = startY; i > stopY; i -= step) {
-            setTimeout("window.scrollTo(0, " + leapY + ")", timer * speed);
-            leapY -= step;if (leapY < stopY) leapY = stopY;timer++;
-        }
-
-        function currentYPosition() {
-            // Firefox, Chrome, Opera, Safari
-            if (self.pageYOffset) return self.pageYOffset;
-            // Internet Explorer 6 - standards mode
-            if (document.documentElement && document.documentElement.scrollTop) return document.documentElement.scrollTop;
-            // Internet Explorer 6, 7 and 8
-            if (document.body.scrollTop) return document.body.scrollTop;
-            return 0;
-        }
-
-        function elmYPosition(eID) {
-            var elm = document.getElementById(eID);
-            var y = elm.offsetTop;
-            var node = elm;
-            while (node.offsetParent && node.offsetParent != document.body) {
-                node = node.offsetParent;
-                y += node.offsetTop;
-            }return y;
-        }
-    };
-});
-
-},{}],7:[function(require,module,exports){
-'use strict';
-
-var Cart = angular.module('myApp');
-
-Cart.controller('cartCtrl', function ($scope, $location, $rootScope, $timeout, $http, transformRequestAsFormPost) {
-
-  $rootScope.Cart;
-  $rootScope.showCart = false;
-  console.log("ran again");
-
-  $rootScope.openCart = function () {
-    $rootScope.showCart = !$rootScope.showCart;
-    $rootScope.updateCart();
-    console.log("opencart");
-  };
-
-  $rootScope.closeCart = function () {
-    $rootScope.showCart = false;
-  };
-
-  $rootScope.$watch('Cart', function (newValue) {
-    console.log(newValue);
-    $rootScope.Cart = newValue;
-  });
-
-  $rootScope.countries = [];
-
-  $rootScope.getCountries = function () {
-    $http({
-      method: 'GET',
-      url: 'assets/countries.json'
-    }).then(function successCallback(response) {
-
-      $rootScope.countries = response.data;
-      console.log(response.data);
-    }, function errorCallback(response) {
-
-      $scope.error = { value: true, text: 'countries not available, this page will be reloaded' };
-      setTimeout({
-        // $route.reload();
-      }, 2000);
-    });
-  };
-  $rootScope.getCountries();
-
-  $scope.phoneRegex = '^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$';
-  $scope.postcodeRegex = '^\\d{5}-\\d{4}|\\d{5}|[A-Z]\\d[A-Z] \\d[A-Z]\\d$';
-
-  $rootScope.updateCart = function () {
-    $http({
-      url: '/getCart',
-      method: 'GET',
-      headers: {
-        // 'Content-Type': 'application/json'
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      transformRequest: transformRequestAsFormPost
-    }).then(function (response) {
-      $rootScope.Cart = response.data;
-      $rootScope.pageLoading = false;
-      console.log(response);
-
-      // if(!$rootScope.Cart.total_items==0){
-      //   console.log("cart has some stuff");
-      //   $rootScope.attachItemID($rootScope.Cart.contents);
-      // }
-    });
-  }; //updateCart
-
-  //attaching item function
-  // $rootScope.attachItemID=function(obj){
-  //     Object.getOwnPropertyNames(obj).forEach(function(val, idx, array) {
-  //       $rootScope.Cart.contents[val].item=val;
-  //       // console.log(val + ' -> ' + obj[val]);
-  //     });
-  // }
-
-  $rootScope.removeItem = function (id) {
-
-    $http({
-      url: '/removeProduct',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      transformRequest: transformRequestAsFormPost,
-      data: {
-        id: id
-      }
-    }).then(function (response) {
-      console.log("object removed");
-      $rootScope.Cart = response;
-      $rootScope.updateCart();
-      console.log(response);
-    });
-  };
-
-  $scope.cartToShipment = function () {
-    if ($rootScope.Cart.total_items > 0) {
-      $rootScope.template = $rootScope.templates[1];
-    } else {
-      $rootScope.noProductsError = true;
-      setTimeout(function () {
-        $rootScope.showCart = false;
-        $rootScope.noProductsError = false;
-        $rootScope.$apply();
-      }, 2000);
-    }
-  };
-
-  $rootScope.backFromShipment = function () {
-    $rootScope.template = $rootScope.templates[0];
-  };
-
-  $rootScope.backFromPayment = function () {
-
-    $rootScope.template = $rootScope.templates[1];
-
-    $rootScope.paymentProcessed = false;
-    $rootScope.errorMessage = false;
-    $rootScope.thankYou = false;
-    $rootScope.cartLoading = false;
-  };
-
-  $rootScope.backFromProcessed = function () {
-    $rootScope.template = $rootScope.templates[2];
-    $rootScope.paymentProcessed = false;
-    $rootScope.errorMessage = false;
-    $rootScope.thankYou = false;
-    $rootScope.cartLoading = false;
-  };
-});
-
-},{}],8:[function(require,module,exports){
-'use strict';
-
-var Checkout = angular.module('myApp');
-
-Checkout.controller('checkoutCtrl', function ($scope, $location, $rootScope, $timeout, $http, transformRequestAsFormPost) {
-  $rootScope.thankYou, $rootScope.payment;
-  $rootScope.isGradient = true;
-
-  $rootScope.customer, $rootScope.shipment, $rootScope.billing, $rootScope.Totals;
-
-  $rootScope.payment = {
-    id: '',
-    number: '5555555555554444',
-    expiry_month: '02',
-    expiry_year: '2018',
-    cvv: '756'
-  };
-
-  $rootScope.checkout = {
-    customer: { first_name: '',
-      last_name: '',
-      email: ''
+  var _metaDescription = '';
+  var _metaKeywords = '';
+  return {
+    metaDescription: function metaDescription() {
+      return _metaDescription;
     },
-    shipment_method: '1336838094099317449',
-    shipment: { first_name: '',
-      last_name: '',
-      address_1: '',
-      city: '',
-      county: '',
-      country: '',
-      postcode: '',
-      phone: ''
+    metaKeywords: function metaKeywords() {
+      return _metaKeywords;
     },
-    billing: {
-      first_name: '',
-      last_name: '',
-      address_1: '',
-      city: '',
-      county: '',
-      country: '',
-      postcode: '',
-      phone: ''
-    }
-  };
-
-  $rootScope.shipmentToPayment = function () {
-    console.log($rootScope.checkout);
-    $rootScope.template = $rootScope.templates[2];
-
-    $http.post('/cartToOrder', $rootScope.checkout).then(function (data) {
-      console.log(data);
-
-      $rootScope.Totals = data.data;
-      $rootScope.payment.id = $rootScope.Totals.id;
-      console.log('id: ' + $rootScope.payment.id);
-      console.log($rootScope.Totals);
-      console.log("posted successfully");
-    }, function (data) {
-      console.error("error in posting");
-    });
-  }; //cartToOrder
-
-  $rootScope.paymentToProcess = function () {
-    $rootScope.cartLoading = true;
-    $rootScope.Processed = false;
-    $rootScope.template = $rootScope.templates[3];
-    console.log("payment started");
-
-    $http({
-      url: '/orderToPayment',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      transformRequest: transformRequestAsFormPost,
-      data: $rootScope.payment
-    }).then(function (response) {
-
-      console.log("payment succeeded");
-      console.log(response.data);
-
-      if (response.data.data.paid) {
-        $rootScope.cartLoading = false;
-        $rootScope.Processed = response;
-        console.log(response.data);
-        $scope.updatestock($rootScope.Cart);
-        $scope.emptyCart();
-      } else {
-        console.log('paid false');
-        $rootScope.Processed = response;
+    reset: function reset() {
+      _metaDescription = '';
+      _metaKeywords = '';
+    },
+    setMetaDescription: function setMetaDescription(newMetaDescription) {
+      _metaDescription = newMetaDescription;
+    },
+    appendMetaKeywords: function appendMetaKeywords(newKeywords) {
+      for (var key in newKeywords) {
+        if (_metaKeywords === '') {
+          _metaKeywords += newKeywords[key].name;
+        } else {
+          _metaKeywords += ', ' + newKeywords[key].name;
+        }
       }
-
-      // $scope.findOrder($rootScope.Processed);
-    }, function (response) {
-      console.log("payment failed!");
-      console.log(response);
-      $rootScope.Processed = response;
-      $rootScope.cartLoading = false;
-    });
-  }; //cartToOrder
-
-  //tentative function to update teh overall stock
-  $scope.findOrder = function (contents) {
-    console.log("angular http");
-    var data = contents.data;
-    data['auth'] = $rootScope.Auth;
-    console.log(data);
-  };
-
-  // $scope.getOrders = ()=>{
-  //   var req = {
-  //    method: 'GET',
-  //    url: 'https://api.molt.in/'+'v1/orders/'+data.order.id+'/items',
-  //    headers: {
-  //      'Authorization': "Bearer "+data.auth.access_token
-  //    }
-  //   }
-  //   $http(req).then(function(response){
-  //     console.log(response);
-  //     $scope.updatestock(response);
-  //   }, function(response){
-  //     console.log(response);
-  //   });
-  // }
-
-  $scope.updatestock = function (data) {
-    $http.post('/updatestock', data).success(function (data, status, headers, config) {
-      console.log("updatestock");
-      console.log(data);
-    }).error(function (data, status, header, config) {
-      console.log(data);
-    });
-  };
-
-  $scope.$watch('isBillingDifferent', function (value) {
-    console.log($scope.isBillingDifferent);
-    if (!$scope.isBillingDifferent) {
-      console.log($rootScope.checkout);
-      $rootScope.checkout.billing.first_name = $rootScope.checkout.shipment.first_name;
-      $rootScope.checkout.billing.last_name = $rootScope.checkout.shipment.last_name;
-      $rootScope.checkout.billing.address_1 = $rootScope.checkout.shipment.address_1;
-      $rootScope.checkout.billing.city = $rootScope.checkout.shipment.city;
-      $rootScope.checkout.billing.county = $rootScope.checkout.shipment.county;
-      $rootScope.checkout.billing.country = $rootScope.checkout.shipment.country;
-      $rootScope.checkout.billing.postcode = $rootScope.checkout.shipment.postcode;
-      $rootScope.checkout.billing.phone = $rootScope.checkout.shipment.phone;
     }
-  });
-
-  $scope.$watch('checkout', function (value) {
-    console.log(value);
-    // $rootScope.checkout.customer.first_name = $rootScope.checkout.shipment.first_name;
-    // $rootScope.checkout.customer.last_name = $rootScope.checkout.shipment.last_name;
-    if (!$scope.isBillingDifferent) {
-      console.log($rootScope.checkout);
-      $rootScope.checkout.billing.first_name = $rootScope.checkout.shipment.first_name;
-      $rootScope.checkout.billing.last_name = $rootScope.checkout.shipment.last_name;
-      $rootScope.checkout.billing.address_1 = $rootScope.checkout.shipment.address_1;
-      $rootScope.checkout.billing.city = $rootScope.checkout.shipment.city;
-      $rootScope.checkout.billing.county = $rootScope.checkout.shipment.county;
-      $rootScope.checkout.billing.country = $rootScope.checkout.shipment.country;
-      $rootScope.checkout.billing.postcode = $rootScope.checkout.shipment.postcode;
-      $rootScope.checkout.billing.phone = $rootScope.checkout.shipment.phone;
-    }
-
-    console.log('country: ' + $rootScope.checkout.shipment.country);
-    if ($rootScope.checkout.shipment.country == 'US') {
-      $rootScope.checkout.shipment_method = '1336838094099317449';
-      console.log('US');
-    } else {
-      $rootScope.checkout.shipment_method = '1336838640038314698';
-      console.log('INT');
-    }
-  }, true);
-
-  $scope.emptyCart = function () {
-    $http.post('/emptyCart').success(function (data, status, headers, config) {
-      console.log("updatestock");
-      console.log(data);
-      $rootScope.Cart = {};
-    }).error(function (data, status, header, config) {
-      console.log(data);
-      $rootScope.Cart = {};
-    });
   };
 });
 
-},{}],9:[function(require,module,exports){
-'use strict';
+Service.service('anchorSmoothScroll', function ($location, $rootScope, $window) {
 
-var Shop = angular.module('myApp');
+  // this.scrollTo = function(eID) {
+  //
+  //     // This scrolling function
+  //     // is from http://www.itnewb.com/tutorial/Creating-the-Smooth-Scroll-Effect-with-JavaScript
+  //
+  //     var startY = currentYPosition();
+  //     var stopY = elmYPosition(eID);
+  //     var distance = stopY > startY ? stopY - startY : startY - stopY;
+  //     if (distance < 100) {
+  //         scrollTo(0, stopY); return;
+  //     }
+  //     var speed = Math.round(distance / 100);
+  //     if (speed >= 20) speed = 20;
+  //     var step = Math.round(distance / 25);
+  //     var leapY = stopY > startY ? startY + step : startY - step;
+  //     var timer = 0;
+  //     if (stopY > startY) {
+  //         for ( var i=startY; i<stopY; i+=step ) {
+  //             setTimeout("window.scrollTo(0, "+leapY+")", timer * speed);
+  //             leapY += step; if (leapY > stopY) leapY = stopY; timer++;
+  //         } return;
+  //     }
+  //     for ( var i=startY; i>stopY; i-=step ) {
+  //         setTimeout("window.scrollTo(0, "+leapY+")", timer * speed);
+  //         leapY -= step; if (leapY < stopY) leapY = stopY; timer++;
+  //     }
+  //
+  //     function currentYPosition() {
+  //         // Firefox, Chrome, Opera, Safari
+  //         if (self.pageYOffset) return self.pageYOffset;
+  //         // Internet Explorer 6 - standards mode
+  //         if (document.documentElement && document.documentElement.scrollTop)
+  //             return document.documentElement.scrollTop;
+  //         // Internet Explorer 6, 7 and 8
+  //         if (document.body.scrollTop) return document.body.scrollTop;
+  //         return 0;
+  //     }
+  //
+  //     function elmYPosition(eID) {
+  //         var elm = document.getElementById(eID);
+  //         var y = elm.offsetTop;
+  //         var node = elm;
+  //         while (node.offsetParent && node.offsetParent != document.body) {
+  //             node = node.offsetParent;
+  //             y += node.offsetTop;
+  //         } return y;
+  //     }
+  //
+  // };
 
-Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http, $sce, $document, anchorSmoothScroll, $window, transformRequestAsFormPost) {
-
-  $rootScope.pageClass = "page-shop";
-  $rootScope.isDetailOpen = false;
-  $rootScope.windowHeight = $window.innerHeight;
-  $rootScope.Detail = {};
-
-  $rootScope.openDetailFN = function (slug) {
-    if ($rootScope.isDetailOpen == true) {
-      $location.path('/shop/' + slug, true);
-    } else {
-      $rootScope.isDetailOpen = true;
-      setTimeout(function () {
-        $location.path('/shop/' + slug, true);
-        $rootScope.$apply();
-      }, 200);
-    }
-  };
-
-  $rootScope.showCart = false;
-  $rootScope.template = {};
-  $rootScope.templates = [{ name: 'cart', url: 'views/cart.html' }, { name: 'shipment', url: 'views/shipment.html' }, { name: 'payment', url: 'views/payment.html' }, { name: 'processed', url: 'views/processed.html' }];
-  $rootScope.template = $rootScope.templates[0];
-
-  $scope.wheel;
-
-  $scope.startWheel_shop = function () {
-    $(".shop-content").bind('mousewheel', function (event, delta) {
-      // console.log(event.deltaX, event.deltaY, event.deltaFactor);
-      this.scrollLeft -= delta * 0.4;
-      event.preventDefault();
-      $scope.wheel = true;
-    });
-  };
-
-  $scope.startWheel_shop();
-
-  $scope.stopWheel_shop = function () {
-    $(".shop-content").unbind('mousewheel');
-    $scope.wheel = false;
-  };
-}); //controller
-
-Shop.controller('detailCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http, $sce, $document, anchorSmoothScroll, $window, transformRequestAsFormPost) {
-
-  $scope.$on('$routeChangeSuccess', function () {
-
-    // $rootScope.openDetailFN();
-    $rootScope.isDetailOpen = true;
-    $rootScope.detailUpdate($routeParams.detail);
-    $rootScope.updateCart();
+  this.scrollOneViewport = function () {
 
     setTimeout(function () {
-      if (!$rootScope.Detail.id) {
-        $rootScope.detailUpdate($routeParams.detail);
-        $scope.$apply();
-        console.log("I loaded it again");
-        console.log($rootScope.Detail);
-      } else {
-        console.log("detail loaded correctly");
-        console.log($rootScope.Detail);
-        return false;
+      var number, element, scroll, scrollPosition, windowheight;
+
+      // $('.div1').get(0).scrollTop($('.div1 div.active').position().top);
+      element = jQuery('html,body');
+      //  scrollPosition =  jQuery('.artist').scrollTop();
+      //  scrollLength = document.getElementById("artist").scrollHeight;
+      windowheight = window.innerHeight;
+      if ($rootScope.isMobile && $rootScope.isDevice) {
+        windowheight = $window.innerHeight + 130;
       }
-    }, 3000);
-  });
 
-  $rootScope.addToCart = function (id) {
+      // event.preventDefault();
 
-    $http({
-      url: '/addProduct',
-      method: 'POST',
-      headers: {
-        // 'Content-Type': 'application/json'
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      transformRequest: transformRequestAsFormPost,
-      data: {
-        id: id,
-        access_token: "helloooo"
-      }
-    }).then(function (response) {
-      // $rootScope.Cart = response;
-      $rootScope.updateCart();
-      $rootScope.pageLoading = false;
-      console.log(response);
-    });
-  }; //addToCart
-
-  //......VARIATIONS
-
-  $rootScope.addVariation = function () {
-
-    if ($rootScope.selectedVariation) {
-      $http({
-        url: '/addVariation',
-        method: 'POST',
-        headers: {
-          // 'Content-Type': 'application/json'
-          // 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-          // 'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        // transformRequest: transformRequestAsFormPost,
-        data: $rootScope.selectedVariation
-      }).then(function (response) {
-        // $rootScope.Cart = response;
-        $rootScope.updateCart();
-        console.log(response);
-      });
-    } else {
-      $scope.variationErrorMessage = "select a size first";
-      setTimeout(function () {
-        $scope.variationErrorMessage = false;
-        $rootScope.$apply();
-      });
-    }
-  }; //addToCart
-
-  //variations
-
-  $rootScope.selectedVariation = {};
-  $rootScope.howManyVAriationsSelected = 0;
-  $rootScope.detailUpdate = function (slug) {
-
-    $rootScope.selectedVariation = {};
-    $rootScope.howManyVAriationsSelected = 0;
-    $rootScope.Detail.total_variations = 0;
-
-    for (var i in $rootScope.Product) {
-      if ($rootScope.Product[i].slug == slug) {
-        $rootScope.Detail = $rootScope.Product[i];
-        $rootScope.Detail.total_variations = 0;
-        $rootScope.Detail.has_variation = $rootScope.has_variation;
-
-        var go = true;
-        //has variation
-        for (i in $rootScope.Detail.modifiers) {
-          $rootScope.Detail.modifiers[i].open = false;
-          $rootScope.Detail.total_variations = $rootScope.Detail.total_variations + 1;
-          // if($rootScope.Detail.modifiers[i].id){$rootScope.has_variation=true;}else{$rootScope.has_variation=false;}
-          $rootScope.Detail.has_variation = true;
-          $rootScope.showSelection($rootScope.Detail.modifiers[i].id);
-          go = false;
-        }
-
-        if (go == true) {
-          //does not have variation
-          $rootScope.Detail.has_variation = false;
-          for (i in $rootScope.Detail.modifiers) {}
-        }
-      }
-    }
+      element.stop().animate({
+        scrollTop: windowheight
+      }, 1000, 'easeInOutQuart'
+      // function() {
+      //   // $location.path(section, false);
+      //   // console.log($location.path());
+      // }
+      );
+    }, 100);
   };
 
-  $rootScope.showSelection = function (modifier_id) {
-    console.log('modifier_id', modifier_id);
-    for (var m in $rootScope.Detail.modifiers) {
-      if ($rootScope.Detail.modifiers[m].id == modifier_id) {
-        $rootScope.Detail.modifiers[m].open = !$rootScope.Detail.modifiers[m].open;
-      }
-    }
+  this.scrollTo = function (id, parent) {
+
+    setTimeout(function () {
+      var number, element, scroll, scrollPosition, windowheight, scrollLength;
+      number = jQuery('#' + id).offset().top;
+      console.log("number: " + number);
+
+      // $('.div1').get(0).scrollTop($('.div1 div.active').position().top);
+      element = jQuery('#' + parent);
+      scrollPosition = jQuery('#' + parent).scrollTop();
+      scrollLength = document.getElementById("shop-content").scrollHeight;
+      windowheight = $rootScope.windowHeight;
+
+      scroll = scrollPosition + number;
+
+      element.stop().animate({
+        scrollTop: scroll
+      }, 1000, 'easeInOutQuart'
+      // function() {
+      //   // $location.path(section, false);
+      //   // console.log($location.path());
+      // }
+      );
+    }, 200);
   };
 
-  $rootScope.thisVariation = function (id, modifier_id, modifier_title, variation_id, variation_title) {
-    var i = 0;
-    for (i in $rootScope.Detail.modifiers) {
+  //............RELEASE
 
-      if ($rootScope.Detail.modifiers[i].id == modifier_id) {
-        $rootScope.selectedVariation[i] = {
-          id: id,
-          modifier_id: modifier_id,
-          modifier_title: modifier_title,
-          variation_id: variation_id,
-          variation_title: variation_title
-        };
-        if ($rootScope.howManyVAriationsSelected < $rootScope.Detail.total_variations) {
-          $rootScope.howManyVAriationsSelected = $rootScope.howManyVAriationsSelected + 1;
-        }
-      }
-    }
+  this.scrollToRelease = function (id) {
+
+    setTimeout(function () {
+      var number, element, scroll, scrollPosition, windowheight;
+      number = jQuery('#' + id).offset().top;
+      console.log("number: " + number);
+
+      // $('.div1').get(0).scrollTop($('.div1 div.active').position().top);
+      element = jQuery('.release');
+      scrollPosition = jQuery('.release').scrollTop();
+      //  scrollLength = document.getElementById("release").scrollHeight;
+      windowheight = $rootScope.windowheight;
+
+      scroll = scrollPosition + number;
+
+      // event.preventDefault();
+
+      element.stop().animate({
+        scrollTop: scroll
+      }, 1000, 'easeInOutQuart'
+      // function() {
+      //   // $location.path(section, false);
+      //   // console.log($location.path());
+      // }
+      );
+    }, 200);
   };
+
+  this.scrollJournalTop = function (id) {
+
+    setTimeout(function () {
+      var number, element, scroll, scrollPosition, windowheight;
+
+      // $('.div1').get(0).scrollTop($('.div1 div.active').position().top);
+      element = jQuery('.journal');
+
+      element.stop().animate({
+        scrollTop: 0
+      }, 1000, 'easeInOutQuart');
+      //
+    }, 200);
+  };
+
+  this.scrollToTop = function (id) {
+
+    setTimeout(function () {
+      var number, element, scroll, scrollPosition, windowheight;
+
+      // $('.div1').get(0).scrollTop($('.div1 div.active').position().top);
+      element = jQuery('#' + id);
+
+      element.stop().animate({
+        scrollTop: 0
+      }, 1000, 'easeInOutQuart');
+      //
+    }, 200);
+  };
+
+  // easeInOutQuart
 });
 
-Shop.directive('detailDirective', function ($rootScope, $location, $window, $routeParams, $timeout) {
-  return {
-    restrict: 'E',
-    templateUrl: 'views/detail.html',
-    replace: true,
-    link: function link(scope, elem, attrs) {}
-  };
-});
-
-},{}],10:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 'use strict';
 
 /* ng-infinite-scroll - v1.0.0 - 2013-02-23 */
@@ -1360,7 +685,7 @@ mod.directive('infiniteScroll', ['$rootScope', '$window', '$timeout', function (
   };
 }]);
 
-},{}],11:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -2492,7 +1817,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }));
 });
 
-},{}],12:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -2731,7 +2056,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 });
 
-},{}],13:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -6879,11 +6204,11 @@ angular.module('ngAnimate', [])
 
 })(window, window.angular);
 
-},{}],14:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 require('./angular-animate');
 module.exports = 'ngAnimate';
 
-},{"./angular-animate":13}],15:[function(require,module,exports){
+},{"./angular-animate":7}],9:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -7743,11 +7068,11 @@ angular.module('ngResource', ['ng']).
 
 })(window, window.angular);
 
-},{}],16:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 require('./angular-resource');
 module.exports = 'ngResource';
 
-},{"./angular-resource":15}],17:[function(require,module,exports){
+},{"./angular-resource":9}],11:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -8814,11 +8139,11 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 })(window, window.angular);
 
-},{}],18:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 require('./angular-route');
 module.exports = 'ngRoute';
 
-},{"./angular-route":17}],19:[function(require,module,exports){
+},{"./angular-route":11}],13:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -40292,11 +39617,11 @@ $provide.value("$locale", {
 })(window);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],20:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":19}],21:[function(require,module,exports){
+},{"./angular":13}],15:[function(require,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -40422,9 +39747,9 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	exports.fromByteArray = uint8ToBase64
 }(typeof exports === 'undefined' ? (this.base64js = {}) : exports))
 
-},{}],22:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 
-},{}],23:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -40536,7 +39861,7 @@ exports.allocUnsafeSlow = function allocUnsafeSlow(size) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"buffer":24}],24:[function(require,module,exports){
+},{"buffer":18}],18:[function(require,module,exports){
 (function (global){
 /*!
  * The buffer module from node.js, for the browser.
@@ -42088,7 +41413,7 @@ function blitBuffer (src, dst, offset, length) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"base64-js":21,"ieee754":29,"isarray":32}],25:[function(require,module,exports){
+},{"base64-js":15,"ieee754":23,"isarray":26}],19:[function(require,module,exports){
 module.exports = {
   "100": "Continue",
   "101": "Switching Protocols",
@@ -42153,7 +41478,7 @@ module.exports = {
   "511": "Network Authentication Required"
 }
 
-},{}],26:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 (function (Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -42264,7 +41589,7 @@ function objectToString(o) {
 }
 
 }).call(this,{"isBuffer":require("../../is-buffer/index.js")})
-},{"../../is-buffer/index.js":31}],27:[function(require,module,exports){
+},{"../../is-buffer/index.js":25}],21:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -42568,7 +41893,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],28:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 var http = require('http');
 
 var https = module.exports;
@@ -42584,7 +41909,7 @@ https.request = function (params, cb) {
     return http.request.call(this, params, cb);
 }
 
-},{"http":50}],29:[function(require,module,exports){
+},{"http":44}],23:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = nBytes * 8 - mLen - 1
@@ -42670,7 +41995,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],30:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -42695,7 +42020,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],31:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 /**
  * Determine if an object is Buffer
  *
@@ -42714,14 +42039,14 @@ module.exports = function (obj) {
     ))
 }
 
-},{}],32:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 var toString = {}.toString;
 
 module.exports = Array.isArray || function (arr) {
   return toString.call(arr) == '[object Array]';
 };
 
-},{}],33:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.0.0
  * https://jquery.com/
@@ -52760,7 +52085,7 @@ if ( !noGlobal ) {
 return jQuery;
 } ) );
 
-},{}],34:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -53561,7 +52886,7 @@ module.exports = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./cache":35,"./documents":36,"./experiments":37,"./predicates":40,"./requests":42}],35:[function(require,module,exports){
+},{"./cache":29,"./documents":30,"./experiments":31,"./predicates":34,"./requests":36}],29:[function(require,module,exports){
 
 "use strict";
 
@@ -53616,7 +52941,7 @@ ApiCache.prototype = {
 
 module.exports = ApiCache;
 
-},{"./lru":39}],36:[function(require,module,exports){
+},{"./lru":33}],30:[function(require,module,exports){
 "use strict";
 
 /**
@@ -54202,7 +53527,7 @@ module.exports = {
   GroupDoc: GroupDoc
 };
 
-},{"./fragments":38}],37:[function(require,module,exports){
+},{"./fragments":32}],31:[function(require,module,exports){
 
 "use strict";
 
@@ -54287,7 +53612,7 @@ module.exports = {
   Variation: Variation
 };
 
-},{}],38:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 "use strict";
 
 var documents = require('./documents');
@@ -55541,7 +54866,7 @@ module.exports = {
   insertSpans: insertSpans
 };
 
-},{"./documents":36}],39:[function(require,module,exports){
+},{"./documents":30}],33:[function(require,module,exports){
 
 /**
  * A doubly linked list-based Least Recently Used (LRU) cache. Will keep most
@@ -55794,7 +55119,7 @@ LRUCache.prototype.toString = function() {
 
 module.exports = LRUCache;
 
-},{}],40:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 
 "use strict";
 
@@ -56076,7 +55401,7 @@ module.exports = {
 
 };
 
-},{}],41:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 "use strict";
 
 var experiments = require('./experiments'),
@@ -56154,7 +55479,7 @@ module.exports = {
 
 module.exports.Prismic = module.exports; // Backward compatibility
 
-},{"./api":34,"./documents":36,"./experiments":37,"./fragments":38,"./predicates":40}],42:[function(require,module,exports){
+},{"./api":28,"./documents":30,"./experiments":31,"./fragments":32,"./predicates":34}],36:[function(require,module,exports){
 (function (process){
 
 "use strict";
@@ -56395,7 +55720,7 @@ module.exports = {
 };
 
 }).call(this,require('_process'))
-},{"../package.json":43,"_process":45,"http":50,"https":28,"url":62}],43:[function(require,module,exports){
+},{"../package.json":37,"_process":39,"http":44,"https":22,"url":56}],37:[function(require,module,exports){
 module.exports={
   "name": "prismic.io",
   "description": "JavaScript development kit for prismic.io",
@@ -56486,7 +55811,7 @@ module.exports={
   "readme": "ERROR: No README data found!"
 }
 
-},{}],44:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -56533,7 +55858,7 @@ function nextTick(fn, arg1, arg2, arg3) {
 }
 
 }).call(this,require('_process'))
-},{"_process":45}],45:[function(require,module,exports){
+},{"_process":39}],39:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -56654,7 +55979,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],46:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 (function (global){
 /*! https://mths.be/punycode v1.4.1 by @mathias */
 ;(function(root) {
@@ -57191,7 +56516,7 @@ process.umask = function() { return 0; };
 }(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],47:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -57277,7 +56602,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],48:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -57364,13 +56689,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],49:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":47,"./encode":48}],50:[function(require,module,exports){
+},{"./decode":41,"./encode":42}],44:[function(require,module,exports){
 (function (global){
 var ClientRequest = require('./lib/request')
 var extend = require('xtend')
@@ -57452,7 +56777,7 @@ http.METHODS = [
 	'UNSUBSCRIBE'
 ]
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./lib/request":52,"builtin-status-codes":25,"url":62,"xtend":65}],51:[function(require,module,exports){
+},{"./lib/request":46,"builtin-status-codes":19,"url":56,"xtend":59}],45:[function(require,module,exports){
 (function (global){
 exports.fetch = isFunction(global.fetch) && isFunction(global.ReadableByteStream)
 
@@ -57496,7 +56821,7 @@ function isFunction (value) {
 xhr = null // Help gc
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],52:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 (function (process,global,Buffer){
 var capability = require('./capability')
 var inherits = require('inherits')
@@ -57777,7 +57102,7 @@ var unsafeHeaders = [
 ]
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
-},{"./capability":51,"./response":53,"_process":45,"buffer":24,"inherits":30,"readable-stream":59,"to-arraybuffer":61}],53:[function(require,module,exports){
+},{"./capability":45,"./response":47,"_process":39,"buffer":18,"inherits":24,"readable-stream":53,"to-arraybuffer":55}],47:[function(require,module,exports){
 (function (process,global,Buffer){
 var capability = require('./capability')
 var inherits = require('inherits')
@@ -57961,7 +57286,7 @@ IncomingMessage.prototype._onXHRProgress = function () {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
-},{"./capability":51,"_process":45,"buffer":24,"inherits":30,"readable-stream":59}],54:[function(require,module,exports){
+},{"./capability":45,"_process":39,"buffer":18,"inherits":24,"readable-stream":53}],48:[function(require,module,exports){
 // a duplex stream is just a stream that is both readable and writable.
 // Since JS doesn't have multiple prototypal inheritance, this class
 // prototypally inherits from Readable, and then parasitically from
@@ -58037,7 +57362,7 @@ function forEach(xs, f) {
     f(xs[i], i);
   }
 }
-},{"./_stream_readable":56,"./_stream_writable":58,"core-util-is":26,"inherits":30,"process-nextick-args":44}],55:[function(require,module,exports){
+},{"./_stream_readable":50,"./_stream_writable":52,"core-util-is":20,"inherits":24,"process-nextick-args":38}],49:[function(require,module,exports){
 // a passthrough stream.
 // basically just the most minimal sort of Transform stream.
 // Every written chunk gets output as-is.
@@ -58064,7 +57389,7 @@ function PassThrough(options) {
 PassThrough.prototype._transform = function (chunk, encoding, cb) {
   cb(null, chunk);
 };
-},{"./_stream_transform":57,"core-util-is":26,"inherits":30}],56:[function(require,module,exports){
+},{"./_stream_transform":51,"core-util-is":20,"inherits":24}],50:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -58960,7 +58285,7 @@ function indexOf(xs, x) {
   return -1;
 }
 }).call(this,require('_process'))
-},{"./_stream_duplex":54,"_process":45,"buffer":24,"buffer-shims":23,"core-util-is":26,"events":27,"inherits":30,"isarray":32,"process-nextick-args":44,"string_decoder/":60,"util":22}],57:[function(require,module,exports){
+},{"./_stream_duplex":48,"_process":39,"buffer":18,"buffer-shims":17,"core-util-is":20,"events":21,"inherits":24,"isarray":26,"process-nextick-args":38,"string_decoder/":54,"util":16}],51:[function(require,module,exports){
 // a transform stream is a readable/writable stream where you do
 // something with the data.  Sometimes it's called a "filter",
 // but that's not a great name for it, since that implies a thing where
@@ -59141,7 +58466,7 @@ function done(stream, er) {
 
   return stream.push(null);
 }
-},{"./_stream_duplex":54,"core-util-is":26,"inherits":30}],58:[function(require,module,exports){
+},{"./_stream_duplex":48,"core-util-is":20,"inherits":24}],52:[function(require,module,exports){
 (function (process){
 // A bit simpler than readable streams.
 // Implement an async ._write(chunk, encoding, cb), and it'll handle all
@@ -59670,7 +58995,7 @@ function CorkedRequest(state) {
   };
 }
 }).call(this,require('_process'))
-},{"./_stream_duplex":54,"_process":45,"buffer":24,"buffer-shims":23,"core-util-is":26,"events":27,"inherits":30,"process-nextick-args":44,"util-deprecate":64}],59:[function(require,module,exports){
+},{"./_stream_duplex":48,"_process":39,"buffer":18,"buffer-shims":17,"core-util-is":20,"events":21,"inherits":24,"process-nextick-args":38,"util-deprecate":58}],53:[function(require,module,exports){
 (function (process){
 var Stream = (function (){
   try {
@@ -59690,7 +59015,7 @@ if (!process.browser && process.env.READABLE_STREAM === 'disable' && Stream) {
 }
 
 }).call(this,require('_process'))
-},{"./lib/_stream_duplex.js":54,"./lib/_stream_passthrough.js":55,"./lib/_stream_readable.js":56,"./lib/_stream_transform.js":57,"./lib/_stream_writable.js":58,"_process":45}],60:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":48,"./lib/_stream_passthrough.js":49,"./lib/_stream_readable.js":50,"./lib/_stream_transform.js":51,"./lib/_stream_writable.js":52,"_process":39}],54:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -59913,7 +59238,7 @@ function base64DetectIncompleteChar(buffer) {
   this.charLength = this.charReceived ? 3 : 0;
 }
 
-},{"buffer":24}],61:[function(require,module,exports){
+},{"buffer":18}],55:[function(require,module,exports){
 var Buffer = require('buffer').Buffer
 
 module.exports = function (buf) {
@@ -59942,7 +59267,7 @@ module.exports = function (buf) {
 	}
 }
 
-},{"buffer":24}],62:[function(require,module,exports){
+},{"buffer":18}],56:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -60676,7 +60001,7 @@ Url.prototype.parseHost = function() {
   if (host) this.hostname = host;
 };
 
-},{"./util":63,"punycode":46,"querystring":49}],63:[function(require,module,exports){
+},{"./util":57,"punycode":40,"querystring":43}],57:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -60694,7 +60019,7 @@ module.exports = {
   }
 };
 
-},{}],64:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 (function (global){
 
 /**
@@ -60765,7 +60090,7 @@ function config (name) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],65:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 module.exports = extend
 
 var hasOwnProperty = Object.prototype.hasOwnProperty;

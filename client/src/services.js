@@ -96,56 +96,235 @@ Service.service('MetaInformation', function() {
 
 
 
-    Service.service('anchorSmoothScroll', function(){
 
-         this.scrollTo = function(eID) {
 
-             // This scrolling function
-             // is from http://www.itnewb.com/tutorial/Creating-the-Smooth-Scroll-Effect-with-JavaScript
 
-             var startY = currentYPosition();
-             var stopY = elmYPosition(eID);
-             var distance = stopY > startY ? stopY - startY : startY - stopY;
-             if (distance < 100) {
-                 scrollTo(0, stopY); return;
-             }
-             var speed = Math.round(distance / 100);
-             if (speed >= 20) speed = 20;
-             var step = Math.round(distance / 25);
-             var leapY = stopY > startY ? startY + step : startY - step;
-             var timer = 0;
-             if (stopY > startY) {
-                 for ( var i=startY; i<stopY; i+=step ) {
-                     setTimeout("window.scrollTo(0, "+leapY+")", timer * speed);
-                     leapY += step; if (leapY > stopY) leapY = stopY; timer++;
-                 } return;
-             }
-             for ( var i=startY; i>stopY; i-=step ) {
-                 setTimeout("window.scrollTo(0, "+leapY+")", timer * speed);
-                 leapY -= step; if (leapY < stopY) leapY = stopY; timer++;
-             }
 
-             function currentYPosition() {
-                 // Firefox, Chrome, Opera, Safari
-                 if (self.pageYOffset) return self.pageYOffset;
-                 // Internet Explorer 6 - standards mode
-                 if (document.documentElement && document.documentElement.scrollTop)
-                     return document.documentElement.scrollTop;
-                 // Internet Explorer 6, 7 and 8
-                 if (document.body.scrollTop) return document.body.scrollTop;
-                 return 0;
-             }
+    Service.service('anchorSmoothScroll', function($location, $rootScope, $window){
 
-             function elmYPosition(eID) {
-                 var elm = document.getElementById(eID);
-                 var y = elm.offsetTop;
-                 var node = elm;
-                 while (node.offsetParent && node.offsetParent != document.body) {
-                     node = node.offsetParent;
-                     y += node.offsetTop;
-                 } return y;
-             }
+        // this.scrollTo = function(eID) {
+        //
+        //     // This scrolling function
+        //     // is from http://www.itnewb.com/tutorial/Creating-the-Smooth-Scroll-Effect-with-JavaScript
+        //
+        //     var startY = currentYPosition();
+        //     var stopY = elmYPosition(eID);
+        //     var distance = stopY > startY ? stopY - startY : startY - stopY;
+        //     if (distance < 100) {
+        //         scrollTo(0, stopY); return;
+        //     }
+        //     var speed = Math.round(distance / 100);
+        //     if (speed >= 20) speed = 20;
+        //     var step = Math.round(distance / 25);
+        //     var leapY = stopY > startY ? startY + step : startY - step;
+        //     var timer = 0;
+        //     if (stopY > startY) {
+        //         for ( var i=startY; i<stopY; i+=step ) {
+        //             setTimeout("window.scrollTo(0, "+leapY+")", timer * speed);
+        //             leapY += step; if (leapY > stopY) leapY = stopY; timer++;
+        //         } return;
+        //     }
+        //     for ( var i=startY; i>stopY; i-=step ) {
+        //         setTimeout("window.scrollTo(0, "+leapY+")", timer * speed);
+        //         leapY -= step; if (leapY < stopY) leapY = stopY; timer++;
+        //     }
+        //
+        //     function currentYPosition() {
+        //         // Firefox, Chrome, Opera, Safari
+        //         if (self.pageYOffset) return self.pageYOffset;
+        //         // Internet Explorer 6 - standards mode
+        //         if (document.documentElement && document.documentElement.scrollTop)
+        //             return document.documentElement.scrollTop;
+        //         // Internet Explorer 6, 7 and 8
+        //         if (document.body.scrollTop) return document.body.scrollTop;
+        //         return 0;
+        //     }
+        //
+        //     function elmYPosition(eID) {
+        //         var elm = document.getElementById(eID);
+        //         var y = elm.offsetTop;
+        //         var node = elm;
+        //         while (node.offsetParent && node.offsetParent != document.body) {
+        //             node = node.offsetParent;
+        //             y += node.offsetTop;
+        //         } return y;
+        //     }
+        //
+        // };
 
-         };
 
-     });
+
+
+        this.scrollOneViewport = function() {
+
+
+
+            setTimeout(function(){
+              var number, element, scroll, scrollPosition, windowheight;
+
+
+
+                      // $('.div1').get(0).scrollTop($('.div1 div.active').position().top);
+                     element = jQuery('html,body');
+                    //  scrollPosition =  jQuery('.artist').scrollTop();
+                    //  scrollLength = document.getElementById("artist").scrollHeight;
+                     windowheight = window.innerHeight;
+                     if ($rootScope.isMobile && $rootScope.isDevice){
+                        windowheight = $window.innerHeight + 130;
+                     }
+
+
+
+
+                      // event.preventDefault();
+
+                      element.stop().animate({
+                        scrollTop: windowheight
+                      },1000,
+                        'easeInOutQuart'
+                        // function() {
+                        //   // $location.path(section, false);
+                        //   // console.log($location.path());
+                        // }
+                      );
+                    }, 100);
+
+          }
+
+
+
+
+
+        this.scrollTo = function(id, parent) {
+
+
+
+            setTimeout(function(){
+              var number, element, scroll, scrollPosition, windowheight, scrollLength;
+                      number =  jQuery('#'+id).offset().top;
+                      console.log("number: "+number);
+
+
+                      // $('.div1').get(0).scrollTop($('.div1 div.active').position().top);
+                     element = jQuery('#'+parent);
+                     scrollPosition =  jQuery('#'+parent).scrollTop();
+                     scrollLength = document.getElementById("shop-content").scrollHeight;
+                     windowheight = $rootScope.windowHeight;
+
+
+                     scroll = scrollPosition + number;
+
+
+
+
+                      element.stop().animate({
+                        scrollTop: scroll
+                      },1000,
+                        'easeInOutQuart'
+                        // function() {
+                        //   // $location.path(section, false);
+                        //   // console.log($location.path());
+                        // }
+                      );
+                    }, 200);
+
+          }
+
+
+
+
+
+
+
+
+
+
+
+//............RELEASE
+
+
+          this.scrollToRelease = function(id) {
+
+
+              setTimeout(function(){
+                  var number, element, scroll, scrollPosition, windowheight;
+                        number =  jQuery('#'+id).offset().top;
+                        console.log("number: "+number);
+
+
+                        // $('.div1').get(0).scrollTop($('.div1 div.active').position().top);
+                       element = jQuery('.release');
+                       scrollPosition =  jQuery('.release').scrollTop();
+                      //  scrollLength = document.getElementById("release").scrollHeight;
+                       windowheight = $rootScope.windowheight;
+
+
+                       scroll = scrollPosition + number;
+
+
+                        // event.preventDefault();
+
+                        element.stop().animate({
+                          scrollTop: scroll
+                        },1000,
+                          'easeInOutQuart'
+                          // function() {
+                          //   // $location.path(section, false);
+                          //   // console.log($location.path());
+                          // }
+                        );
+                      }, 200);
+
+            }
+
+
+
+
+            this.scrollJournalTop = function(id) {
+
+
+                setTimeout(function(){
+                  var number, element, scroll, scrollPosition, windowheight;
+
+
+                          // $('.div1').get(0).scrollTop($('.div1 div.active').position().top);
+                         element = jQuery('.journal');
+
+                          element.stop().animate({
+                            scrollTop: 0
+                          },1000,
+                            'easeInOutQuart'
+
+                          );
+                              //
+                        }, 200);
+
+              }
+
+
+
+              this.scrollToTop = function(id) {
+
+
+                  setTimeout(function(){
+                    var number, element, scroll, scrollPosition, windowheight;
+
+
+                            // $('.div1').get(0).scrollTop($('.div1 div.active').position().top);
+                           element = jQuery('#'+id);
+
+                            element.stop().animate({
+                              scrollTop: 0
+                            },1000,
+                              'easeInOutQuart'
+
+                            );
+                                //
+                          }, 200);
+
+                }
+
+// easeInOutQuart
+
+
+    });
