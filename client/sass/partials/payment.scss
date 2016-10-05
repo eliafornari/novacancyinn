@@ -17,6 +17,10 @@
     position: relative;
     margin-top: $form-sides;
     left: $form-sides;
+    @include respond-to(phone){
+      width:50%;
+      left: $margin-sides;
+    }
   }
 }
 
@@ -30,14 +34,15 @@
     margin-top: $margin-top-li;
     margin-bottom: $margin-sides;
     background-color: transparent;
+    @include respond-to(phone){
+      width:50%;
+    }
     p{
       @include paragraph();
       width:80%;
       span{
         float:right;
         @include paragraph();
-        margin-left: $form-sides;
-
       }
     }
   }

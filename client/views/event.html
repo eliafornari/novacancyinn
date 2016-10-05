@@ -1,4 +1,4 @@
-<div class="event" ng-controller="eventCtrl">
+<div class="event" ng-controller="eventCtrl" ng-show="Event">
 
 <table>
   <tr>
@@ -34,13 +34,13 @@
 
 
 
-<!-- <div class="event-description" ng-if="selectedEvent.data['event.description'].value">
-  <h2>"{{selectedEvent.data['event.description'].value}}"</h2>
-</div> -->
+  <!-- <div class="event-description" ng-if="selectedEvent.data['event.description'].value">
+    <h2>"{{selectedEvent.data['event.description'].value}}"</h2>
+  </div> -->
 
-<div class="event-image" ng-if="selectedEvent.data['event.flyer'].value.main.url">
-  <img src="{{selectedEvent.data['event.flyer'].value.main.url}}" alt="{{selectedEvent.data['event.name'].value}}"/>
-</div>
+  <div class="event-image" ng-if="selectedEvent.data['event.flyer'].value.main.url">
+    <img src="{{selectedEvent.data['event.flyer'].value.main.url}}" alt="{{selectedEvent.data['event.name'].value}}"/>
+  </div>
 
 
 

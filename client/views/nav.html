@@ -2,10 +2,10 @@
    <!-- ng-show="isNavOpen" -->
 
 
-     <table>
+     <table class="nav-table">
        <tr>
          <td>
-           <div class="nav-container">
+           <div class="nav-container" >
              <div class="nav-left">
                <a class="nav-left-a" href="/shop" ng-class="{'active': isLocation('/shop') || isShopDetail()}">shop</a>
                <a class="nav-left-a" href="/archive" ng-class="{'active': isLocation('/archive')}">archive</a>
@@ -16,7 +16,6 @@
                  <logo-directive></logo-directive>
                  <div class="nav-logo-blur" style="background-image: url('/assets/images/novacancyinn_logo_web_blur.png')" ng-class="{'blur': showBlur||isLocation('/') , 'blink-infinite': pageLoading}"></div>
                </a>
-
              </div>
 
 
@@ -30,6 +29,9 @@
          </td>
        </tr>
      </table>
+
+
+
 
 
   <!-- <table class="table-nav">

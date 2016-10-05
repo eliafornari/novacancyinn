@@ -345,6 +345,18 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
       });
     });
   };
+
+  $scope.hideNav = true;
+
+  //MOBILE
+  $scope.openMenu_m = function () {
+    $scope.hideNav = !$scope.hideNav;
+  };
+  $scope.closeNav_m = function () {
+    if ($rootScope.isMobile) {
+      $scope.hideNav = true;
+    }
+  };
 }); //......end of the route controller
 
 var jquerymousewheel = require('./vendor/jquery.mousewheel.js')($);
@@ -578,6 +590,13 @@ angular.module('myApp').controller('navCtrl', function ($scope, $location, $root
   return {
     restrict: 'E',
     templateUrl: 'views/icon/menu-icon.html',
+    replace: true,
+    link: function link(scope, elem, attrs) {}
+  };
+}).directive('navmobileDirective', function ($rootScope, $location, $window, $routeParams, $timeout) {
+  return {
+    restrict: 'E',
+    templateUrl: 'views/nav-mobile.html',
     replace: true,
     link: function link(scope, elem, attrs) {}
   };

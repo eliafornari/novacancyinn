@@ -7,6 +7,9 @@
   width:55vw;
   margin:auto;
   margin-top: $margin-top;
+  @include respond-to(phone){
+    width:80vw;
+  }
   .radio-li{
     width:55vw;
     clear:both;
@@ -15,6 +18,9 @@
     line-height: $line-height-h1;
     vertical-align: middle;
     position: relative;
+    @include respond-to(phone){
+      width:80vw;
+    }
 
     &:nth-child(1){
       margin-top: 0;

@@ -7,18 +7,27 @@
   width:400px;
   margin:auto;
   margin-top: $margin-top;
+  @include respond-to(phone){
+    width:80vw;
+  }
   .event-li{
     width:400px;
     clear:both;
     margin: auto;
     height:50px;
     position: relative;
+    @include respond-to(phone){
+      width:80vw;
+    }
     &:nth-child(1){
       margin-top: 0;
     }
     .event-date{
       width:400px;
       margin: auto;
+      @include respond-to(phone){
+        width:80vw;
+      }
       span{
         width:20%;
         text-align: center;
@@ -102,27 +111,27 @@
 
 
 @keyframes shrink {
-  0% { width:55vw; }
+  0% { width:400px;   @include respond-to(phone){width:80vw;} }
   100% { width:8vw; }
 }
 
 @-webkit-keyframes shrink {
-  0% { width:55vw; }
+  0% { width:400px; @include respond-to(phone){width:80vw;} }
   100% { width:8vw; }
 }
 
 @-moz-keyframes shrink {
-  0% { width:55vw; }
+  0% { width:400px; @include respond-to(phone){width:80vw;} }
   100% { width:8vw; }
 }
 
 @-ms-keyframes shrink {
-  0% { width:55vw; }
+  0% { width:400px; @include respond-to(phone){width:80vw;} }
   100% { width:8vw; }
 }
 
 @-o-keyframes shrink {
-  0% { width:55vw; }
+  0% { width:400px; @include respond-to(phone){width:80vw;} }
   100% { width:8vw; }
 }
 
@@ -130,25 +139,25 @@
 
 @keyframes unShrink {
   0% { width:8vw;  }
-  100% { width:55vw; }
+  100% { width:400px; @include respond-to(phone){width:80vw;} }
 }
 
 @-webkit-keyframes unShrink {
   0% { width:8vw;  }
-  100% { width:55vw; }
+  100% { width:400px; @include respond-to(phone){width:80vw;} }
 }
 
 @-moz-keyframes unShrink {
   0% { width:8vw;  }
-  100% { width:55vw; }
+  100% { width:400px; @include respond-to(phone){width:80vw;} }
 }
 
 @-ms-keyframes unShrink {
   0% { width:8vw;  }
-  100% { width:55vw; }
+  100% { width:400px; @include respond-to(phone){width:80vw;} }
 }
 
 @-o-keyframes unShrink {
   0% { width:8vw;  }
-  100% { width:55vw; }
+  100% { width:400px; @include respond-to(phone){width:80vw;} }
 }

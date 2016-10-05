@@ -1,0 +1,51 @@
+<nav ng-controller="navCtrl" class="nav-mobile" ng-class="{'up': !isLocation('/') && !isMobile}">
+   <!-- ng-show="isNavOpen" -->
+
+
+     <table class="nav-mobile-table" ng-hide="hideNav && !isLocation('/')">
+       <tr>
+         <td>
+           <div class="nav-container" >
+             <div class="nav-left">
+               <a class="nav-left-a" href="/shop" ng-class="{'active': isLocation('/shop') || isShopDetail()}" ng-click="closeNav_m()">shop</a>
+               <a class="nav-left-a" href="/archive" ng-class="{'active': isLocation('/archive')}" ng-click="closeNav_m()">archive</a>
+               <a class="nav-left-a" href="/event" ng-class="{'active': isLocation('/event')}" ng-click="closeNav_m()">events</a>
+             </div>
+
+             <div class="nav-logo" ng-show="isLocation('/')">
+               <a href="/">
+                 <logo-directive></logo-directive>
+                 <div class="nav-logo-blur" style="background-image: url('/assets/images/novacancyinn_logo_web_blur.png')" ng-class="{'blur': showBlur||isLocation('/') , 'blink-infinite': pageLoading}"></div>
+               </a>
+             </div>
+
+             <div class="nav-right">
+               <a class="nav-right-a" href="/radio" ng-class="{'active': isLocation('/radio')}" ng-click="closeNav_m()">radio</a>
+               <a class="nav-right-a" href="/about" ng-class="{'active': isLocation('/about')}" ng-click="closeNav_m()">about</a>
+               <a class="nav-right-a" href="/contact" ng-class="{'active': isLocation('/contact')}" ng-click="closeNav_m()">contact</a>
+             </div>
+
+           </div>
+         </td>
+       </tr>
+     </table>
+
+
+<div class="mobile-nav-bar" ng-if="isMobile" ng-hide="isLocation('/')">
+  <div class="mobile-nav-logo" ng-mouseenter="showBlur=true" ng-mouseleave="showBlur=false" >
+    <a href="/" ng-click="closeNav_m()">
+      <logo-directive></logo-directive>
+      <div class="nav-logo-blur" style="background-image: url('/assets/images/novacancyinn_logo_web_blur.png')" ng-class="{'blur': showBlur||isLocation('/') , 'blink-infinite': pageLoading}"></div>
+    </a>
+  </div>
+  <div class="mobile-nav-burger" ng-click="openMenu_m()">
+    <p>menu</p>
+  </div>
+</div>
+
+
+
+
+
+
+</nav>

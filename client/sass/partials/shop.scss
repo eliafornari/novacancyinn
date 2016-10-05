@@ -5,51 +5,102 @@
   // background-color: #FFFFFF;
 }
 
+
+// when DETAIL is open
 .shop-content.openDetail{
-  height:20vh;
+  height:100vh;
+  width: 10vw;
   position: fixed;
   top:0;
+  overflow-x: hidden;
+  overflow-y: scroll;
   // z-index: $z-shop-content;
-  -webkit-transition: cominUp $transition-medium $animation-bezier;
-  -moz-transition: cominUp $transition-medium $animation-bezier;
-  -ms-transition: cominUp $transition-medium $animation-bezier;
-  transition: cominUp $transition-medium $animation-bezier;
+  -webkit-transition: all $transition-medium $animation-bezier;
+  -moz-transition: all $transition-medium $animation-bezier;
+  -ms-transition: all $transition-medium $animation-bezier;
+  transition: all $transition-medium $animation-bezier;
+
+  .product-ul{
+    width: 100%;
+    height:auto;
+    margin:0;
+    display:table;
+    .product-li{
+      width:100%;
+      margin-left: 0vw;
+      margin-top:$margin-top-li;
+      float:none;
+      &:nth-child(1){
+        margin-top: $margin-top;
+      }
+    }
+
+  }
 }
 
-.product-li-img.opacityProducts{
-  opacity:0.2;
-  -webkit-transition: opacity $transition-medium;
-  -moz-transition: opacity $transition-medium;
-  -ms-transition: opacity $transition-medium;
-  transition: opacity $transition-medium;
-}
-
+// .product-li-img.opacityProducts{
+//   opacity:0.2;
+//   -webkit-transition: opacity $transition-medium;
+//   -moz-transition: opacity $transition-medium;
+//   -ms-transition: opacity $transition-medium;
+//   transition: opacity $transition-medium;
+// }
+//
 
 .shop-content{
   width:100vw;
-  height:100vh;
-  overflow-x: scroll;
-  -webkit-overflow-scrolling: touch;
-  overflow-y: hidden;
-  height: 100vh;
-  white-space:nowrap;
+  height:auto;
+  z-index:$z-shop-content;
 }
 
 .product-ul{
-  width:auto;
-  height:100%;
+  width: 90vw;
+  margin: auto;
+  height:auto;
+  margin-top:$margin-top;
 
   .product-li{
-    margin-right: 2vw;
-    margin-left: 2vw;
-    width:12vw;
-    height:100%;
-    display:inline-block;
+    display:block;
+    margin-left: 10vw;
+    width:15vw;
+    height:auto;
+    float:left;
     position: relative;
-    z-index: $z-shop-image;
+    margin-top:10vw;
     &:nth-child(1){
-      margin-left: 15vw;
+      margin-left: 0vw;
     }
+    &:nth-child(4n+5){
+      margin-left: 0vw;
+      @include respond-to(phone){
+        margin-left: 9vw;
+      }
+    }
+
+    &:nth-child(-n+4) {
+      margin-top:0vw;
+      @include respond-to(phone){
+        margin-top: 10vw;
+      }
+    }
+
+    //phone
+    &:nth-child(3n+4){
+      @include respond-to(phone){
+        margin-left: 0vw;
+      }
+    }
+    &:nth-child(-n+3){
+      @include respond-to(phone){
+        margin-top: 0vw;
+      }
+    }
+    @include respond-to(phone){
+      width:24vw;
+      margin-left: 9vw;
+    }
+
+
 
     .product-li-img{
       width:80%;
@@ -123,65 +174,65 @@
   bottom:10%;
 }
 
-
-
-.shop-content.openDetail-add.openDetail-add-active{
-    -webkit-animation: cominUp $transition-fast $animation-bezier;
-    -moz-animation: cominUp $transition-fast $animation-bezier;
-    -ms-animation: cominUp $transition-fast $animation-bezier;
-    animation: cominUp $transition-fast $animation-bezier;
-}
-
-
-
-@keyframes cominUp {
-  0% { height:100vh; }
-  100% { height:20vh; }
-}
-
-@-webkit-keyframes cominUp {
-  0% { height:100vh; }
-  100% { height:20vh; }
-}
-
-@-moz-keyframes cominUp {
-  0% { height:100vh; }
-  100% { height:20vh; }
-}
-
-@-ms-keyframes cominUp {
-  0% { height:100vh; }
-  100% { height:20vh; }
-}
-
-@-o-keyframes cominUp {
-  0% { height:100vh; }
-  100% { height:20vh; }
-}
-
-
-
-@keyframes cominDown {
-  0% { height:20vh; }
-  100% { height:100vh; }
-}
-
-@-webkit-keyframes cominDown {
-  0% { height:20vh; }
-  100% { height:100vh; }
-}
-
-@-moz-keyframes cominDown {
-  0% { height:20vh; }
-  100% { height:100vh; }
-}
-
-@-ms-keyframes cominDown {
-  0% { height:20vh; }
-  100% { height:100vh; }
-}
-
-@-o-keyframes cominDown {
-  0% { height:20vh; }
-  100% { height:100vh; }
-}
+//
+//
+// .shop-content.openDetail-add.openDetail-add-active{
+//     -webkit-animation: cominUp $transition-fast $animation-bezier;
+//     -moz-animation: cominUp $transition-fast $animation-bezier;
+//     -ms-animation: cominUp $transition-fast $animation-bezier;
+//     animation: cominUp $transition-fast $animation-bezier;
+// }
+//
+//
+//
+// @keyframes cominUp {
+//   0% { height:100vh; }
+//   100% { height:20vh; }
+// }
+//
+// @-webkit-keyframes cominUp {
+//   0% { height:100vh; }
+//   100% { height:20vh; }
+// }
+//
+// @-moz-keyframes cominUp {
+//   0% { height:100vh; }
+//   100% { height:20vh; }
+// }
+//
+// @-ms-keyframes cominUp {
+//   0% { height:100vh; }
+//   100% { height:20vh; }
+// }
+//
+// @-o-keyframes cominUp {
+//   0% { height:100vh; }
+//   100% { height:20vh; }
+// }
+//
+//
+//
+// @keyframes cominDown {
+//   0% { height:20vh; }
+//   100% { height:100vh; }
+// }
+//
+// @-webkit-keyframes cominDown {
+//   0% { height:20vh; }
+//   100% { height:100vh; }
+// }
+//
+// @-moz-keyframes cominDown {
+//   0% { height:20vh; }
+//   100% { height:100vh; }
+// }
+//
+// @-ms-keyframes cominDown {
+//   0% { height:20vh; }
+//   100% { height:100vh; }
+// }
+//
+// @-o-keyframes cominDown {
+//   0% { height:20vh; }
+//   100% { height:100vh; }
+// }

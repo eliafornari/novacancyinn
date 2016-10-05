@@ -466,7 +466,17 @@ var radioRan = false;
     };
 
 
+  $scope.hideNav = true;
 
+    //MOBILE
+    $scope.openMenu_m=()=>{
+    $scope.hideNav = !$scope.hideNav;
+    }
+    $scope.closeNav_m=()=>{
+    if($rootScope.isMobile){
+      $scope.hideNav = true;
+    }
+    }
 
 
 
