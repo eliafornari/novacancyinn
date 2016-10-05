@@ -229,16 +229,19 @@
 
 //MOBILE
 
+$nav_height_mobile: calc(100vh - 100px);
+
 .nav-mobile{
   .nav-mobile-table{
     width:100vw;
-    height:100vh;
+    height:$nav_height_mobile;
     background-color: #FFFFFF;
     position: fixed;
-    top:0;
+    top:100px;
     left:0;
     z-index: $z-nav;
-
+    border-top: 1px solid $red;
+    box-sizing:border-box;
   }
 }
 
@@ -246,10 +249,12 @@
   position: fixed;
   width:100vw;
   height:100px;
-  top:0;
+  top:0px;
   left:0;
   background-color: $white;
   z-index: $z-nav;
+  border-bottom: 1px solid $red;
+  box-sizing:border-box;
   .mobile-nav-logo{
     position: absolute;
     left: $margin-sides;
@@ -268,7 +273,7 @@
   .mobile-nav-burger{
     position: absolute;
     width:100px;
-    height:1000px;
+    height:100px;
     right: $margin-sides;
     top:0;
     p{
@@ -281,4 +286,92 @@
   }
 
 
+}
+
+
+// @include keyframes('nav_mobile_slideup', 'nav_mobile_slidedown', 'translateY(100vh)', 'translateY(0vh)', 'translateY(0vh)', 'translateY(100vh)');
+
+@keyframes nav_mobile_slideup {
+  0% {@include transform-element(translateY($nav_height_mobile))}
+  100% {@include transform-element(translateY(0vh))}
+}
+
+@-webkit-keyframes nav_mobile_slideup {
+  0% {@include transform-element(translateY($nav_height_mobile))}
+  100% {@include transform-element(translateY(0vh))}
+}
+
+@-moz-keyframes nav_mobile_slideup {
+  0% {@include transform-element(translateY($nav_height_mobile))}
+  100% {@include transform-element(translateY(0vh))}
+}
+
+@-ms-keyframes nav_mobile_slideup {
+  0% {@include transform-element(translateY($nav_height_mobile))}
+  100% {@include transform-element(translateY(0vh))}
+}
+
+@-o-keyframes nav_mobile_slideup {
+  0% {@include transform-element(translateY($nav_height_mobile))}
+  100% {@include transform-element(translateY(0vh))}
+}
+
+
+
+
+
+@keyframes nav_mobile_slidedown {
+  0% {@include transform-element(translateY(0vh))}
+  100% {@include transform-element(translateY($nav_height_mobile))}
+}
+
+@-webkit-keyframes nav_mobile_slidedown {
+  0% {@include transform-element(translateY(0vh))}
+  100% {@include transform-element(translateY($nav_height_mobile))}
+}
+
+@-moz-keyframes nav_mobile_slidedown {
+  0% {@include transform-element(translateY(0vh))}
+  100% {@include transform-element(translateY($nav_height_mobile))}
+}
+
+@-ms-keyframes nav_mobile_slidedown {
+  0% {@include transform-element(translateY(0vh))}
+  100% {@include transform-element(translateY($nav_height_mobile))}
+}
+
+@-o-keyframes nav_mobile_slidedown {
+  0% {@include transform-element(translateY(0vh))}
+  100% {@include transform-element(translateY($nav_height_mobile))}
+}
+
+
+$animation-bezier: ease-in-out;
+$animation-speed: 0.6s;
+
+
+.nav-mobile-table{
+  position: fixed;
+  @include transform-element(translateY(0vh));
+}
+.nav-mobile-table.ng-hide{
+  @include transform-element(translateY($nav_height_mobile));
+}
+
+
+.nav-mobile-table.ng-hide-remove.ng-hide-remove-active{
+  -webkit-animation: nav_mobile_slideup $animation-speed $animation-bezier;
+  -moz-animation: nav_mobile_slideup $animation-speed $animation-bezier;
+  -ms-animation: nav_mobile_slideup $animation-speed $animation-bezier;
+  -o-animation: nav_mobile_slideup $animation-speed $animation-bezier;
+  animation: nav_mobile_slideup $animation-speed $animation-bezier;
+}
+
+.nav-mobile-table.ng-hide-add.ng-hide-add-active{
+
+  -webkit-animation: nav_mobile_slidedown $animation-speed $animation-bezier;
+  -moz-animation: nav_mobile_slidedown $animation-speed $animation-bezier;
+  -ms-animation: nav_mobile_slidedown $animation-speed $animation-bezier;
+  -o-animation: nav_mobile_slidedown $animation-speed $animation-bezier;
+  animation: nav_mobile_slidedown $animation-speed $animation-bezier;
 }

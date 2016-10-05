@@ -274,6 +274,7 @@ $transition-slow: 1s;
   transform: $coordinate;
   -ms-transform: $coordinate; /* IE 9 */
  	-webkit-transform: $coordinate; /* Safari */
+  -moz-transform: $coordinate; /* Safari */
   transform-origin: 0 0;
 }
 
@@ -298,6 +299,65 @@ $transition-slow: 1s;
 
 
 
+@mixin keyframes($name, $name_back, $position_initial, $position_final, $position_initial_mobile, $position_final_mobile){
+
+
+      @keyframes $name {
+        0% {@include transform-element($position_initial)}
+        100% {@include transform-element($position_final)}
+      }
+
+      @-webkit-keyframes $name {
+        0% {@include transform-element($position_initial)}
+        100% {@include transform-element($position_final)}
+      }
+
+      @-moz-keyframes $name {
+        0% {@include transform-element($position_initial)}
+        100% {@include transform-element($position_final)}
+      }
+
+      @-ms-keyframes $name {
+        0% {@include transform-element($position_initial)}
+        100% {@include transform-element($position_final)}
+      }
+
+      @-o-keyframes $name {
+        0% {@include transform-element($position_initial)}
+        100% {@include transform-element($position_final)}
+      }
+
+
+
+
+
+      @keyframes $name_back {
+        0% {@include transform-element($position_final)}
+        100% {@include transform-element($position_initial)}
+      }
+
+      @-webkit-keyframes $name_back {
+        0% {@include transform-element($position_final)}
+        100% {@include transform-element($position_initial)}
+      }
+
+      @-moz-keyframes $name_back {
+        0% {@include transform-element($position_final)}
+        100% {@include transform-element($position_initial)}
+      }
+
+      @-ms-keyframes $name_back {
+        0% {@include transform-element($position_final)}
+        100% {@include transform-element($position_initial)}
+      }
+
+      @-o-keyframes $name_back {
+        0% {@include transform-element($position_final)}
+        100% {@include transform-element($position_initial)}
+      }
+
+
+}
 
 
 @mixin h1(){
