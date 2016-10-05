@@ -1,7 +1,8 @@
 
 .shop{
   width:100vw;
-  height:100vh;
+  display: table;
+  // height:100vh;
   // background-color: #FFFFFF;
 }
 
@@ -15,6 +16,10 @@
   overflow-x: hidden;
   overflow-y: scroll;
   // z-index: $z-shop-content;
+  -webkit-transition: all $transition-medium $animation-bezier;
+-moz-transition: all $transition-medium $animation-bezier;
+-ms-transition: all $transition-medium $animation-bezier;
+transition: all $transition-medium $animation-bezier;
 
   .product-ul{
     width: 100%;
@@ -25,7 +30,8 @@
       width:100%;
       margin-left: 0vw;
       margin-top:$margin-top-li;
-      float:none;
+      float:none !important;
+
       &:nth-child(1){
         margin-top: $margin-top;
       }

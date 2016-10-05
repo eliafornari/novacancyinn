@@ -243,6 +243,13 @@ $nav_height_mobile: calc(100vh - 100px);
     border-top: 1px solid $red;
     box-sizing:border-box;
   }
+  //when nav is home
+  .nav-mobile-table.nav-home{
+      border-top: 0;
+      height:100vh;
+      top:0px;
+      background-color: transparent;
+  }
 }
 
 .mobile-nav-bar{

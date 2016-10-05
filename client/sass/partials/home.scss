@@ -2,10 +2,27 @@
   position: fixed;
   width: 100vw;
   height: 100vh;
+  background-image: url('/assets/images/background_0.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
 }
 
 
 
+.home-background{
+  display:block;
+  width:100vw;
+  height:100vh;
+  position: absolute;
+  top:0;
+  left:0;
+  background-color: rgba(0,0,0,0.96);
+}
+.home-background.desaturated {
+  display:none;
+}
 
 
 //image
@@ -37,3 +54,7 @@
     }
   }
 }
+
+
+// -webkit-filter: grayscale(100%);
+// filter: grayscale(100%);

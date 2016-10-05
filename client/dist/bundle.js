@@ -151,27 +151,25 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
     $rootScope.authentication();
   }, 600);
 
-  $rootScope.backgroundColor = '#000000';
-  $rootScope.cartColor = 'rgba(0,0,0,0.96)';
-  $rootScope.font = 'folio';
+  // font-family: 'Roboto Mono', monospace;
+  // font-family: 'Roboto', sans-serif;
+
+  $rootScope.desaturate = true;
   $rootScope.elia = false;
+  $rootScope.font = 'Roboto Mono';
 
   document.addEventListener("keydown", function (event) {
     console.log(event.which);
     var key = event.which;
 
     if (key == 66) {
-      $rootScope.backgroundColor = '#000000';
-      $rootScope.cartColor = 'rgba(0,0,0,0.96)';
+      $rootScope.desaturate = false;
     } else if (key == 87) {
-      $rootScope.backgroundColor = '#FFFFFF';
-      $rootScope.cartColor = 'rgba(255,255,255,0.96)';
+      $rootScope.desaturate = true;
     } else if (key == 49) {
-      $rootScope.font = 'folio';
+      $rootScope.font = 'Roboto Mono';
     } else if (key == 50) {
-      $rootScope.font = 'basil';
-    } else if (key == 51) {
-      $rootScope.font = 'graebenbach';
+      $rootScope.font = 'Roboto';
     }
 
     if (key == 69) {
@@ -1139,23 +1137,26 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
   $rootScope.templates = [{ name: 'cart', url: 'views/cart.html' }, { name: 'shipment', url: 'views/shipment.html' }, { name: 'payment', url: 'views/payment.html' }, { name: 'processed', url: 'views/processed.html' }];
   $rootScope.template = $rootScope.templates[0];
 
-  $scope.wheel;
-
-  $scope.startWheel_shop = function () {
-    $(".shop-content").bind('mousewheel', function (event, delta) {
-      // console.log(event.deltaX, event.deltaY, event.deltaFactor);
-      this.scrollLeft -= delta * 0.4;
-      event.preventDefault();
-      $scope.wheel = true;
-    });
-  };
-
-  $scope.startWheel_shop();
-
-  $scope.stopWheel_shop = function () {
-    $(".shop-content").unbind('mousewheel');
-    $scope.wheel = false;
-  };
+  //
+  // $scope.wheel;
+  //
+  // $scope.startWheel_shop = ()=>{
+  //   $(".shop-content").bind('mousewheel', function(event, delta) {
+  //      // console.log(event.deltaX, event.deltaY, event.deltaFactor);
+  //      this.scrollLeft -= (delta * 0.4);
+  //      event.preventDefault();
+  //      $scope.wheel=true;
+  //   });
+  // }
+  //
+  // $scope.startWheel_shop();
+  //
+  //
+  // $scope.stopWheel_shop = ()=>{
+  //   $(".shop-content").unbind('mousewheel');
+  //   $scope.wheel=false;
+  // }
+  //
 }); //controller
 
 Shop.controller('detailCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http, $sce, $document, anchorSmoothScroll, $window, transformRequestAsFormPost) {

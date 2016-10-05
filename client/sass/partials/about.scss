@@ -8,6 +8,7 @@
   margin: auto;
   display: block;
   text-align: center;
+  text-transform: none;
   @include respond-to(phone){
     width:80vw;
   }

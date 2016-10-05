@@ -225,6 +225,11 @@ table {
   z-index: 16;
   border-top: 1px solid #ec2224;
   box-sizing: border-box; }
+.nav-mobile .nav-mobile-table.nav-home {
+  border-top: 0;
+  height: 100vh;
+  top: 0px;
+  background-color: transparent; }
 
 .mobile-nav-bar {
   position: fixed;
@@ -529,12 +534,13 @@ a::selection {
 /*.....................GENERAL STYLES......................*/
 html {
   box-sizing: border-box;
-  font-family: "folio";
+  font-family: "Roboto Mono", monospace;
   width: 100%;
   height: auto;
   margin: 0, 0;
   padding: 0, 0;
   color: #ec2224;
+  min-height: 100%;
   /*  @if $media == large-desktop {
       @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
     }*/ }
@@ -549,6 +555,7 @@ html {
 body {
   width: 100%;
   height: auto;
+  min-height: 100%;
   margin: 0, 0;
   padding: 0, 0;
   display: table;
@@ -636,6 +643,7 @@ table {
 /*.........................MAIN............................*/
 main {
   height: auto;
+  min-height: 100%;
   position: relative;
   display: block;
   list-style-type: none;
@@ -653,7 +661,7 @@ main {
 
 .shop {
   width: 100vw;
-  height: 100vh; }
+  display: table; }
 
 .shop-content.openDetail {
   height: 100vh;
@@ -661,7 +669,11 @@ main {
   position: fixed;
   top: 0;
   overflow-x: hidden;
-  overflow-y: scroll; }
+  overflow-y: scroll;
+  -webkit-transition: all 0.4s ease-in-out;
+  -moz-transition: all 0.4s ease-in-out;
+  -ms-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out; }
   .shop-content.openDetail .product-ul {
     width: 100%;
     height: auto;
@@ -671,7 +683,7 @@ main {
       width: 100%;
       margin-left: 0vw;
       margin-top: 30px;
-      float: none; }
+      float: none !important; }
       .shop-content.openDetail .product-ul .product-li:nth-child(1) {
         margin-top: 200px; }
 
@@ -947,6 +959,7 @@ main {
   margin: auto;
   display: block;
   text-align: center;
+  text-transform: none;
   /*  @if $media == large-desktop {
       @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
     }*/ }
@@ -1219,7 +1232,23 @@ main {
 .home {
   position: fixed;
   width: 100vw;
-  height: 100vh; }
+  height: 100vh;
+  background-image: url("/assets/images/background_0.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center; }
+
+.home-background {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.96); }
+
+.home-background.desaturated {
+  display: none; }
 
 .home-image {
   width: 23vw;
@@ -1345,7 +1374,7 @@ main {
   height: 100vh;
   width: 100vw;
   z-index: 18;
-  background-color: rgba(255, 255, 255, 0.96);
+  background-color: white;
   /*  @if $media == large-desktop {
       @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
     }*/ }
@@ -1850,10 +1879,10 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
 .processed-thankyou {
   width: 35%;
   height: auto;
-  margin-top: 100px;
+  margin-top: 20%;
   margin-left: 100px; }
   .processed-thankyou p {
-    width: 80%;
+    width: 70%;
     font-size: 12px;
     line-height: 30px;
     font-weight: 700; }

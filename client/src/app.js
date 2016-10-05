@@ -215,15 +215,14 @@ $rootScope.Home;
 
 
 
+  // font-family: 'Roboto Mono', monospace;
+  // font-family: 'Roboto', sans-serif;
 
 
 
-
-
-  $rootScope.backgroundColor = '#000000';
-  $rootScope.cartColor = 'rgba(0,0,0,0.96)';
-  $rootScope.font = 'folio';
+  $rootScope.desaturate = true;
   $rootScope.elia = false;
+  $rootScope.font = 'Roboto Mono';
 
 
   document.addEventListener("keydown", function(event) {
@@ -231,17 +230,13 @@ $rootScope.Home;
     var key = event.which
 
     if(key == 66){
-      $rootScope.backgroundColor = '#000000';
-      $rootScope.cartColor = 'rgba(0,0,0,0.96)'
+      $rootScope.desaturate = false;
     }else if(key == 87){
-      $rootScope.backgroundColor = '#FFFFFF';
-      $rootScope.cartColor = 'rgba(255,255,255,0.96)'
+      $rootScope.desaturate = true;
     }else if(key == 49){
-      $rootScope.font = 'folio';
+      $rootScope.font = 'Roboto Mono';
     }else if(key == 50){
-      $rootScope.font = 'basil';
-    }else if(key == 51){
-      $rootScope.font = 'graebenbach';
+      $rootScope.font = 'Roboto';
     }
 
 

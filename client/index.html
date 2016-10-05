@@ -36,8 +36,7 @@
 <meta property="og:url" content="https://novacancyinn.com/">
 <meta property="og:site_name" content="novacancyinn">
 
-
-<link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono" rel="stylesheet">
 
   <meta name=“author” title=“Elia Fornari | Qual Agency”>
 
@@ -58,21 +57,25 @@
 
 -->
 
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-68513539-7', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+
   <base href="/">
-
-    <script>
-
-
-    </script>
-
-    <meta name="google-site-verification" content="lCTbMx34XwlV2JvL2rcZ2YMuCEQ4_V-FZE9WbznixZw" />
 </head>
 
 
 
 <!-- .................................. Body ...............................-->
 
-<body style="background-color: {{backgroundColor}}; font-family: {{font}}">
+<body style="font-family: {{font}}">
 
 
 
@@ -94,14 +97,14 @@
     <ex-directive></ex-directive>
   </div>
 
-  <div class="cart" style="background-color: {{cartColor}}" ng-include="template.url" ng-show="showCart" ng-controller="cartCtrl" >
-    <div class="cart-close" ng-click="closeCart()">
+  <div class="cart" ng-include="template.url" ng-show="showCart" ng-controller="cartCtrl" >
+    <!-- <div class="cart-close" ng-click="closeCart()">
       <ex-directive></ex-directive>
-    </div>
+    </div> -->
   </div>
 
 
-  <main ng-view class="main {{pageClass}}" autoscroll="true"></main>
+  <main ng-view class="main {{pageClass}}"></main>
 
 
 

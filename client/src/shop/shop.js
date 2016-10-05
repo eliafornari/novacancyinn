@@ -32,26 +32,26 @@ $rootScope.templates = [
 $rootScope.template = $rootScope.templates[0];
 
 
-
-$scope.wheel;
-
-$scope.startWheel_shop = ()=>{
-  $(".shop-content").bind('mousewheel', function(event, delta) {
-     // console.log(event.deltaX, event.deltaY, event.deltaFactor);
-     this.scrollLeft -= (delta * 0.4);
-     event.preventDefault();
-     $scope.wheel=true;
-  });
-}
-
-$scope.startWheel_shop();
-
-
-$scope.stopWheel_shop = ()=>{
-  $(".shop-content").unbind('mousewheel');
-  $scope.wheel=false;
-}
-
+// 
+// $scope.wheel;
+//
+// $scope.startWheel_shop = ()=>{
+//   $(".shop-content").bind('mousewheel', function(event, delta) {
+//      // console.log(event.deltaX, event.deltaY, event.deltaFactor);
+//      this.scrollLeft -= (delta * 0.4);
+//      event.preventDefault();
+//      $scope.wheel=true;
+//   });
+// }
+//
+// $scope.startWheel_shop();
+//
+//
+// $scope.stopWheel_shop = ()=>{
+//   $(".shop-content").unbind('mousewheel');
+//   $scope.wheel=false;
+// }
+//
 
 
 

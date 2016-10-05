@@ -2,7 +2,7 @@
    <!-- ng-show="isNavOpen" -->
 
 
-     <table class="nav-mobile-table" ng-hide="hideNav && !isLocation('/')">
+     <table class="nav-mobile-table" ng-hide="hideNav && !isLocation('/')" ng-class="{'nav-home': isLocation('/')}">
        <tr>
          <td>
            <div class="nav-container" >
