@@ -46,14 +46,11 @@ table {
   border-spacing: 0; }
 
 @font-face {
+  font-family: sabon;
+  src: url("/assets/fonts/sabon.woff") format("woff"); }
+@font-face {
   font-family: folio;
   src: url("/assets/fonts/folio.woff") format("woff"); }
-@font-face {
-  font-family: basil;
-  src: url("/assets/fonts/BasilQT-Regular.otf") format("woff"); }
-@font-face {
-  font-family: graebenbach;
-  src: url("/assets/fonts/gbcamweba-webfont.woff") format("woff"); }
 /*....................................SCSS VARIABLES..................................*/
 /*....................................................................................*/
 /*.................................................................................*/
@@ -75,6 +72,8 @@ table {
   .nav.up .nav-logo {
     width: 100px !important;
     height: 100px !important; }
+  .nav.up a {
+    color: #000000; }
 
 .nav-container {
   display: block;
@@ -136,6 +135,9 @@ table {
     text-align: center;
     float: left;
     color: #884f9e;
+    font-size: 19px;
+    line-height: 35px;
+    font-family: "sabon";
     /*  @if $media == large-desktop {
         @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
       }*/ }
@@ -170,6 +172,9 @@ table {
     text-align: center;
     float: left;
     color: #884f9e;
+    font-size: 19px;
+    line-height: 35px;
+    font-family: "sabon";
     /*  @if $media == large-desktop {
         @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
       }*/ }
@@ -531,15 +536,19 @@ a::selection {
 *, *:before, *:after {
   box-sizing: inherit; }
 
+* {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
 /*.....................GENERAL STYLES......................*/
 html {
   box-sizing: border-box;
-  font-family: "Roboto Mono", monospace;
+  font-family: "folio";
   width: 100%;
   height: auto;
   margin: 0, 0;
   padding: 0, 0;
-  color: #ec2224;
   min-height: 100%;
   /*  @if $media == large-desktop {
       @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
@@ -559,8 +568,7 @@ body {
   margin: 0, 0;
   padding: 0, 0;
   display: table;
-  text-transform: uppercase;
-  background-color: #FFFFFF;
+  background-color: #fffbfb;
   /*  @if $media == large-desktop {
       @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
     }*/
@@ -573,6 +581,9 @@ body {
       height: 100vh;
       width: 100vw; } }
 
+body.backgound-black {
+  background-color: #000000; }
+
 p, a, li {
   list-style-type: none;
   letter-spacing: 1px; }
@@ -580,8 +591,28 @@ p, a, li {
 p, span {
   font-size: 12px;
   line-height: 30px;
-  font-weight: 700;
-  color: #ec2224; }
+  font-family: "folio";
+  color: #000000; }
+
+h1 {
+  font-size: 35px;
+  line-height: 50px;
+  font-family: "sabon"; }
+
+h2 {
+  font-size: 19px;
+  line-height: 35px;
+  font-family: "sabon"; }
+
+h3 {
+  font-size: 15px;
+  line-height: 23px;
+  font-family: "sabon"; }
+
+p {
+  font-size: 12px;
+  line-height: 30px;
+  font-family: "folio"; }
 
 /*........................A.................................*/
 a:active {
@@ -592,10 +623,9 @@ a:active {
 
 a {
   cursor: pointer;
-  color: #884f9e;
-  font-size: 13px;
+  font-size: 19px;
   line-height: 35px;
-  font-weight: 700;
+  font-family: "sabon";
   text-shadow: 0 0 0px #884f9e;
   transition: text-shadow 0.2s ease;
   -webkit-transition: text-shadow 0.2s ease;
@@ -663,89 +693,26 @@ main {
   width: 100vw;
   display: table; }
 
-.shop-content.openDetail {
-  height: 100vh;
-  width: 10vw;
-  position: fixed;
-  top: 0;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  -webkit-transition: all 0.4s ease-in-out;
-  -moz-transition: all 0.4s ease-in-out;
-  -ms-transition: all 0.4s ease-in-out;
-  transition: all 0.4s ease-in-out; }
-  .shop-content.openDetail .product-ul {
-    width: 100%;
-    height: auto;
-    margin: 0;
-    display: table; }
-    .shop-content.openDetail .product-ul .product-li {
-      width: 100%;
-      margin-left: 0vw;
-      margin-top: 30px;
-      float: none !important; }
-      .shop-content.openDetail .product-ul .product-li:nth-child(1) {
-        margin-top: 200px; }
-
 .shop-content {
   width: 100vw;
   height: auto;
   z-index: 11; }
 
 .product-ul {
-  width: 90vw;
+  width: 100vw;
   margin: auto;
   height: auto;
   margin-top: 200px; }
   .product-ul .product-li {
     display: block;
-    margin-left: 10vw;
-    width: 15vw;
+    width: 100%;
     height: auto;
-    float: left;
     position: relative;
-    margin-top: 10vw;
-    /*  @if $media == large-desktop {
-        @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-      }*/ }
+    margin-top: 20vh; }
     .product-ul .product-li:nth-child(1) {
-      margin-left: 0vw; }
-    .product-ul .product-li:nth-child(4n+5) {
-      margin-left: 0vw;
-      /*  @if $media == large-desktop {
-          @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-        }*/ }
-      @media only screen and (min-width: 0px) and (max-width: 767px) {
-        .product-ul .product-li:nth-child(4n+5) {
-          margin-left: 9vw; } }
-    .product-ul .product-li:nth-child(-n+4) {
-      margin-top: 0vw;
-      /*  @if $media == large-desktop {
-          @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-        }*/ }
-      @media only screen and (min-width: 0px) and (max-width: 767px) {
-        .product-ul .product-li:nth-child(-n+4) {
-          margin-top: 10vw; } }
-    .product-ul .product-li:nth-child(3n+4) {
-      /*  @if $media == large-desktop {
-          @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-        }*/ }
-      @media only screen and (min-width: 0px) and (max-width: 767px) {
-        .product-ul .product-li:nth-child(3n+4) {
-          margin-left: 0vw; } }
-    .product-ul .product-li:nth-child(-n+3) {
-      /*  @if $media == large-desktop {
-          @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-        }*/ }
-      @media only screen and (min-width: 0px) and (max-width: 767px) {
-        .product-ul .product-li:nth-child(-n+3) {
-          margin-top: 0vw; } }
-    @media only screen and (min-width: 0px) and (max-width: 767px) {
-      .product-ul .product-li {
-        width: 24vw;
-        margin-left: 9vw; } }
+      margin-top: 15vh; }
     .product-ul .product-li .product-li-img {
-      width: 80%;
+      width: 40vw;
       margin: auto;
       display: block;
       /*  @if $media == large-desktop {
@@ -758,88 +725,42 @@ main {
 .dollar {
   position: fixed;
   bottom: 20px;
-  right: 20px;
-  height: 100px;
-  width: 100px;
+  left: 20px;
   z-index: 14; }
   .dollar p {
     position: absolute;
     right: 0;
     bottom: 0; }
-  .dollar .dollar-ul {
-    width: 100%;
-    height: 100%;
-    position: relative; }
-    .dollar .dollar-ul .dollar-li {
-      width: 60%;
-      height: auto;
-      position: absolute; }
-      .dollar .dollar-ul .dollar-li img {
-        width: 100%;
-        height: auto;
-        display: block; }
-  .dollar .dollar-contents {
-    display: inline-block;
-    position: relative;
-    color: #000000;
-    display: inline-block;
-    top: 0; }
 
-#dollar-li-1 {
+.product-detail {
+  position: absolute;
+  top: 0;
   right: 0;
-  bottom: 0; }
+  width: 30vw;
+  height: 100%; }
 
-#dollar-li-2 {
-  left: 50%;
-  top: 0; }
-
-#dollar-li-3 {
-  left: 0%;
-  bottom: 0%; }
-
-#dollar-li-3 {
-  right: 0%;
-  bottom: 0%; }
-
-#dollar-li-3 {
-  right: 30%;
-  bottom: 10%; }
+.product-name {
+  position: absolute;
+  left: 0px;
+  top: 0;
+  height: 100%;
+  width: 30vw; }
+  .product-name h2 {
+    width: 90%;
+    text-align: center;
+    position: relative;
+    display: block; }
 
 .detail {
-  width: 100vw;
-  position: relative;
-  margin-top: 30vh;
+  width: 300px;
+  height: 100%;
+  position: absolute;
+  margin-top: 0vh;
   z-index: 10; }
 
-.detail-images .detail-images-single:nth-child(1) {
-  margin-top: 10vh; }
-.detail-images .detail-images-single .detail-img {
-  max-width: 20vw;
-  margin: auto;
-  display: block;
-  margin-top: 25vh;
-  /*  @if $media == large-desktop {
-      @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-    }*/ }
-  @media only screen and (min-width: 0px) and (max-width: 767px) {
-    .detail-images .detail-images-single .detail-img {
-      max-width: 52vw; } }
-
-.detail-images.zoom {
-  width: 100vw;
-  height: auto; }
-  .detail-images.zoom .detail-images-single {
-    width: 100vw;
-    height: 100vh; }
-    .detail-images.zoom .detail-images-single img {
-      max-width: 80vw !important; }
-
 .detail-functions {
-  position: fixed;
-  right: 20px;
-  top: 50%;
+  position: relative;
   width: auto;
-  margin-top: -10px;
   height: auto;
   z-index: 11;
   /*  @if $media == large-desktop {
@@ -847,36 +768,77 @@ main {
     }*/ }
   @media only screen and (min-width: 0px) and (max-width: 767px) {
     .detail-functions {
-      top: auto;
       bottom: 20px;
-      width: 100px;
-      left: 50%;
-      margin-left: -50px; } }
+      width: 100px; } }
+
+.detail-price {
+  position: relative;
+  display: block;
+  height: 30px;
+  width: 100%;
+  /*  @if $media == large-desktop {
+      @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
+    }*/ }
+  @media only screen and (min-width: 0px) and (max-width: 767px) {
+    .detail-price {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      width: 50px; } }
+  .detail-price h3 {
+    height: 100%;
+    width: 100%;
+    text-align: right; }
+
+.detail-description {
+  width: 100%;
+  text-align: left;
+  display: block; }
+
+.detail-modifiers {
+  position: relative;
+  margin-top: 10px;
+  display: block; }
+  .detail-modifiers .detail-modifiers-ul {
+    display: block;
+    width: auto; }
+    .detail-modifiers .detail-modifiers-ul .detail-modifiers-ul-placeholder {
+      width: auto;
+      display: block;
+      font-size: 12px;
+      line-height: 30px;
+      font-family: "folio"; }
+    .detail-modifiers .detail-modifiers-ul .detail-modifiers-variations {
+      width: auto;
+      display: inline-block; }
+      .detail-modifiers .detail-modifiers-ul .detail-modifiers-variations .detail-modifiers-variations-li {
+        display: inline-block;
+        margin-left: 10px; }
+        .detail-modifiers .detail-modifiers-ul .detail-modifiers-variations .detail-modifiers-variations-li:nth-child(1) {
+          margin-left: 0; }
+        .detail-modifiers .detail-modifiers-ul .detail-modifiers-variations .detail-modifiers-variations-li a {
+          font-size: 12px;
+          line-height: 30px;
+          font-family: "folio"; }
 
 .detail-add {
-  position: relative;
-  top: 0;
-  left: 0;
+  position: absolute;
+  bottom: 0;
   height: auto;
-  width: auto;
-  display: block;
-  float: left;
-  margin-left: 10px; }
-  .detail-add p {
+  width: 100%;
+  display: block; }
+  .detail-add h2 {
     display: block;
     width: 100%;
-    text-align: left;
+    text-align: center;
     vertical-align: middle;
     margin: 0;
-    font-size: 12px;
-    line-height: 30px;
-    font-weight: 700;
     text-shadow: 0 0 0px #ec2224;
     transition: text-shadow 0.2s ease;
     -webkit-transition: text-shadow 0.2s ease;
     -moz-transition: text-shadow 0.2s ease;
     -ms-transition: text-shadow 0.2s ease; }
-    .detail-add p:hover {
+    .detail-add h2:hover {
       text-shadow: 2px 2px 7px #ec2224;
       /*  @if $media == large-desktop {
           @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
@@ -888,67 +850,14 @@ main {
           @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
         }*/ }
       @media only screen and (min-width: 0px) and (max-device-width: 767px) {
-        .detail-add p:hover {
+        .detail-add h2:hover {
           color: #ec2224 !important; } }
       @media only screen and (min-device-width: 768px) and (max-device-width: 1022px) and (orientation: portrait) {
-        .detail-add p:hover {
+        .detail-add h2:hover {
           color: #ec2224 !important; } }
       @media only screen and (min-device-width: 768px) and (max-device-width: 1022px) and (orientation: landscape) {
-        .detail-add p:hover {
+        .detail-add h2:hover {
           color: #ec2224 !important; } }
-
-.detail-price {
-  position: absolute;
-  display: block;
-  height: 30px;
-  width: 100%;
-  bottom: -28px;
-  left: 0;
-  float: none;
-  /*  @if $media == large-desktop {
-      @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-    }*/ }
-  @media only screen and (min-width: 0px) and (max-width: 767px) {
-    .detail-price {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      width: 50px; } }
-  .detail-price p {
-    height: 100%;
-    width: 100%;
-    color: #ec2224;
-    text-align: right;
-    font-size: 12px;
-    line-height: 30px;
-    font-weight: 700; }
-
-.detail-modifiers {
-  position: relative;
-  display: block;
-  float: left; }
-  .detail-modifiers .detail-modifiers-ul {
-    display: block;
-    width: auto; }
-    .detail-modifiers .detail-modifiers-ul .detail-modifiers-ul-placeholder {
-      width: auto;
-      display: block;
-      float: left;
-      font-size: 12px;
-      line-height: 30px;
-      font-weight: 700; }
-    .detail-modifiers .detail-modifiers-ul .detail-modifiers-variations {
-      width: auto;
-      display: block;
-      float: left;
-      margin-left: 10px; }
-      .detail-modifiers .detail-modifiers-ul .detail-modifiers-variations .detail-modifiers-variations-li {
-        display: block;
-        clear: both; }
-        .detail-modifiers .detail-modifiers-ul .detail-modifiers-variations .detail-modifiers-variations-li a {
-          font-size: 12px;
-          line-height: 30px;
-          font-weight: 700; }
 
 .about {
   height: 100vh;
@@ -978,7 +887,7 @@ main {
   text-align: center;
   font-size: 12px;
   line-height: 30px;
-  font-weight: 700;
+  font-family: "folio";
   color: #ec2224;
   text-shadow: 0 0 0px #ec2224;
   transition: text-shadow 0.2s ease;
@@ -1056,7 +965,7 @@ main {
   .event-info-left a {
     font-size: 12px;
     line-height: 30px;
-    font-weight: 700;
+    font-family: "folio";
     color: #ec2224;
     text-shadow: 0 0 0px #ec2224;
     transition: text-shadow 0.2s ease;
@@ -1086,7 +995,7 @@ main {
   .event-info-left span {
     font-size: 12px;
     line-height: 30px;
-    font-weight: 700; }
+    font-family: "folio"; }
 
 .event-info-right {
   position: absolute;
@@ -1099,7 +1008,7 @@ main {
     text-align: right;
     font-size: 12px;
     line-height: 30px;
-    font-weight: 700; }
+    font-family: "folio"; }
 
 .event-image {
   position: fixed;
@@ -1233,10 +1142,11 @@ main {
   position: fixed;
   width: 100vw;
   height: 100vh;
-  background-image: url("/assets/images/background_0.jpg");
+  background-image: url("/assets/images/9_small.jpg");
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: center; }
+  background-position: center;
+  opacity: 0.2; }
 
 .home-background {
   display: block;
@@ -1366,7 +1276,7 @@ main {
   text-align: center;
   font-size: 12px;
   line-height: 30px;
-  font-weight: 700;
+  font-family: "folio";
   color: #ec2224; }
 
 .cart {
@@ -1455,7 +1365,7 @@ main {
       float: right;
       font-size: 12px;
       line-height: 30px;
-      font-weight: 700;
+      font-family: "folio";
       position: absolute;
       right: 0;
       line-height: 70px;
@@ -1495,7 +1405,7 @@ main {
     .cart-ul .cart-li p {
       font-size: 12px;
       line-height: 30px;
-      font-weight: 700;
+      font-family: "folio";
       float: left;
       line-height: 70px;
       height: 70px;
@@ -1523,22 +1433,22 @@ main {
   .cart-total .cart-total-tax {
     font-size: 12px;
     line-height: 30px;
-    font-weight: 700;
+    font-family: "folio";
     height: 70px;
     line-height: 70px; }
   .cart-total .cart-total-amount {
     font-size: 12px;
     line-height: 30px;
-    font-weight: 700;
+    font-family: "folio";
     height: 70px;
     line-height: 70px; }
     .cart-total .cart-total-amount span {
       margin-left: 40px; }
 
 .form-title {
-  font-size: 13px;
+  font-size: 19px;
   line-height: 35px;
-  font-weight: 700;
+  font-family: "sabon";
   color: #ec2224; }
 
 .checkout-button {
@@ -1552,9 +1462,9 @@ main {
   color: #ec2224;
   background-color: transparent;
   border-bottom: 2px solid #ec2224;
-  font-size: 13px;
+  font-size: 19px;
   line-height: 35px;
-  font-weight: 700;
+  font-family: "sabon";
   text-shadow: 0 0 0px #ec2224;
   transition: text-shadow 0.2s ease;
   -webkit-transition: text-shadow 0.2s ease;
@@ -1599,9 +1509,9 @@ main {
   width: auto; }
   .cart-back p {
     height: 100%;
-    font-size: 13px;
+    font-size: 19px;
     line-height: 35px;
-    font-weight: 700;
+    font-family: "sabon";
     text-shadow: 0 0 0px #ec2224;
     transition: text-shadow 0.2s ease;
     -webkit-transition: text-shadow 0.2s ease;
@@ -1661,7 +1571,7 @@ main {
     -moz-border-radius: 0%;
     font-size: 12px;
     line-height: 30px;
-    font-weight: 700;
+    font-family: "folio";
     /*  @if $media == large-desktop {
         @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
       }*/ }
@@ -1697,7 +1607,7 @@ select {
   outline: 0;
   font-size: 12px;
   line-height: 30px;
-  font-weight: 700;
+  font-family: "folio";
   border-radius: 0%;
   -webkit-border-radius: 0%;
   -moz-border-radius: 0%;
@@ -1768,18 +1678,18 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
   .payment-total p {
     font-size: 12px;
     line-height: 30px;
-    font-weight: 700;
+    font-family: "folio";
     width: 80%; }
     .payment-total p span {
       float: right;
       font-size: 12px;
       line-height: 30px;
-      font-weight: 700; }
+      font-family: "folio"; }
 
 .payment-header {
-  font-size: 13px;
+  font-size: 19px;
   line-height: 35px;
-  font-weight: 700; }
+  font-family: "sabon"; }
 
 .shipment {
   width: 100%;
@@ -1793,9 +1703,9 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
       position: relative; }
 
 .shipment-h1 {
-  font-size: 13px;
+  font-size: 19px;
   line-height: 35px;
-  font-weight: 700;
+  font-family: "sabon";
   position: absolute;
   top: 20px;
   left: 20px; }
@@ -1861,12 +1771,12 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
   .isBillingDifferent label {
     font-size: 12px;
     line-height: 30px;
-    font-weight: 700;
+    font-family: "folio";
     color: #ec2224; }
   .isBillingDifferent input {
     font-size: 12px;
     line-height: 30px;
-    font-weight: 700;
+    font-family: "folio";
     color: #ec2224; }
 
 .processed {
@@ -1885,7 +1795,7 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
     width: 70%;
     font-size: 12px;
     line-height: 30px;
-    font-weight: 700; }
+    font-family: "folio"; }
   .processed-thankyou a {
     width: 50px;
     height: 50px;
@@ -1897,4 +1807,4 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
     margin-top: 200px;
     font-size: 12px;
     line-height: 30px;
-    font-weight: 700; }
+    font-family: "folio"; }

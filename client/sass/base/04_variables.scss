@@ -13,7 +13,9 @@ $font-weight-regular: 400;
 // ........................................................FONT SIZES
 $font-size-nav:35px;
 $font-size-h1:35px;
-$font-size-h2:13px;
+$font-size-h2:19px;
+$font-size-h3:15px;
+
 $font-size-paragraph: 12px;
 
 $font-size-nav-mobile:25px;
@@ -26,21 +28,24 @@ $letter-spacing: 1px;
 
 
 
-$font-family-nav: 'Roboto Mono', monospace;
-$font-family-h1: 'Roboto Mono', monospace;
-$font-family-h2: 'Roboto Mono', monospace;
-$font-family-paragraph: 'Roboto Mono', monospace;
+$font-family-nav: 'sabon';
+$font-family-h1: 'sabon';
+$font-family-h2: 'sabon';
+$font-family-h3: 'sabon';
+$font-family-paragraph: 'folio';
 
 
 
 // ........................................................FONT LINEHEIGHTS
 $line-height-h1: 50px;
 $line-height-h2: 35px;
+$line-height-h3: 23px;
 $line-height-paragraph: 30px;
 
 
 $line-height-h1-mobile: 40px;
 $line-height-h2-mobile: 24px;
+$line-height-h3-mobile: 24px;
 $line-height-paragraph-mobile: 18px;
 
 $button-height:50px;
@@ -56,6 +61,7 @@ $padding-headline-bottom: 20px;
 $black: #000000;
 $purple: #884f9e;
 $red: #ec2224;
+$off-red:rgba(255,251,251,1);
 $white: #FFFFFF;
 $yellow: #ede611;
 $green: #009900;

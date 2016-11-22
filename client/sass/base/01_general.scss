@@ -64,6 +64,11 @@ a::selection {
   box-sizing: inherit;
 }
 
+* {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
 
 
@@ -76,7 +81,6 @@ html{
   height: auto;
   margin: 0, 0;
   padding: 0, 0;
-  color:$red;
   min-height:100%;
   @include respond-to(phone-device){
     overflow-x: hidden;
@@ -92,12 +96,10 @@ body {
   width: 100%;
   height: auto;
    min-height:100%;
-
   margin: 0, 0;
   padding: 0, 0;
   display: table;
-  text-transform: uppercase;
-  background-color: #FFFFFF;
+  background-color: $off-red;
 @include respond-to(phone-device){
   overflow-x: hidden;
   overflow-y: hidden;
@@ -110,6 +112,9 @@ body {
 // overflow: hidden;
 }
 
+body.backgound-black{
+  background-color: $black;
+}
 
 p, a, li {
   list-style-type: none;
@@ -118,9 +123,24 @@ p, a, li {
 
 p, span{
   @include paragraph();
-  color:$red;
+  color:$black;
 }
 
+
+h1{
+  @include h1();
+}
+
+h2{
+  @include h2();
+}
+
+h3{
+  @include h3();
+}
+p{
+  @include paragraph();
+}
 
 
 
@@ -136,7 +156,6 @@ a:active {
 
 a{
   cursor: pointer;
-  color: $purple;
   @include h2();
   @include hover-effect-glow($purple);
 }

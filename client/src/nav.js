@@ -48,6 +48,33 @@ angular.module('myApp')
   })
 
 
+  $scope.getFirstPath=()=>{
+    var first = $location.path();
+    first.indexOf(1);
+    first.toLowerCase();
+    first = first.split("/")[1];
+    return first;
+  }
+
+  $scope.getSecondPath=()=>{
+    var first = $location.path();
+    first.indexOf(1);
+    first.toLowerCase();
+
+    first = first.split("/")[2];
+    return first;
+  }
+
+  $scope.getThirdPath=()=>{
+    var first = $location.path();
+    first.indexOf(1);
+    first.toLowerCase();
+
+    first = first.split("/")[3];
+    return first;
+  }
+
+
 })
 
 

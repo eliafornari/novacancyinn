@@ -71,9 +71,9 @@ $sceProvider.enabled(false);
 
   // $locationChangeStart
 
-    .when('/shop/:detail', {
+    .when('/shop/product/:detail', {
       templateUrl: 'views/shop.html',
-      controller: 'detailCtrl',
+      // controller: 'detailCtrl',
       reloadOnSearch: false
     })
 
@@ -175,10 +175,6 @@ $rootScope.Home;
                 var expires_in = response.data.expires_in;
                 var access_token = response.data.access_token;
                 var type = response.data.token_type;
-
-
-
-
             }
             $rootScope.getProductsFN();
 
@@ -229,15 +225,15 @@ $rootScope.Home;
     console.log(event.which);
     var key = event.which
 
-    if(key == 66){
-      $rootScope.desaturate = false;
-    }else if(key == 87){
-      $rootScope.desaturate = true;
-    }else if(key == 49){
-      $rootScope.font = 'Roboto Mono';
-    }else if(key == 50){
-      $rootScope.font = 'Roboto';
-    }
+    // if(key == 66){
+    //   $rootScope.desaturate = false;
+    // }else if(key == 87){
+    //   $rootScope.desaturate = true;
+    // }else if(key == 49){
+    //   $rootScope.font = 'Roboto Mono';
+    // }else if(key == 50){
+    //   $rootScope.font = 'Roboto';
+    // }
 
 
 

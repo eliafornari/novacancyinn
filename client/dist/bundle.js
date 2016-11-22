@@ -64,9 +64,9 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
 
   // $locationChangeStart
 
-  .when('/shop/:detail', {
+  .when('/shop/product/:detail', {
     templateUrl: 'views/shop.html',
-    controller: 'detailCtrl',
+    // controller: 'detailCtrl',
     reloadOnSearch: false
   }).when('/shop', {
     templateUrl: 'views/shop.html',
@@ -162,15 +162,15 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
     console.log(event.which);
     var key = event.which;
 
-    if (key == 66) {
-      $rootScope.desaturate = false;
-    } else if (key == 87) {
-      $rootScope.desaturate = true;
-    } else if (key == 49) {
-      $rootScope.font = 'Roboto Mono';
-    } else if (key == 50) {
-      $rootScope.font = 'Roboto';
-    }
+    // if(key == 66){
+    //   $rootScope.desaturate = false;
+    // }else if(key == 87){
+    //   $rootScope.desaturate = true;
+    // }else if(key == 49){
+    //   $rootScope.font = 'Roboto Mono';
+    // }else if(key == 50){
+    //   $rootScope.font = 'Roboto';
+    // }
 
     if (key == 69) {
       $rootScope.elia = true;
@@ -556,6 +556,32 @@ angular.module('myApp').controller('navCtrl', function ($scope, $location, $root
       $rootScope.$apply();
     }, 1000);
   });
+
+  $scope.getFirstPath = function () {
+    var first = $location.path();
+    first.indexOf(1);
+    first.toLowerCase();
+    first = first.split("/")[1];
+    return first;
+  };
+
+  $scope.getSecondPath = function () {
+    var first = $location.path();
+    first.indexOf(1);
+    first.toLowerCase();
+
+    first = first.split("/")[2];
+    return first;
+  };
+
+  $scope.getThirdPath = function () {
+    var first = $location.path();
+    first.indexOf(1);
+    first.toLowerCase();
+
+    first = first.split("/")[3];
+    return first;
+  };
 }).directive('logoDirective', function ($rootScope, $location, $window, $routeParams, $timeout) {
   return {
     restrict: 'E',
@@ -1122,11 +1148,14 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
 
   $rootScope.openDetailFN = function (slug) {
     if ($rootScope.isDetailOpen == true) {
-      $location.path('/shop/' + slug, true);
+      $location.path('/shop/product/' + slug, false);
+      $rootScope.detailUpdate(slug);
     } else {
+      $rootScope.thisDetail();
       $rootScope.isDetailOpen = true;
+      $rootScope.detailUpdate(slug);
       setTimeout(function () {
-        $location.path('/shop/' + slug, true);
+        $location.path('/shop/product/' + slug, false);
         $rootScope.$apply();
       }, 200);
     }
@@ -1157,30 +1186,6 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
   //   $scope.wheel=false;
   // }
   //
-}); //controller
-
-Shop.controller('detailCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http, $sce, $document, anchorSmoothScroll, $window, transformRequestAsFormPost) {
-
-  $scope.$on('$routeChangeSuccess', function () {
-
-    // $rootScope.openDetailFN();
-    $rootScope.isDetailOpen = true;
-    $rootScope.detailUpdate($routeParams.detail);
-    $rootScope.updateCart();
-
-    setTimeout(function () {
-      if (!$rootScope.Detail.id) {
-        $rootScope.detailUpdate($routeParams.detail);
-        $scope.$apply();
-        console.log("I loaded it again");
-        console.log($rootScope.Detail);
-      } else {
-        console.log("detail loaded correctly");
-        console.log($rootScope.Detail);
-        return false;
-      }
-    }, 3000);
-  });
 
   $rootScope.addToCart = function (id) {
 
@@ -1296,7 +1301,28 @@ Shop.controller('detailCtrl', function ($scope, $location, $rootScope, $routePar
       }
     }
   };
-});
+
+  $scope.$on('$routeChangeSuccess', function () {
+    console.log("$routeParams.detail:" + $routeParams.detail);
+    $rootScope.isDetailOpen = true;
+    $rootScope.detailUpdate($routeParams.detail);
+    $rootScope.updateCart();
+    setTimeout(function () {
+      if (!$rootScope.Detail.id) {
+        $rootScope.detailUpdate($routeParams.detail);
+        $scope.$apply();
+        console.log("I loaded it again");
+        console.log($rootScope.Detail);
+      } else {
+        console.log("detail loaded correctly");
+        console.log($rootScope.Detail);
+        return false;
+      }
+    }, 3000);
+  });
+}); //controller
+
+Shop.controller('detailCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http, $sce, $document, anchorSmoothScroll, $window, transformRequestAsFormPost) {});
 
 Shop.directive('detailDirective', function ($rootScope, $location, $window, $routeParams, $timeout) {
   return {

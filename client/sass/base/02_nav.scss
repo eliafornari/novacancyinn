@@ -17,6 +17,9 @@
     width:100px !important;
     height:100px !important;
   }
+  a{
+    color:$black;
+  }
 }
 
 //
@@ -122,6 +125,7 @@
     text-align: center;
     float: left;
     color: $purple;
+    @include h2();
     @include respond-to(phone){
       width:100vw;
       display: block;
@@ -153,6 +157,7 @@
     text-align: center;
     float: left;
     color: $purple;
+    @include h2();
     @include respond-to(phone){
       width:100vw;
       display: block;

@@ -9,11 +9,14 @@ $rootScope.Detail = {};
 
 $rootScope.openDetailFN = (slug)=>{
   if($rootScope.isDetailOpen == true){
-    $location.path('/shop/'+slug, true);
+    $location.path('/shop/product/'+slug, false);
+    $rootScope.detailUpdate(slug);
   }else{
+    $rootScope.thisDetail();
     $rootScope.isDetailOpen = true;
+    $rootScope.detailUpdate(slug);
     setTimeout(function(){
-      $location.path('/shop/'+slug, true);
+      $location.path('/shop/product/'+slug, false);
       $rootScope.$apply();
     }, 200);
   }
@@ -32,7 +35,7 @@ $rootScope.templates = [
 $rootScope.template = $rootScope.templates[0];
 
 
-// 
+//
 // $scope.wheel;
 //
 // $scope.startWheel_shop = ()=>{
@@ -54,107 +57,61 @@ $rootScope.template = $rootScope.templates[0];
 //
 
 
+$rootScope.addToCart = function(id){
+
+    $http({
+      url: '/addProduct',
+      method: 'POST',
+      headers: {
+        // 'Content-Type': 'application/json'
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      transformRequest: transformRequestAsFormPost,
+      data: {
+              id: id,
+              access_token:"helloooo"
+            }
+    }).then(function(response){
+      // $rootScope.Cart = response;
+      $rootScope.updateCart();
+      $rootScope.pageLoading = false;
+      console.log(response);
+    });
+}//addToCart
 
 
 
 
+//......VARIATIONS
 
+$rootScope.addVariation = function(){
 
-});//controller
-
-Shop.controller('detailCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, $sce, $document, anchorSmoothScroll, $window, transformRequestAsFormPost){
-
-  $scope.$on('$routeChangeSuccess', function(){
-
-    // $rootScope.openDetailFN();
-    $rootScope.isDetailOpen = true;
-    $rootScope.detailUpdate($routeParams.detail);
-    $rootScope.updateCart();
-
+  if($rootScope.selectedVariation){
+    $http({
+      url: '/addVariation',
+      method: 'POST',
+      headers: {
+        // 'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        // 'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      // transformRequest: transformRequestAsFormPost,
+      data: $rootScope.selectedVariation
+    }).then(function(response){
+      // $rootScope.Cart = response;
+      $rootScope.updateCart();
+      console.log(response);
+    });
+  }else{
+    $scope.variationErrorMessage = "select a size first"
     setTimeout(function(){
-      if(!$rootScope.Detail.id){
-        $rootScope.detailUpdate($routeParams.detail);
-        $scope.$apply();
-        console.log("I loaded it again");
-        console.log($rootScope.Detail);
-      }else{
-        console.log("detail loaded correctly");
-        console.log($rootScope.Detail);
-        return false
-      }
-    },3000);
+      $scope.variationErrorMessage = false;
+      $rootScope.$apply();
+    });
+  }
 
 
-  });
-
-
-      $rootScope.addToCart = function(id){
-
-          $http({
-            url: '/addProduct',
-            method: 'POST',
-            headers: {
-              // 'Content-Type': 'application/json'
-              'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            transformRequest: transformRequestAsFormPost,
-            data: {
-                    id: id,
-                    access_token:"helloooo"
-                  }
-          }).then(function(response){
-            // $rootScope.Cart = response;
-            $rootScope.updateCart();
-            $rootScope.pageLoading = false;
-            console.log(response);
-          });
-    }//addToCart
-
-
-
-
-    //......VARIATIONS
-
-      $rootScope.addVariation = function(){
-
-        if($rootScope.selectedVariation){
-          $http({
-            url: '/addVariation',
-            method: 'POST',
-            headers: {
-              // 'Content-Type': 'application/json'
-              // 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-              // 'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            // transformRequest: transformRequestAsFormPost,
-            data: $rootScope.selectedVariation
-          }).then(function(response){
-            // $rootScope.Cart = response;
-            $rootScope.updateCart();
-            console.log(response);
-          });
-        }else{
-          $scope.variationErrorMessage = "select a size first"
-          setTimeout(function(){
-            $scope.variationErrorMessage = false;
-            $rootScope.$apply();
-          });
-        }
-
-
-      }//addToCart
-
-
-
-
-
-
-
-
-
-
-
-
+}//addToCart
 
 
   //variations
@@ -231,6 +188,60 @@ Shop.controller('detailCtrl', function($scope, $location, $rootScope, $routePara
 
     }
   }
+
+
+
+
+
+
+  $scope.$on('$routeChangeSuccess', function(){
+    console.log("$routeParams.detail:"+$routeParams.detail);
+    $rootScope.isDetailOpen = true;
+    $rootScope.detailUpdate($routeParams.detail);
+    $rootScope.updateCart();
+    setTimeout(function(){
+      if(!$rootScope.Detail.id){
+        $rootScope.detailUpdate($routeParams.detail);
+        $scope.$apply();
+        console.log("I loaded it again");
+        console.log($rootScope.Detail);
+      }else{
+        console.log("detail loaded correctly");
+        console.log($rootScope.Detail);
+        return false
+      }
+    },3000);
+
+  });
+
+
+
+
+
+
+
+});//controller
+
+Shop.controller('detailCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, $sce, $document, anchorSmoothScroll, $window, transformRequestAsFormPost){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 });

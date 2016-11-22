@@ -148,25 +148,21 @@ $scope.updatestock = function(data){
 }
 
 
-  $scope.$watch('isBillingDifferent', function(value){
-    console.log($scope.isBillingDifferent);
-    if(!$scope.isBillingDifferent){
-      console.log($rootScope.checkout);
-        $rootScope.checkout.billing.first_name = $rootScope.checkout.shipment.first_name;
-        $rootScope.checkout.billing.last_name = $rootScope.checkout.shipment.last_name;
-        $rootScope.checkout.billing.address_1 = $rootScope.checkout.shipment.address_1;
-        $rootScope.checkout.billing.city = $rootScope.checkout.shipment.city;
-        $rootScope.checkout.billing.county = $rootScope.checkout.shipment.county;
-        $rootScope.checkout.billing.country = $rootScope.checkout.shipment.country;
-        $rootScope.checkout.billing.postcode = $rootScope.checkout.shipment.postcode;
-        $rootScope.checkout.billing.phone = $rootScope.checkout.shipment.phone;
-    }
+$scope.$watch('isBillingDifferent', function(value){
+  console.log($scope.isBillingDifferent);
+  if(!$scope.isBillingDifferent){
+    console.log($rootScope.checkout);
+      $rootScope.checkout.billing.first_name = $rootScope.checkout.shipment.first_name;
+      $rootScope.checkout.billing.last_name = $rootScope.checkout.shipment.last_name;
+      $rootScope.checkout.billing.address_1 = $rootScope.checkout.shipment.address_1;
+      $rootScope.checkout.billing.city = $rootScope.checkout.shipment.city;
+      $rootScope.checkout.billing.county = $rootScope.checkout.shipment.county;
+      $rootScope.checkout.billing.country = $rootScope.checkout.shipment.country;
+      $rootScope.checkout.billing.postcode = $rootScope.checkout.shipment.postcode;
+      $rootScope.checkout.billing.phone = $rootScope.checkout.shipment.phone;
+  }
 
-  });
-
-
-
-
+});
 
 $scope.$watch('checkout', function(value){
   console.log(value);

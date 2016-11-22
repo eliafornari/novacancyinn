@@ -9,7 +9,7 @@
 
    <url>
 
-      <loc>https://lifeinadiary.com/</loc>
+      <loc>https://novacancyinn.com/</loc>
 
 	  <lastmod>2016-08-31T10:15:44+00:00</lastmod>
 
@@ -21,7 +21,7 @@
 
    <url>
 
-      <loc>https://lifeinadiary.com/shop/redsky-tshirt</loc>
+      <loc>https://novacancyinn.com/shop</loc>
 
      <lastmod>2016-08-31T10:15:44+00:00</lastmod>
 
@@ -30,6 +30,57 @@
       <priority>1</priority>
 
    </url>
+
+   <url>
+
+      <loc>https://novacancyinn.com/events</loc>
+
+     <lastmod>2016-08-31T10:15:44+00:00</lastmod>
+
+      <changefreq>monthly</changefreq>
+
+      <priority>1</priority>
+
+   </url>
+
+   <url>
+
+      <loc>https://novacancyinn.com/radio</loc>
+
+     <lastmod>2016-08-31T10:15:44+00:00</lastmod>
+
+      <changefreq>monthly</changefreq>
+
+      <priority>1</priority>
+
+   </url>
+
+
+
+   <url>
+
+      <loc>https://novacancyinn.com/about</loc>
+
+     <lastmod>2016-08-31T10:15:44+00:00</lastmod>
+
+      <changefreq>monthly</changefreq>
+
+      <priority>1</priority>
+
+   </url>
+
+      <url>
+
+      <loc>https://novacancyinn.com/contact</loc>
+
+     <lastmod>2016-08-31T10:15:44+00:00</lastmod>
+
+      <changefreq>monthly</changefreq>
+
+      <priority>1</priority>
+
+   </url>
+
 
 
 
