@@ -1,18 +1,23 @@
 <div class="processed" ng-cloak>
+
+
+  <h1 class="form-title" ng-show="Processed.status==200">Thank You</h1>
+
+
   <div class="processed-error" ng-hide="Processed.status==200 || Processed==false">
     <p>an error occurred please refresh the page</p>
     <p>{{Processed.data}}</p>
   </div>
 
   <div class="processed-thankyou" ng-show="Processed.status==200">
-    <p>
-      your order will be shipped to
+    <p class="processed-thankyou-p">
+      Your order will be shipped to
       {{Processed.data.order.ship_to.data.address_1}}
       {{Processed.data.order.ship_to.data.city}}
       {{Processed.data.order.ship_to.data.county.value}}
       {{Processed.data.order.ship_to.data.country.value}}
     </p>
-    <a class="" href="https://www.instagram.com/novacancyinn/">IG</a>
+    <p class="processed-thankyou-p">For any question please contact <a class="processed-thankyou-a" href="mailto:service@novacancyinn.com?subject={{Processed.data.order.id}} | novacancyinn.com">service@novacancyinn.com</a></p>
     <!-- <audio src="/assets/audio/youaresobeautiful.mp3" autoplay>
       <source src="/assets/audio/youaresobeautiful.mp3" type="audio/mpeg">
     </audio> -->

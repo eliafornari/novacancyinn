@@ -906,40 +906,20 @@ html, body {
   width: 100vw;
   height: 100vh; }
 
-.contact-a {
-  width: 200px;
+.contact-ul {
+  width: 70vw;
   margin: auto;
-  display: block;
-  text-align: center;
-  font-size: 12px;
-  line-height: 30px;
-  font-family: "folio";
-  color: #ec2224;
-  text-shadow: 0 0 0px #ec2224;
-  transition: text-shadow 0.2s ease;
-  -webkit-transition: text-shadow 0.2s ease;
-  -moz-transition: text-shadow 0.2s ease;
-  -ms-transition: text-shadow 0.2s ease; }
-  .contact-a:hover {
-    text-shadow: 2px 2px 7px #ec2224;
-    /*  @if $media == large-desktop {
-        @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-      }*/
-    /*  @if $media == large-desktop {
-        @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-      }*/
-    /*  @if $media == large-desktop {
-        @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-      }*/ }
-    @media only screen and (min-width: 0px) and (max-device-width: 767px) {
-      .contact-a:hover {
-        color: #ec2224 !important; } }
-    @media only screen and (min-device-width: 768px) and (max-device-width: 1022px) and (orientation: portrait) {
-      .contact-a:hover {
-        color: #ec2224 !important; } }
-    @media only screen and (min-device-width: 768px) and (max-device-width: 1022px) and (orientation: landscape) {
-      .contact-a:hover {
-        color: #ec2224 !important; } }
+  display: block; }
+  .contact-ul .contact-li {
+    width: 100%; }
+    .contact-ul .contact-li .contact-p {
+      width: 100%;
+      text-align: center; }
+      .contact-ul .contact-li .contact-p .contact-a {
+        font-size: 12px;
+        line-height: 30px;
+        font-family: "folio";
+        color: #000000; }
 
 .event {
   width: 100vw;
@@ -1309,7 +1289,7 @@ html, body {
   position: fixed;
   height: 100vh;
   width: 100vw;
-  z-index: 18;
+  z-index: 15;
   background-color: white;
   /*  @if $media == large-desktop {
       @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
@@ -1472,7 +1452,7 @@ html, body {
   line-height: 35px;
   font-family: "sabon";
   border: 0;
-  border-bottom: 2px solid #000000;
+  border-bottom: 1px solid #000000;
   outline: 0;
   padding: 0;
   /*  @if $media == large-desktop {
@@ -1510,7 +1490,7 @@ html, body {
   .form-entry:nth-child(1) {
     margin-top: 15px; }
   .form-entry input {
-    width: 80%;
+    width: 100%;
     left: 0px;
     position: absolute;
     top: 50%;
@@ -1519,7 +1499,7 @@ html, body {
     color: #000000;
     background-color: transparent;
     border: 0;
-    border-bottom: 2px solid #000000;
+    border-bottom: 1px solid #000000;
     text-align: left;
     outline: 0;
     border-radius: 0%;
@@ -1549,7 +1529,7 @@ html, body {
       color: #000000; }
 
 select {
-  width: 80%;
+  width: 100%;
   left: 0px;
   position: absolute;
   top: 50%;
@@ -1558,7 +1538,7 @@ select {
   color: #000000;
   background-color: transparent;
   border: 0;
-  border-bottom: 2px solid #000000;
+  border-bottom: 1px solid #000000;
   text-align: left;
   outline: 0;
   font-size: 12px;
@@ -1607,26 +1587,32 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
 .payment-form {
   width: 100%;
   height: 100%; }
-  .payment-form .payment-form-div {
-    width: 35%;
-    height: 200px;
+  .payment-form .payment-form-content {
+    width: 80vw;
+    height: calc(100vh - 200px);
+    padding-top: 200px;
     display: block;
-    position: relative;
-    margin-top: 100px;
-    left: 100px;
-    /*  @if $media == large-desktop {
-        @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-      }*/ }
-    @media only screen and (min-width: 0px) and (max-width: 767px) {
-      .payment-form .payment-form-div {
-        width: 50%;
-        left: 20px; } }
+    margin: auto;
+    overflow-y: scroll; }
+    .payment-form .payment-form-content .payment-form-div {
+      width: 45%;
+      height: 200px;
+      display: block;
+      position: relative;
+      left: 100px;
+      /*  @if $media == large-desktop {
+          @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
+        }*/ }
+      @media only screen and (min-width: 0px) and (max-width: 767px) {
+        .payment-form .payment-form-content .payment-form-div {
+          width: 50%;
+          left: 20px; } }
 
 .payment-total {
   position: relative;
   left: 100px;
   height: 70px;
-  width: 35%;
+  width: 45%;
   margin-top: 30px;
   margin-bottom: 20px;
   background-color: transparent;
@@ -1640,7 +1626,7 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
     font-size: 12px;
     line-height: 30px;
     font-family: "folio";
-    width: 80%; }
+    width: 100%; }
     .payment-total p span {
       float: right;
       font-size: 12px;
@@ -1662,57 +1648,49 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
       width: 100%;
       height: 100%;
       position: relative; }
+      .shipment .shipment-content .shipment-form .form-content {
+        width: 80vw;
+        height: calc(100vh - 200px);
+        padding-top: 200px;
+        display: block;
+        margin: auto;
+        overflow-y: scroll; }
 
 .customer {
-  width: 35%;
-  display: block;
-  position: absolute;
-  top: 100px;
-  left: 100px;
+  width: 45%;
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+  margin: 0;
   /*  @if $media == large-desktop {
       @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
     }*/ }
-  @media only screen and (min-width: 0px) and (max-width: 767px) {
-    .customer {
-      left: 20px; } }
 
 .address {
-  width: 35%;
-  display: block;
-  position: absolute;
-  left: 100px;
-  top: 245px;
+  width: 45%;
+  margin-left: 9%;
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+  padding-bottom: 200px;
   /*  @if $media == large-desktop {
       @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
     }*/ }
-  @media only screen and (min-width: 0px) and (max-width: 767px) {
-    .address {
-      top: 250px;
-      left: 20px; } }
-
-.billing {
-  width: 35%;
-  display: block;
-  position: absolute;
-  left: 40%;
-  top: 245px;
-  margin-left: 50px;
-  /*  @if $media == large-desktop {
-      @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-    }*/ }
-  @media only screen and (min-width: 0px) and (max-width: 767px) {
-    .billing {
-      top: 250px;
-      left: 45%;
-      margin-left: 30px; } }
+  .address .shipping {
+    width: 100%;
+    display: block; }
+  .address .billing {
+    width: 100%;
+    display: block;
+    /*  @if $media == large-desktop {
+        @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
+      }*/ }
 
 .isBillingDifferent {
-  position: absolute;
-  left: 100px;
-  top: 550px;
   height: auto;
   width: auto;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  margin-top: 15px;
   /*  @if $media == large-desktop {
       @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
     }*/ }
@@ -1740,24 +1718,16 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
   position: fixed; }
 
 .processed-thankyou {
-  width: 35%;
+  width: 80vw;
   height: auto;
-  margin-top: 20%;
-  margin-left: 100px; }
-  .processed-thankyou p {
-    width: 70%;
+  margin: auto;
+  margin-top: 200px; }
+  .processed-thankyou .processed-thankyou-p {
+    width: 100%;
     font-size: 12px;
     line-height: 30px;
     font-family: "folio"; }
-  .processed-thankyou a {
-    width: 50px;
-    height: 50px;
-    text-align: center;
-    vertical-align: middle;
-    line-height: 50px;
-    display: block;
-    margin: auto;
-    margin-top: 200px;
-    font-size: 12px;
-    line-height: 30px;
-    font-family: "folio"; }
+    .processed-thankyou .processed-thankyou-p .processed-thankyou-a {
+      font-size: 12px;
+      line-height: 30px;
+      font-family: "folio"; }

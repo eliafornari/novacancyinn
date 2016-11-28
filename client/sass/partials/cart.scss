@@ -82,7 +82,7 @@
     }
     .cart-remove{
       float:right;
-      @include paragraph();
+      @include p();
       position: absolute;
       right: 0;
       line-height: 70px;
@@ -95,7 +95,7 @@
 
     }
     p{
-      @include paragraph();
+      @include p();
       float:left;
       line-height: 70px;
       height:70px;
@@ -118,12 +118,12 @@
     width:90vw;
   }
   .cart-total-tax{
-    @include paragraph();
+    @include p();
     height: 70px;
     line-height: 70px;
   }
   .cart-total-amount{
-    @include paragraph();
+    @include p();
     height: 70px;
     line-height: 70px;
     span{
@@ -166,7 +166,7 @@
   @include h2();
   // @include hover-effect-glow($red);
   border: 0;
-  border-bottom: 2px solid $black;
+  border-bottom: 1px solid $black;
   outline: 0;
   padding: 0;
 
@@ -203,7 +203,7 @@
     margin-top: 15px;
   }
   input{
-    width: 80%;
+    width: 100%;
     left: 0px;
     position: absolute;
     top: 50%;
@@ -212,13 +212,13 @@
     color: $black;
     background-color: transparent;
     border:0;
-    border-bottom:2px solid $black;
+    border-bottom:1px solid $black;
     text-align: left;
     outline:0;
     border-radius: 0%;
     -webkit-border-radius: 0%;
     -moz-border-radius: 0%;
-    @include paragraph();
+    @include p();
     @include respond-to(phone){
       line-height: normal;
       width:100%;
@@ -250,7 +250,7 @@
 
 
 select{
-  width: 80%;
+  width: 100%;
   left: 0px;
   position: absolute;
   top: 50%;
@@ -259,10 +259,10 @@ select{
   color: $black;
   background-color: transparent;
   border:0;
-  border-bottom:2px solid $black;
+  border-bottom:1px solid $black;
   text-align: left;
   outline:0;
-  @include paragraph();
+  @include p();
   $placeholder-color:#FFFFFF;
   border-radius: 0%;
   -webkit-border-radius: 0%;

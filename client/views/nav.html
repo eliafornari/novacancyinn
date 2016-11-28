@@ -6,7 +6,7 @@
        <tr>
          <td>
            <div class="nav-container" >
-             <div class="nav-left">
+             <div class="nav-left" ng-show="!showCart">
                <a class="nav-left-a" href="/shop" ng-class="{'active': isLocation('/shop') || isShopDetail()}">Shop</a>
                <!-- <a class="nav-left-a" href="/archive" ng-class="{'active': isLocation('/archive')}">Archive</a> -->
                <a class="nav-left-a" href="/event" ng-class="{'active': isLocation('/event')}">Events</a>
@@ -19,7 +19,7 @@
              </div>
 
 
-             <div class="nav-right">
+             <div class="nav-right" ng-show="!showCart">
                <!-- <a class="nav-right-a" href="/radio" ng-class="{'active': isLocation('/radio')}">Radio</a> -->
                <a class="nav-right-a" href="/about" ng-class="{'active': isLocation('/about')}">About</a>
                <a class="nav-right-a" href="/contact" ng-class="{'active': isLocation('/contact')}">Contact</a>

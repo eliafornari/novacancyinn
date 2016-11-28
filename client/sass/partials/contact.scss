@@ -3,12 +3,21 @@
   height:100vh;
 }
 
-.contact-a{
-  width:200px;
+.contact-ul{
+  width: 70vw;
   margin: auto;
   display: block;
-  text-align: center;
-  @include paragraph();
-  color: $red;
-  @include hover-effect-glow($red);
+  .contact-li{
+    width: 100%;
+    .contact-p{
+      width: 100%;
+      text-align: center;
+      // @include p();
+      .contact-a{
+        @include p();
+        color: $black;
+
+      }
+    }
+  }
 }

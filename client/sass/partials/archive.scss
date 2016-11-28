@@ -8,6 +8,6 @@
   margin: auto;
   display: block;
   text-align: center;
-  @include paragraph();
+  @include p();
   color: $red;
 }

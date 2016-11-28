@@ -377,7 +377,7 @@ $transition-slow: 1s;
   font-family: $font-family-h3;
 }
 
-@mixin paragraph(){
+@mixin p(){
   font-size: $font-size-paragraph;
   line-height: $line-height-paragraph;
   font-family: $font-family-paragraph;

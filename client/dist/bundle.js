@@ -639,7 +639,6 @@ angular.module('myApp')
 
     for (var i in $rootScope.Event) {
       var item = $rootScope.Event[i].data['event.date'].value;
-      console.log(i);
       // item = item.replace(/-/g, '.');
       var year = item.substring(0, 4);
       var month = item.substring(5, 7);
@@ -649,8 +648,6 @@ angular.module('myApp')
       // console.log('month: '+month);
       // console.log('day: '+day);
       item = { 'year': year, 'month': month, 'day': day };
-
-      console.log(item);
       $rootScope.Event[i].data['event.date'].value = item;
     }
     $rootScope.pageLoading = false;
