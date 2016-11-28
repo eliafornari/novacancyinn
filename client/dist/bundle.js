@@ -1,6 +1,199 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+angular.module('myApp').controller('aboutCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http, $sce, $document, anchorSmoothScroll, $window) {
+
+  $rootScope.pageLoading = false;
+
+  $scope.aboutText = [{
+    x: "2",
+    y: "40",
+    text: "No Man's Land",
+    type: "folio",
+    size: 30,
+    point: 1
+  }, {
+    x: "20",
+    y: "20",
+    text: "No Man's Land",
+    type: "sabon",
+    size: 40,
+    point: 2
+  }, {
+    x: "20",
+    y: "80",
+    text: "No Man's Land",
+    type: "Book Antiqua",
+    size: 50,
+    point: 3
+  }, {
+    x: "50",
+    y: "33",
+    text: "No Man's Land",
+    type: "helvetica",
+    size: 20,
+    point: 4
+  }, {
+    x: "30",
+    y: "70",
+    text: "No Location",
+    type: "Times New Roman",
+    size: 35,
+    point: 5
+  }, {
+    x: "30",
+    y: "40",
+    text: "World",
+    type: "Arial Black",
+    size: 35,
+    point: 6
+  }, {
+    x: "50",
+    y: "30",
+    text: "Heaven or Las Vegas",
+    type: "Tahoma",
+    size: 75,
+    point: 7
+  }, {
+    x: "30",
+    y: "20",
+    text: "No Man's Land",
+    type: "Geneva",
+    size: 75,
+    point: 8
+  }, {
+    x: "10",
+    y: "90",
+    text: "Thank You",
+    type: "Courier",
+    size: 25,
+    point: 9
+  }
+
+  // Impact
+  // Tahoma
+  // Geneva
+  // Courier
+  // Monaco
+  // monospace
+
+  ];
+
+  $scope.wheel_about;
+  $scope.scroll_about = 0;
+  $scope.view_about = 0;
+
+  $scope.startWheel_about = function () {
+    $(".about").bind('mousewheel', function (event, delta) {
+      //  console.log(event.deltaX, event.deltaY, event.deltaFactor);
+      //  console.log(delta);
+      this.scrollLeft += event.deltaY * 0.4;
+      $scope.scroll_about = $scope.scroll_about + -event.deltaY * 0.4;
+
+      $scope.view_about = parseInt($scope.scroll_about / $rootScope.windowHeight);
+
+      event.preventDefault();
+      $scope.wheel_about = true;
+      $rootScope.$apply();
+    });
+  };
+
+  $scope.startWheel_about();
+
+  $scope.stopWheel_about = function () {
+    $(".about").unbind('mousewheel');
+    $scope.wheel_about = false;
+  };
+
+  setTimeout(function () {
+    //   $scope.loadVideo();
+    $scope.onYouTubeIframeAPIReady();
+  }, 1000);
+
+  var player;
+  var state = true;
+
+  $scope.onYouTubeIframeAPIReady = function () {
+    var _playerVars;
+
+    player = new YT.Player('video', {
+      height: '100%',
+      width: '100%',
+      playerVars: (_playerVars = { 'autoplay': 0, 'controls': 0 }, _defineProperty(_playerVars, 'controls', 0), _defineProperty(_playerVars, 'fs', 0), _defineProperty(_playerVars, 'rel', 0), _defineProperty(_playerVars, 'showinfo', 0), _defineProperty(_playerVars, 'autohide', 1), _defineProperty(_playerVars, 'color', 'white'), _playerVars),
+      videoId: 'eYb9cbUsPxY',
+      events: {
+        'onReady': onPlayerReady,
+        'onStateChange': onPlayerStateChange
+      }
+    });
+
+    // 4. The API will call this function when the video player is ready.
+    function onPlayerReady(event) {
+      event.target.playVideo();
+    }
+
+    // 5. The API calls this function when the player's state changes.
+    //    The function indicates that when playing a video (state=1),
+    //    the player should play for six seconds and then stop.
+    var done = false;
+    function onPlayerStateChange(event) {
+      if (event.data == YT.PlayerState.PLAYING) {
+        //  && !done
+        // setTimeout(, 6000);
+        state = true;
+        // done = true;
+      } else {
+        state = false;
+      }
+    }
+
+    $scope.playPause = function () {
+      console.log("clicked");
+      // player.pauseVideo();
+      if (state) {
+        player.pauseVideo();
+        console.log("pause");
+      } else {
+        player.playVideo();
+        console.log("play");
+      }
+    };
+  };
+
+  $scope.loadVideo = function () {
+
+    // 2. This code loads the IFrame Player API code asynchronously.
+    var tag = document.createElement('script');
+
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // 3. This function creates an <iframe> (and YouTube player)
+    //    after the API code downloads.
+    var player;
+    function onYouTubeIframeAPIReady() {
+      var _playerVars2;
+
+      player = new YT.Player('player', {
+        height: '100%',
+        width: '100%',
+        playerVars: (_playerVars2 = { 'autoplay': 0, 'controls': 0 }, _defineProperty(_playerVars2, 'controls', 0), _defineProperty(_playerVars2, 'fs', 0), _defineProperty(_playerVars2, 'rel', 0), _defineProperty(_playerVars2, 'showinfo', 0), _defineProperty(_playerVars2, 'autohide', 1), _defineProperty(_playerVars2, 'color', 'white'), _playerVars2),
+        videoId: 'eYb9cbUsPxY',
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    }
+  }; //load video function
+}); //controller
+
+},{}],2:[function(require,module,exports){
+'use strict';
+
 require('angular');
 
 require('angular-route');
@@ -29,6 +222,7 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
   $location.path = function (path, reload) {
     if (reload === false) {
       var lastRoute = $route.current;
+      $rootScope.pageLoading = false;
       var un = $rootScope.$on('$locationChangeSuccess', function () {
         $route.current = lastRoute;
         un();
@@ -36,6 +230,7 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
     } else if (reload === true) {
       var currentPageTemplate = $route.current.templateUrl;
       $templateCache.remove(currentPageTemplate);
+      $rootScope.pageLoading = false;
       var un = $rootScope.$on('$locationChangeSuccess', function () {
         $route.current = '/';
         un();
@@ -260,7 +455,6 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
     if ($rootScope.isMobile == true) {
       if (window.innerHeight < window.innerWidth) {
         $rootScope.landscapeView = true;
-        $rootScope.pageLoading = true;
         $(".landscape-view-wrapper").css({
           "width": "100vw",
           "height": "100vh",
@@ -268,7 +462,6 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
         });
       } else {
         $rootScope.landscapeView = false;
-        $rootScope.pageLoading = false;
       }
     }
   };
@@ -355,12 +548,50 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
       $scope.hideNav = true;
     }
   };
+
+  // The scroll event cannot be canceled. But you can do it by canceling these interaction events:
+  // Mouse & Touch scroll and Buttons associated with scrolling.
+
+  // left: 37, up: 38, right: 39, down: 40,
+  // spacebar: 32, pageup: 33, pagedown: 34, end: 35, home: 36
+  var keys = { 37: 1, 38: 1, 39: 1, 40: 1 };
+
+  function preventDefault(e) {
+    e = e || window.event;
+    if (e.preventDefault) e.preventDefault();
+    e.returnValue = false;
+  }
+
+  function preventDefaultForScrollKeys(e) {
+    if (keys[e.keyCode]) {
+      preventDefault(e);
+      return false;
+    }
+  }
+
+  $rootScope.disableScroll = function () {
+    if (window.addEventListener) // older FF
+      window.addEventListener('DOMMouseScroll', preventDefault, false);
+    window.onwheel = preventDefault; // modern standard
+    window.onmousewheel = document.onmousewheel = preventDefault; // older browsers, IE
+    window.ontouchmove = preventDefault; // mobile
+    document.onkeydown = preventDefaultForScrollKeys;
+  };
+
+  $rootScope.enableScroll = function () {
+    if (window.removeEventListener) window.removeEventListener('DOMMouseScroll', preventDefault, false);
+    window.onmousewheel = document.onmousewheel = null;
+    window.onwheel = null;
+    window.ontouchmove = null;
+    document.onkeydown = null;
+  };
 }); //......end of the route controller
 
 var jquerymousewheel = require('./vendor/jquery.mousewheel.js')($);
 var infiniteScroll = require("./vendor/infiniteScroll.js");
 var jqueryUI = require('./vendor/jquery-ui.min.js');
 var home = require("./home.js");
+var about = require("./about.js");
 var events = require("./event.js");
 var radio = require("./radio.js");
 var nav = require("./nav.js");
@@ -369,7 +600,7 @@ var cart = require("./shop/cart.js");
 var shop = require("./shop/shop.js");
 var shop = require("./shop/checkout.js");
 
-},{"./event.js":2,"./home.js":3,"./nav.js":4,"./radio.js":5,"./services.js":6,"./shop/cart.js":7,"./shop/checkout.js":8,"./shop/shop.js":9,"./vendor/infiniteScroll.js":10,"./vendor/jquery-ui.min.js":11,"./vendor/jquery.mousewheel.js":12,"angular":20,"angular-animate":14,"angular-resource":16,"angular-route":18,"jquery":33,"prismic.io":41}],2:[function(require,module,exports){
+},{"./about.js":1,"./event.js":3,"./home.js":4,"./nav.js":5,"./radio.js":6,"./services.js":7,"./shop/cart.js":8,"./shop/checkout.js":9,"./shop/shop.js":10,"./vendor/infiniteScroll.js":11,"./vendor/jquery-ui.min.js":12,"./vendor/jquery.mousewheel.js":13,"angular":21,"angular-animate":15,"angular-resource":17,"angular-route":19,"jquery":34,"prismic.io":42}],3:[function(require,module,exports){
 'use strict';
 
 angular.module('myApp')
@@ -431,7 +662,7 @@ angular.module('myApp')
   };
 }); //controller
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 'use strict';
 
 var Home = angular.module('myApp');
@@ -506,7 +737,7 @@ Home.controller('homeCtrl', function ($scope, $location, $rootScope, $routeParam
   // }
 }); //controller
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 angular.module('myApp').controller('navCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http) {
@@ -538,11 +769,11 @@ angular.module('myApp').controller('navCtrl', function ($scope, $location, $root
   };
 
   $scope.$on('$routeChangeStart', function () {
-    if ($location.path() == '/shop' || $location.path() == '/shop/' + $routeParams.detail) {
+    if ($location.path() == '/shop' || $location.path() == '/shop/product/' + $routeParams.detail) {
       console.log("isShop");
       $rootScope.pageLoading = false;
     } else {
-      $rootScope.pageLoading = true;
+      // $rootScope.pageLoading = true;
     }
   });
 
@@ -550,6 +781,7 @@ angular.module('myApp').controller('navCtrl', function ($scope, $location, $root
     if ($location.path() != '/') {
       console.log('not home');
       $rootScope.backgroundColor = '#FFFFFF';
+      $rootScope.pageLoading = false;
     }
     setTimeout(function () {
       $rootScope.pageLoading = false;
@@ -633,7 +865,7 @@ angular.module('myApp').controller('navCtrl', function ($scope, $location, $root
   };
 });
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 angular.module('myApp').filter('turnIntoSoundcloud', function ($sce) {
@@ -673,7 +905,7 @@ angular.module('myApp').filter('turnIntoSoundcloud', function ($sce) {
   $scope.radioHovered = false;
 }); //controller
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 
 /* Services */
@@ -812,7 +1044,7 @@ Service.service('anchorSmoothScroll', function () {
     };
 });
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 var Cart = angular.module('myApp');
@@ -946,7 +1178,7 @@ Cart.controller('cartCtrl', function ($scope, $location, $rootScope, $timeout, $
   };
 });
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 var Checkout = angular.module('myApp');
@@ -1134,7 +1366,7 @@ Checkout.controller('checkoutCtrl', function ($scope, $location, $rootScope, $ti
   };
 });
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 var Shop = angular.module('myApp');
@@ -1145,6 +1377,9 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
   $rootScope.isDetailOpen = false;
   $rootScope.windowHeight = $window.innerHeight;
   $rootScope.Detail = {};
+  $rootScope.selectedVariation;
+  $rootScope.Variations;
+  $scope.sizeLoading = false;
 
   $rootScope.openDetailFN = function (slug) {
     if ($rootScope.isDetailOpen == true) {
@@ -1213,16 +1448,12 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
 
   $rootScope.addVariation = function () {
 
+    console.log($rootScope.selectedVariation);
+
     if ($rootScope.selectedVariation) {
       $http({
         url: '/addVariation',
         method: 'POST',
-        headers: {
-          // 'Content-Type': 'application/json'
-          // 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-          // 'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        // transformRequest: transformRequestAsFormPost,
         data: $rootScope.selectedVariation
       }).then(function (response) {
         // $rootScope.Cart = response;
@@ -1240,48 +1471,52 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
 
   //variations
 
-  $rootScope.selectedVariation = {};
   $rootScope.howManyVAriationsSelected = 0;
   $rootScope.detailUpdate = function (slug) {
 
-    $rootScope.selectedVariation = {};
-    $rootScope.howManyVAriationsSelected = 0;
-    $rootScope.Detail.total_variations = 0;
+    if ($rootScope.Detail.slug != slug) {
+      $rootScope.pageLoading = false;
 
-    for (var i in $rootScope.Product) {
-      if ($rootScope.Product[i].slug == slug) {
-        $rootScope.Detail = $rootScope.Product[i];
-        $rootScope.Detail.total_variations = 0;
-        $rootScope.Detail.has_variation = $rootScope.has_variation;
+      $rootScope.selectedVariation = {};
+      $rootScope.howManyVAriationsSelected = 0;
+      $rootScope.Detail.total_variations = 0;
+      for (var i in $rootScope.Product) {
+        if ($rootScope.Product[i].slug == slug) {
+          $rootScope.Detail = $rootScope.Product[i];
+          $rootScope.Detail.total_variations = 0;
+          $rootScope.Detail.has_variation = $rootScope.has_variation;
+          $rootScope.pageLoading = false;
+          $scope.drag_FN(slug);
 
-        var go = true;
-        //has variation
-        for (i in $rootScope.Detail.modifiers) {
-          $rootScope.Detail.modifiers[i].open = false;
-          $rootScope.Detail.total_variations = $rootScope.Detail.total_variations + 1;
-          // if($rootScope.Detail.modifiers[i].id){$rootScope.has_variation=true;}else{$rootScope.has_variation=false;}
-          $rootScope.Detail.has_variation = true;
-          $rootScope.showSelection($rootScope.Detail.modifiers[i].id);
-          go = false;
-        }
+          var go = true;
+          //has variation
+          for (i in $rootScope.Detail.modifiers) {
+            $rootScope.Detail.modifiers[i].open = false;
+            $rootScope.Detail.total_variations = $rootScope.Detail.total_variations + 1;
+            // if($rootScope.Detail.modifiers[i].id){$rootScope.has_variation=true;}else{$rootScope.has_variation=false;}
+            $rootScope.Detail.has_variation = true;
+            // $rootScope.showSelection($rootScope.Detail.modifiers[i].id);
+            go = false;
+          }
 
-        if (go == true) {
-          //does not have variation
-          $rootScope.Detail.has_variation = false;
-          for (i in $rootScope.Detail.modifiers) {}
+          if (go == true) {
+            //does not have variation
+            $rootScope.Detail.has_variation = false;
+            for (i in $rootScope.Detail.modifiers) {}
+          }
         }
       }
     }
   };
 
-  $rootScope.showSelection = function (modifier_id) {
-    console.log('modifier_id', modifier_id);
-    for (var m in $rootScope.Detail.modifiers) {
-      if ($rootScope.Detail.modifiers[m].id == modifier_id) {
-        $rootScope.Detail.modifiers[m].open = !$rootScope.Detail.modifiers[m].open;
-      }
-    }
-  };
+  // $rootScope.showSelection = function(modifier_id){
+  //   console.log('modifier_id',modifier_id);
+  //   for (var m in $rootScope.Detail.modifiers){
+  //     if($rootScope.Detail.modifiers[m].id == modifier_id){
+  //       $rootScope.Detail.modifiers[m].open = !$rootScope.Detail.modifiers[m].open;
+  //     }
+  //   }
+  // }
 
   $rootScope.thisVariation = function (id, modifier_id, modifier_title, variation_id, variation_title) {
     var i = 0;
@@ -1295,6 +1530,7 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
           variation_id: variation_id,
           variation_title: variation_title
         };
+        console.log($rootScope.selectedVariation[i]);
         if ($rootScope.howManyVAriationsSelected < $rootScope.Detail.total_variations) {
           $rootScope.howManyVAriationsSelected = $rootScope.howManyVAriationsSelected + 1;
         }
@@ -1320,6 +1556,54 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
       }
     }, 3000);
   });
+
+  // document.getElementById('target').ondragstart = function() { return false; };
+  var dragging = false;
+  var coord;
+  var right = 0;
+  var left = 0;
+
+  $scope.drag_FN = function (slug) {
+    $('#' + slug).mousedown(function (event) {
+      event.preventDefault();console.log("mousedown");
+      dragging = true;
+    }).mousemove(function (event) {
+      if (dragging) {
+
+        if (coord) {
+          if (coord.pageX < event.pageX) {
+            right += 1;
+
+            if (right > 10) {
+              console.log('boom boom');
+              right = 0;
+            }
+
+            console.log('right', right);
+          } else if (coord.pageX > event.pageX) {
+            console.log('left');
+          }
+        }
+
+        coord = {
+          pageX: event.pageX,
+          pageY: event.pageY
+        };
+
+        // $( "#log" ).append( "<div>" + msg + "</div>" );
+      }
+    }).mouseup(function (event) {
+      event.preventDefault();
+      console.log("mouseup");
+      dragging = false;
+    });
+  };
+
+  $rootScope.blockScroll = false;
+
+  $rootScope.blockScrollFN = function () {
+    $rootScope.blockScroll = !$rootScope.blockScroll;
+  };
 }); //controller
 
 Shop.controller('detailCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http, $sce, $document, anchorSmoothScroll, $window, transformRequestAsFormPost) {});
@@ -1333,7 +1617,16 @@ Shop.directive('detailDirective', function ($rootScope, $location, $window, $rou
   };
 });
 
-},{}],10:[function(require,module,exports){
+Shop.directive('fullscreenDirective', function ($rootScope, $location, $window, $routeParams, $timeout) {
+  return {
+    restrict: 'E',
+    templateUrl: 'views/icon/fullscreen.html',
+    replace: true,
+    link: function link(scope, elem, attrs) {}
+  };
+});
+
+},{}],11:[function(require,module,exports){
 'use strict';
 
 /* ng-infinite-scroll - v1.0.0 - 2013-02-23 */
@@ -1406,7 +1699,7 @@ mod.directive('infiniteScroll', ['$rootScope', '$window', '$timeout', function (
   };
 }]);
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -2538,7 +2831,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }));
 });
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -2777,7 +3070,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 });
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -6925,11 +7218,11 @@ angular.module('ngAnimate', [])
 
 })(window, window.angular);
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 require('./angular-animate');
 module.exports = 'ngAnimate';
 
-},{"./angular-animate":13}],15:[function(require,module,exports){
+},{"./angular-animate":14}],16:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -7789,11 +8082,11 @@ angular.module('ngResource', ['ng']).
 
 })(window, window.angular);
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 require('./angular-resource');
 module.exports = 'ngResource';
 
-},{"./angular-resource":15}],17:[function(require,module,exports){
+},{"./angular-resource":16}],18:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -8860,11 +9153,11 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 })(window, window.angular);
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 require('./angular-route');
 module.exports = 'ngRoute';
 
-},{"./angular-route":17}],19:[function(require,module,exports){
+},{"./angular-route":18}],20:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -40338,11 +40631,11 @@ $provide.value("$locale", {
 })(window);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":19}],21:[function(require,module,exports){
+},{"./angular":20}],22:[function(require,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -40468,9 +40761,9 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	exports.fromByteArray = uint8ToBase64
 }(typeof exports === 'undefined' ? (this.base64js = {}) : exports))
 
-},{}],22:[function(require,module,exports){
-
 },{}],23:[function(require,module,exports){
+
+},{}],24:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -40582,7 +40875,7 @@ exports.allocUnsafeSlow = function allocUnsafeSlow(size) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"buffer":24}],24:[function(require,module,exports){
+},{"buffer":25}],25:[function(require,module,exports){
 (function (global){
 /*!
  * The buffer module from node.js, for the browser.
@@ -42134,7 +42427,7 @@ function blitBuffer (src, dst, offset, length) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"base64-js":21,"ieee754":29,"isarray":32}],25:[function(require,module,exports){
+},{"base64-js":22,"ieee754":30,"isarray":33}],26:[function(require,module,exports){
 module.exports = {
   "100": "Continue",
   "101": "Switching Protocols",
@@ -42199,7 +42492,7 @@ module.exports = {
   "511": "Network Authentication Required"
 }
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 (function (Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -42310,7 +42603,7 @@ function objectToString(o) {
 }
 
 }).call(this,{"isBuffer":require("../../is-buffer/index.js")})
-},{"../../is-buffer/index.js":31}],27:[function(require,module,exports){
+},{"../../is-buffer/index.js":32}],28:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -42614,7 +42907,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 var http = require('http');
 
 var https = module.exports;
@@ -42630,7 +42923,7 @@ https.request = function (params, cb) {
     return http.request.call(this, params, cb);
 }
 
-},{"http":50}],29:[function(require,module,exports){
+},{"http":51}],30:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = nBytes * 8 - mLen - 1
@@ -42716,7 +43009,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -42741,7 +43034,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 /**
  * Determine if an object is Buffer
  *
@@ -42760,14 +43053,14 @@ module.exports = function (obj) {
     ))
 }
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 var toString = {}.toString;
 
 module.exports = Array.isArray || function (arr) {
   return toString.call(arr) == '[object Array]';
 };
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.0.0
  * https://jquery.com/
@@ -52806,7 +53099,7 @@ if ( !noGlobal ) {
 return jQuery;
 } ) );
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -53607,7 +53900,7 @@ module.exports = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./cache":35,"./documents":36,"./experiments":37,"./predicates":40,"./requests":42}],35:[function(require,module,exports){
+},{"./cache":36,"./documents":37,"./experiments":38,"./predicates":41,"./requests":43}],36:[function(require,module,exports){
 
 "use strict";
 
@@ -53662,7 +53955,7 @@ ApiCache.prototype = {
 
 module.exports = ApiCache;
 
-},{"./lru":39}],36:[function(require,module,exports){
+},{"./lru":40}],37:[function(require,module,exports){
 "use strict";
 
 /**
@@ -54248,7 +54541,7 @@ module.exports = {
   GroupDoc: GroupDoc
 };
 
-},{"./fragments":38}],37:[function(require,module,exports){
+},{"./fragments":39}],38:[function(require,module,exports){
 
 "use strict";
 
@@ -54333,7 +54626,7 @@ module.exports = {
   Variation: Variation
 };
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 "use strict";
 
 var documents = require('./documents');
@@ -55587,7 +55880,7 @@ module.exports = {
   insertSpans: insertSpans
 };
 
-},{"./documents":36}],39:[function(require,module,exports){
+},{"./documents":37}],40:[function(require,module,exports){
 
 /**
  * A doubly linked list-based Least Recently Used (LRU) cache. Will keep most
@@ -55840,7 +56133,7 @@ LRUCache.prototype.toString = function() {
 
 module.exports = LRUCache;
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 
 "use strict";
 
@@ -56122,7 +56415,7 @@ module.exports = {
 
 };
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 "use strict";
 
 var experiments = require('./experiments'),
@@ -56200,7 +56493,7 @@ module.exports = {
 
 module.exports.Prismic = module.exports; // Backward compatibility
 
-},{"./api":34,"./documents":36,"./experiments":37,"./fragments":38,"./predicates":40}],42:[function(require,module,exports){
+},{"./api":35,"./documents":37,"./experiments":38,"./fragments":39,"./predicates":41}],43:[function(require,module,exports){
 (function (process){
 
 "use strict";
@@ -56441,7 +56734,7 @@ module.exports = {
 };
 
 }).call(this,require('_process'))
-},{"../package.json":43,"_process":45,"http":50,"https":28,"url":62}],43:[function(require,module,exports){
+},{"../package.json":44,"_process":46,"http":51,"https":29,"url":63}],44:[function(require,module,exports){
 module.exports={
   "name": "prismic.io",
   "description": "JavaScript development kit for prismic.io",
@@ -56532,7 +56825,7 @@ module.exports={
   "readme": "ERROR: No README data found!"
 }
 
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -56579,7 +56872,7 @@ function nextTick(fn, arg1, arg2, arg3) {
 }
 
 }).call(this,require('_process'))
-},{"_process":45}],45:[function(require,module,exports){
+},{"_process":46}],46:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -56700,7 +56993,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],46:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 (function (global){
 /*! https://mths.be/punycode v1.4.1 by @mathias */
 ;(function(root) {
@@ -57237,7 +57530,7 @@ process.umask = function() { return 0; };
 }(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],47:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -57323,7 +57616,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -57410,13 +57703,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],49:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":47,"./encode":48}],50:[function(require,module,exports){
+},{"./decode":48,"./encode":49}],51:[function(require,module,exports){
 (function (global){
 var ClientRequest = require('./lib/request')
 var extend = require('xtend')
@@ -57498,7 +57791,7 @@ http.METHODS = [
 	'UNSUBSCRIBE'
 ]
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./lib/request":52,"builtin-status-codes":25,"url":62,"xtend":65}],51:[function(require,module,exports){
+},{"./lib/request":53,"builtin-status-codes":26,"url":63,"xtend":66}],52:[function(require,module,exports){
 (function (global){
 exports.fetch = isFunction(global.fetch) && isFunction(global.ReadableByteStream)
 
@@ -57542,7 +57835,7 @@ function isFunction (value) {
 xhr = null // Help gc
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],52:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 (function (process,global,Buffer){
 var capability = require('./capability')
 var inherits = require('inherits')
@@ -57823,7 +58116,7 @@ var unsafeHeaders = [
 ]
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
-},{"./capability":51,"./response":53,"_process":45,"buffer":24,"inherits":30,"readable-stream":59,"to-arraybuffer":61}],53:[function(require,module,exports){
+},{"./capability":52,"./response":54,"_process":46,"buffer":25,"inherits":31,"readable-stream":60,"to-arraybuffer":62}],54:[function(require,module,exports){
 (function (process,global,Buffer){
 var capability = require('./capability')
 var inherits = require('inherits')
@@ -58007,7 +58300,7 @@ IncomingMessage.prototype._onXHRProgress = function () {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
-},{"./capability":51,"_process":45,"buffer":24,"inherits":30,"readable-stream":59}],54:[function(require,module,exports){
+},{"./capability":52,"_process":46,"buffer":25,"inherits":31,"readable-stream":60}],55:[function(require,module,exports){
 // a duplex stream is just a stream that is both readable and writable.
 // Since JS doesn't have multiple prototypal inheritance, this class
 // prototypally inherits from Readable, and then parasitically from
@@ -58083,7 +58376,7 @@ function forEach(xs, f) {
     f(xs[i], i);
   }
 }
-},{"./_stream_readable":56,"./_stream_writable":58,"core-util-is":26,"inherits":30,"process-nextick-args":44}],55:[function(require,module,exports){
+},{"./_stream_readable":57,"./_stream_writable":59,"core-util-is":27,"inherits":31,"process-nextick-args":45}],56:[function(require,module,exports){
 // a passthrough stream.
 // basically just the most minimal sort of Transform stream.
 // Every written chunk gets output as-is.
@@ -58110,7 +58403,7 @@ function PassThrough(options) {
 PassThrough.prototype._transform = function (chunk, encoding, cb) {
   cb(null, chunk);
 };
-},{"./_stream_transform":57,"core-util-is":26,"inherits":30}],56:[function(require,module,exports){
+},{"./_stream_transform":58,"core-util-is":27,"inherits":31}],57:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -59006,7 +59299,7 @@ function indexOf(xs, x) {
   return -1;
 }
 }).call(this,require('_process'))
-},{"./_stream_duplex":54,"_process":45,"buffer":24,"buffer-shims":23,"core-util-is":26,"events":27,"inherits":30,"isarray":32,"process-nextick-args":44,"string_decoder/":60,"util":22}],57:[function(require,module,exports){
+},{"./_stream_duplex":55,"_process":46,"buffer":25,"buffer-shims":24,"core-util-is":27,"events":28,"inherits":31,"isarray":33,"process-nextick-args":45,"string_decoder/":61,"util":23}],58:[function(require,module,exports){
 // a transform stream is a readable/writable stream where you do
 // something with the data.  Sometimes it's called a "filter",
 // but that's not a great name for it, since that implies a thing where
@@ -59187,7 +59480,7 @@ function done(stream, er) {
 
   return stream.push(null);
 }
-},{"./_stream_duplex":54,"core-util-is":26,"inherits":30}],58:[function(require,module,exports){
+},{"./_stream_duplex":55,"core-util-is":27,"inherits":31}],59:[function(require,module,exports){
 (function (process){
 // A bit simpler than readable streams.
 // Implement an async ._write(chunk, encoding, cb), and it'll handle all
@@ -59716,7 +60009,7 @@ function CorkedRequest(state) {
   };
 }
 }).call(this,require('_process'))
-},{"./_stream_duplex":54,"_process":45,"buffer":24,"buffer-shims":23,"core-util-is":26,"events":27,"inherits":30,"process-nextick-args":44,"util-deprecate":64}],59:[function(require,module,exports){
+},{"./_stream_duplex":55,"_process":46,"buffer":25,"buffer-shims":24,"core-util-is":27,"events":28,"inherits":31,"process-nextick-args":45,"util-deprecate":65}],60:[function(require,module,exports){
 (function (process){
 var Stream = (function (){
   try {
@@ -59736,7 +60029,7 @@ if (!process.browser && process.env.READABLE_STREAM === 'disable' && Stream) {
 }
 
 }).call(this,require('_process'))
-},{"./lib/_stream_duplex.js":54,"./lib/_stream_passthrough.js":55,"./lib/_stream_readable.js":56,"./lib/_stream_transform.js":57,"./lib/_stream_writable.js":58,"_process":45}],60:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":55,"./lib/_stream_passthrough.js":56,"./lib/_stream_readable.js":57,"./lib/_stream_transform.js":58,"./lib/_stream_writable.js":59,"_process":46}],61:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -59959,7 +60252,7 @@ function base64DetectIncompleteChar(buffer) {
   this.charLength = this.charReceived ? 3 : 0;
 }
 
-},{"buffer":24}],61:[function(require,module,exports){
+},{"buffer":25}],62:[function(require,module,exports){
 var Buffer = require('buffer').Buffer
 
 module.exports = function (buf) {
@@ -59988,7 +60281,7 @@ module.exports = function (buf) {
 	}
 }
 
-},{"buffer":24}],62:[function(require,module,exports){
+},{"buffer":25}],63:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -60722,7 +61015,7 @@ Url.prototype.parseHost = function() {
   if (host) this.hostname = host;
 };
 
-},{"./util":63,"punycode":46,"querystring":49}],63:[function(require,module,exports){
+},{"./util":64,"punycode":47,"querystring":50}],64:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -60740,7 +61033,7 @@ module.exports = {
   }
 };
 
-},{}],64:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 (function (global){
 
 /**
@@ -60811,7 +61104,7 @@ function config (name) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],65:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 module.exports = extend
 
 var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -60832,4 +61125,4 @@ function extend() {
     return target
 }
 
-},{}]},{},[1]);
+},{}]},{},[2]);

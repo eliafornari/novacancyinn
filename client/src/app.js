@@ -26,6 +26,7 @@ $rootScope.pageLoading = true;
     $location.path = function (path, reload) {
         if (reload === false) {
             var lastRoute = $route.current;
+            $rootScope.pageLoading = false;
             var un = $rootScope.$on('$locationChangeSuccess', function () {
                 $route.current = lastRoute;
                 un();
@@ -34,6 +35,7 @@ $rootScope.pageLoading = true;
         else if (reload === true){
             var currentPageTemplate = $route.current.templateUrl;
             $templateCache.remove(currentPageTemplate);
+            $rootScope.pageLoading = false;
             var un = $rootScope.$on('$locationChangeSuccess', function () {
                   $route.current = '/';
                   un();
@@ -350,7 +352,6 @@ $rootScope.Home;
         if ($rootScope.isMobile==true){
             if(window.innerHeight < window.innerWidth){
               $rootScope.landscapeView = true;
-              $rootScope.pageLoading = true;
               $(".landscape-view-wrapper").css({
                 "width":"100vw",
                 "height": "100vh",
@@ -358,7 +359,6 @@ $rootScope.Home;
             });
             }else{
               $rootScope.landscapeView = false;
-              $rootScope.pageLoading = false;
             }
         }
       }
@@ -467,7 +467,51 @@ var radioRan = false;
     if($rootScope.isMobile){
       $scope.hideNav = true;
     }
-    }
+  }
+
+
+
+
+// The scroll event cannot be canceled. But you can do it by canceling these interaction events:
+// Mouse & Touch scroll and Buttons associated with scrolling.
+
+// left: 37, up: 38, right: 39, down: 40,
+// spacebar: 32, pageup: 33, pagedown: 34, end: 35, home: 36
+var keys = {37: 1, 38: 1, 39: 1, 40: 1};
+
+function preventDefault(e) {
+e = e || window.event;
+if (e.preventDefault)
+    e.preventDefault();
+e.returnValue = false;
+}
+
+function preventDefaultForScrollKeys(e) {
+  if (keys[e.keyCode]) {
+      preventDefault(e);
+      return false;
+  }
+}
+
+$rootScope.disableScroll =()=>{
+if (window.addEventListener) // older FF
+    window.addEventListener('DOMMouseScroll', preventDefault, false);
+window.onwheel = preventDefault; // modern standard
+window.onmousewheel = document.onmousewheel = preventDefault; // older browsers, IE
+window.ontouchmove  = preventDefault; // mobile
+document.onkeydown  = preventDefaultForScrollKeys;
+}
+
+
+
+$rootScope.enableScroll =()=>{
+  if (window.removeEventListener)
+      window.removeEventListener('DOMMouseScroll', preventDefault, false);
+  window.onmousewheel = document.onmousewheel = null;
+  window.onwheel = null;
+  window.ontouchmove = null;
+  document.onkeydown = null;
+}
 
 
 
@@ -483,6 +527,7 @@ var jquerymousewheel = require('./vendor/jquery.mousewheel.js')($);
 var infiniteScroll = require("./vendor/infiniteScroll.js");
 var jqueryUI = require('./vendor/jquery-ui.min.js');
 var home = require("./home.js");
+var about = require("./about.js");
 var events = require("./event.js");
 var radio = require("./radio.js");
 var nav = require("./nav.js");

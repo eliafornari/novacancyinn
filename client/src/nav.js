@@ -27,11 +27,11 @@ angular.module('myApp')
   }
 
   $scope.$on('$routeChangeStart', function(){
-    if(($location.path()=='/shop') || ($location.path()=='/shop/'+$routeParams.detail)){
+    if(($location.path()=='/shop') || ($location.path()=='/shop/product/'+$routeParams.detail)){
       console.log("isShop");
       $rootScope.pageLoading = false;
     }else{
-      $rootScope.pageLoading = true;
+      // $rootScope.pageLoading = true;
     }
 
   })
@@ -40,6 +40,7 @@ angular.module('myApp')
     if($location.path() != '/'){
       console.log('not home');
       $rootScope.backgroundColor = '#FFFFFF';
+        $rootScope.pageLoading = false;
     }
     setTimeout(function(){
       $rootScope.pageLoading = false;

@@ -1,17 +1,26 @@
-<div class="shop" ng-controller="shopCtrl">
+<div class="shop" ng-controller="shopCtrl" >
 
 
 
-      <div class="shop-content" >
+      <div class="shop-content" ng-init="isFullscreen=false" ng-class="{'noscroll': blockScroll}">
          <!-- ng-class="{'openDetail': isDetailOpen}" -->
         <ul class="product-ul">
           <li class="product-li" ng-repeat="p in Product" ng-click="openDetailFN(p.slug)" ng-init="productHovered=false">
+
+
+            <div class="product-fullscreen" ng-show="isFullscreen && Detail.slug==p.slug" ng-click="isFullscreen=false; blockScrollFN()">
+              <div class="product-fullscreen-content">
+                <img src="{{f.url.https}}" alt="{{p.slug}}" ng-repeat="f in p.images">
+              </div>
+            </div>
+
+
 
             <div class="product-name">
               <table>
                 <tr>
                   <td>
-                    <h2  ng-show="Detail.slug==p.slug">{{p.title}}</h2>
+                    <h2 ng-show="Detail.slug==p.slug">{{p.title}}</h2>
                   </td>
                 </tr>
               </table>
@@ -22,11 +31,14 @@
               <tr>
                 <td>
 
-                  <img class="product-li-img" src="{{p.images[0].url.http}}" alt="{{p.description}}" ng-class="{'opacityProducts': isDetailOpen && !productHovered}" ng-mouseenter="productHovered=true" ng-mouseleave="productHovered=false"/>
-
+                  <img class="product-li-img" id="target" src="{{p.images[0].url.https}}" alt="{{p.description}}" ng-class="{'opacityProducts': isDetailOpen && !productHovered}" ng-mouseenter="productHovered=true" ng-mouseleave="productHovered=false"/>
 
                   <div class="product-detail" ng-show="Detail.slug==p.slug">
                     <detail-directive></detail-directive>
+                  </div>
+
+                  <div class="product-fullscreen-btn" ng-click="isFullscreen=!isFullscreen; blockScrollFN()" ng-show="Detail.slug==p.slug">
+                    <fullscreen-directive></fullscreen-directive>
                   </div>
 
                 </td>
@@ -43,8 +55,8 @@
 
 
       <div class="dollar" ng-click="openCart()" ng-cloak>
-        <h3 ng-if="Cart.total_items == 0">
-          Cart ({{Cart.total_items}})
+        <h3>
+          Cart <span ng-if="Cart.total_items != 0">({{Cart.total_items}})</span>
         </h3>
         <!-- <ul class="dollar-ul">
           <li class="dollar-li" id="dollar-li-{{$index}}" ng-repeat="c in Cart.contents">

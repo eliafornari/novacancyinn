@@ -1,7 +1,9 @@
 
 .shop{
   width:100vw;
-  display: table;
+  height:100vh;
+  display: block;
+  overflow: scroll;
   // height:100vh;
   // background-color: #FFFFFF;
 }
@@ -19,6 +21,7 @@
   margin: auto;
   height:auto;
   margin-top:$margin-top;
+  padding-bottom: $margin-top;
 
   .product-li{
     display:block;
@@ -39,6 +42,55 @@
       }
     }
   }
+}
+
+.product-fullscreen-btn{
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  right: 30vw;
+  bottom: 0;
+  z-index: $z-shop-fullscreen-btn;
+  // bottom:10vh;
+  svg{
+    width: 100%;
+    height: 100%;
+    fill: transparent;
+  }
+}
+
+.product-fullscreen{
+  width: 100vw;
+  height:100vh;
+  overflow-y: scroll;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  z-index: $z-shop-fullscreen;
+  background-color: $white;
+  .product-fullscreen-content{
+    height: 100%;
+    overflow: scroll;
+    img{
+      width: 90%;
+      margin: auto;
+      display: block;
+      margin-top: 100px;
+    }
+  }
+}
+
+.noscroll{
+  // position: fixed;
+  // overflow: hidden;
+}
+
+html, body {
+    height: 100%;
+    height: 100%;
+    overflow: auto;
 }
 
 

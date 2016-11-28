@@ -3,13 +3,57 @@
   width: 100vw;
 }
 
-.about-p{
-  width: 50vw;
-  margin: auto;
-  display: block;
-  text-align: center;
-  text-transform: none;
-  @include respond-to(phone){
-    width:80vw;
+// .about-p{
+//   width: 50vw;
+//   margin: auto;
+//   display: block;
+//   text-align: center;
+//   text-transform: none;
+//   @include respond-to(phone){
+//     width:80vw;
+//   }
+// }
+
+
+.about-text{
+  width: 100%;
+  height:100%;
+  position: relative;
+  top:0;
+  left:0;
+  background-color: transparent;
+  z-index: 15;
+  .about-text-li{
+    position: absolute;
+    .about-text-p{
+
+    }
+  }
+}
+
+.about-video{
+  width: 100vw;
+  height:100vh;
+  position: fixed;
+  z-index:0;
+  top:0;
+  left:0;
+  iframe{
+    position: absolute;
+    width: 200vw;
+    height: 200vh;
+    top: 50%;
+    left: 50%;
+    margin-top: -100vh;
+    margin-left: -100vw;
+  }
+  #player{
+    position: absolute;
+    width: 200vw;
+    height: 200vh;
+    top: 50%;
+    left: 50%;
+    margin-top: -100vh;
+    margin-left: -100vw;
   }
 }

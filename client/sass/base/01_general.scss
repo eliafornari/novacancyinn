@@ -60,9 +60,9 @@ a::selection {
 
 
 
-*, *:before, *:after {
-  box-sizing: inherit;
-}
+// *, *:before, *:after {
+//   box-sizing: inherit;
+// }
 
 * {
   text-rendering: optimizeLegibility;
@@ -148,24 +148,37 @@ p{
 
 
 a:active {
-  text-shadow: 0 0 3px $purple;
+  // text-shadow: 0 0 3px $purple;
 }
 .ng-click-active{
-  text-shadow: 0 0 3px $purple;
+  // text-shadow: 0 0 3px $purple;
+  border-bottom: 1px solid $black;
 }
 
 a{
   cursor: pointer;
   @include h2();
-  @include hover-effect-glow($purple);
+  box-sizing: border-box;
+  &:hover{
+    // text-underline-position:below;
+    // text-decoration: underline;
+    // -moz-text-decoration-style: wavy;
+    border-bottom: 1px solid $black;
+    // color: black;
+    // -webkit-text-fill-color: black; /* Will override color (regardless of order) */
+    // -webkit-text-stroke-width: 9px;
+    // -webkit-text-stroke-color: black;
+  }
+  // @include hover-effect-glow($purple);
 }
 
 
 /*.....................ACTIVE CLASSES......................*/
 
 .active{
-  text-shadow: 0 0 3px $purple;
+  // text-shadow: 0 0 3px $purple;
   pointer-events: none;
+  border-bottom: 1px solid $black;
 }
 
 input, textarea, select, a, li {

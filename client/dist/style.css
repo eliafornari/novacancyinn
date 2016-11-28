@@ -51,6 +51,9 @@ table {
 @font-face {
   font-family: folio;
   src: url("/assets/fonts/folio.woff") format("woff"); }
+@font-face {
+  font-family: graebenbach;
+  src: url("/assets/fonts/gbcamweba-webfont.woff") format("woff"); }
 /*....................................SCSS VARIABLES..................................*/
 /*....................................................................................*/
 /*.................................................................................*/
@@ -78,7 +81,7 @@ table {
 .nav-container {
   display: block;
   margin: auto;
-  width: 900px;
+  width: 800px;
   position: relative;
   /*  @if $media == large-desktop {
       @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
@@ -112,11 +115,11 @@ table {
 
 .nav-left {
   position: absolute;
-  width: 300px;
+  width: 250px;
   float: left;
   height: 50px;
   top: 50%;
-  left: 0;
+  left: 25px;
   margin-top: -25px;
   /*  @if $media == large-desktop {
       @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
@@ -130,10 +133,12 @@ table {
       margin-top: auto;
       float: none; } }
   .nav-left a {
-    width: 100px;
+    width: 120px;
     display: inline-block;
     text-align: center;
     float: left;
+    padding-left: 15px;
+    padding-right: 15px;
     color: #884f9e;
     font-size: 19px;
     line-height: 35px;
@@ -151,10 +156,10 @@ table {
 
 .nav-right {
   position: absolute;
-  width: 300px;
+  width: 250px;
   height: 50px;
   top: 50%;
-  right: 0;
+  right: 25px;
   margin-top: -25px;
   /*  @if $media == large-desktop {
       @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
@@ -167,11 +172,13 @@ table {
       top: auto;
       margin-top: auto; } }
   .nav-right a {
-    width: 100px;
+    width: 120px;
     display: inline-block;
     text-align: center;
     float: left;
     color: #884f9e;
+    padding-left: 15px;
+    padding-right: 15px;
     font-size: 19px;
     line-height: 35px;
     font-family: "sabon";
@@ -533,9 +540,6 @@ a::selection {
 ::-webkit-scrollbar {
   display: none; }
 
-*, *:before, *:after {
-  box-sizing: inherit; }
-
 * {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -615,47 +619,22 @@ p {
   font-family: "folio"; }
 
 /*........................A.................................*/
-a:active {
-  text-shadow: 0 0 3px #884f9e; }
-
 .ng-click-active {
-  text-shadow: 0 0 3px #884f9e; }
+  border-bottom: 1px solid #000000; }
 
 a {
   cursor: pointer;
   font-size: 19px;
   line-height: 35px;
   font-family: "sabon";
-  text-shadow: 0 0 0px #884f9e;
-  transition: text-shadow 0.2s ease;
-  -webkit-transition: text-shadow 0.2s ease;
-  -moz-transition: text-shadow 0.2s ease;
-  -ms-transition: text-shadow 0.2s ease; }
+  box-sizing: border-box; }
   a:hover {
-    text-shadow: 2px 2px 7px #884f9e;
-    /*  @if $media == large-desktop {
-        @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-      }*/
-    /*  @if $media == large-desktop {
-        @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-      }*/
-    /*  @if $media == large-desktop {
-        @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-      }*/ }
-    @media only screen and (min-width: 0px) and (max-device-width: 767px) {
-      a:hover {
-        color: #884f9e !important; } }
-    @media only screen and (min-device-width: 768px) and (max-device-width: 1022px) and (orientation: portrait) {
-      a:hover {
-        color: #884f9e !important; } }
-    @media only screen and (min-device-width: 768px) and (max-device-width: 1022px) and (orientation: landscape) {
-      a:hover {
-        color: #884f9e !important; } }
+    border-bottom: 1px solid #000000; }
 
 /*.....................ACTIVE CLASSES......................*/
 .active {
-  text-shadow: 0 0 3px #884f9e;
-  pointer-events: none; }
+  pointer-events: none;
+  border-bottom: 1px solid #000000; }
 
 input, textarea, select, a, li {
   text-decoration: none; }
@@ -691,7 +670,9 @@ main {
 
 .shop {
   width: 100vw;
-  display: table; }
+  height: 100vh;
+  display: block;
+  overflow: scroll; }
 
 .shop-content {
   width: 100vw;
@@ -702,7 +683,8 @@ main {
   width: 100vw;
   margin: auto;
   height: auto;
-  margin-top: 200px; }
+  margin-top: 200px;
+  padding-bottom: 200px; }
   .product-ul .product-li {
     display: block;
     width: 100%;
@@ -722,6 +704,43 @@ main {
         .product-ul .product-li .product-li-img {
           max-width: 70vw; } }
 
+.product-fullscreen-btn {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  right: 30vw;
+  bottom: 0;
+  z-index: 11; }
+  .product-fullscreen-btn svg {
+    width: 100%;
+    height: 100%;
+    fill: transparent; }
+
+.product-fullscreen {
+  width: 100vw;
+  height: 100vh;
+  overflow-y: scroll;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  z-index: 17;
+  background-color: #FFFFFF; }
+  .product-fullscreen .product-fullscreen-content {
+    height: 100%;
+    overflow: scroll; }
+    .product-fullscreen .product-fullscreen-content img {
+      width: 90%;
+      margin: auto;
+      display: block;
+      margin-top: 100px; }
+
+html, body {
+  height: 100%;
+  height: 100%;
+  overflow: auto; }
+
 .dollar {
   position: fixed;
   bottom: 20px;
@@ -736,7 +755,7 @@ main {
   position: absolute;
   top: 0;
   right: 0;
-  width: 30vw;
+  width: 27vw;
   height: 100%; }
 
 .product-name {
@@ -744,19 +763,23 @@ main {
   left: 0px;
   top: 0;
   height: 100%;
-  width: 30vw; }
+  width: 27vw; }
   .product-name h2 {
     width: 90%;
+    margin: auto;
     text-align: center;
     position: relative;
     display: block; }
 
 .detail {
-  width: 300px;
+  width: 27vw;
   height: 100%;
   position: absolute;
   margin-top: 0vh;
   z-index: 10; }
+
+.detail-content {
+  margin-top: 10vh; }
 
 .detail-functions {
   position: relative;
@@ -821,60 +844,63 @@ main {
           line-height: 30px;
           font-family: "folio"; }
 
+.activeVariant a {
+  border-bottom: 1px solid #000000; }
+
 .detail-add {
   position: absolute;
-  bottom: 0;
+  bottom: 100px;
   height: auto;
   width: 100%;
   display: block; }
   .detail-add h2 {
     display: block;
-    width: 100%;
+    width: 50%;
     text-align: center;
     vertical-align: middle;
-    margin: 0;
-    text-shadow: 0 0 0px #ec2224;
-    transition: text-shadow 0.2s ease;
-    -webkit-transition: text-shadow 0.2s ease;
-    -moz-transition: text-shadow 0.2s ease;
-    -ms-transition: text-shadow 0.2s ease; }
+    margin: auto;
+    box-sizing: border-box; }
     .detail-add h2:hover {
-      text-shadow: 2px 2px 7px #ec2224;
-      /*  @if $media == large-desktop {
-          @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-        }*/
-      /*  @if $media == large-desktop {
-          @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-        }*/
-      /*  @if $media == large-desktop {
-          @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-        }*/ }
-      @media only screen and (min-width: 0px) and (max-device-width: 767px) {
-        .detail-add h2:hover {
-          color: #ec2224 !important; } }
-      @media only screen and (min-device-width: 768px) and (max-device-width: 1022px) and (orientation: portrait) {
-        .detail-add h2:hover {
-          color: #ec2224 !important; } }
-      @media only screen and (min-device-width: 768px) and (max-device-width: 1022px) and (orientation: landscape) {
-        .detail-add h2:hover {
-          color: #ec2224 !important; } }
+      border-bottom: 1px solid #000000; }
 
 .about {
   height: 100vh;
   width: 100vw; }
 
-.about-p {
-  width: 50vw;
-  margin: auto;
-  display: block;
-  text-align: center;
-  text-transform: none;
-  /*  @if $media == large-desktop {
-      @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-    }*/ }
-  @media only screen and (min-width: 0px) and (max-width: 767px) {
-    .about-p {
-      width: 80vw; } }
+.about-text {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  z-index: 15; }
+  .about-text .about-text-li {
+    position: absolute; }
+
+.about-video {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: 0;
+  top: 0;
+  left: 0; }
+  .about-video iframe {
+    position: absolute;
+    width: 200vw;
+    height: 200vh;
+    top: 50%;
+    left: 50%;
+    margin-top: -100vh;
+    margin-left: -100vw; }
+  .about-video #player {
+    position: absolute;
+    width: 200vw;
+    height: 200vh;
+    top: 50%;
+    left: 50%;
+    margin-top: -100vh;
+    margin-left: -100vw; }
 
 .contact {
   width: 100vw;
@@ -1309,19 +1335,18 @@ main {
     width: 100%;
     height: 100%; }
     .cart-close svg line {
-      stroke: #ec2224; }
+      stroke: #000000; }
 
 .cart-contents {
-  height: 100%; }
+  height: 100%;
+  overflow: scroll; }
 
 .cart-ul {
   position: relative;
-  left: 100px;
-  margin-top: 100px;
+  left: 15vw;
+  margin-top: 200px;
   width: 70vw;
   height: auto;
-  max-height: 450px;
-  overflow: scroll;
   /*  @if $media == large-desktop {
       @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
     }*/ }
@@ -1370,34 +1395,9 @@ main {
       right: 0;
       line-height: 70px;
       height: 70px;
-      text-shadow: 0 0 0px #ec2224;
-      transition: text-shadow 0.2s ease;
-      -webkit-transition: text-shadow 0.2s ease;
-      -moz-transition: text-shadow 0.2s ease;
-      -ms-transition: text-shadow 0.2s ease;
       /*  @if $media == large-desktop {
           @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
         }*/ }
-      .cart-ul .cart-li .cart-remove:hover {
-        text-shadow: 2px 2px 7px #ec2224;
-        /*  @if $media == large-desktop {
-            @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-          }*/
-        /*  @if $media == large-desktop {
-            @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-          }*/
-        /*  @if $media == large-desktop {
-            @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-          }*/ }
-        @media only screen and (min-width: 0px) and (max-device-width: 767px) {
-          .cart-ul .cart-li .cart-remove:hover {
-            color: #ec2224 !important; } }
-        @media only screen and (min-device-width: 768px) and (max-device-width: 1022px) and (orientation: portrait) {
-          .cart-ul .cart-li .cart-remove:hover {
-            color: #ec2224 !important; } }
-        @media only screen and (min-device-width: 768px) and (max-device-width: 1022px) and (orientation: landscape) {
-          .cart-ul .cart-li .cart-remove:hover {
-            color: #ec2224 !important; } }
       @media only screen and (min-width: 0px) and (max-width: 767px) {
         .cart-ul .cart-li .cart-remove {
           line-height: 30px;
@@ -1419,10 +1419,10 @@ main {
 
 .cart-total {
   position: relative;
-  left: 100px;
   height: 70px;
   width: auto;
   margin-top: 30px;
+  padding-bottom: 200px;
   /*  @if $media == large-desktop {
       @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
     }*/ }
@@ -1446,10 +1446,17 @@ main {
       margin-left: 40px; }
 
 .form-title {
+  font-size: 35px;
+  line-height: 50px;
+  font-family: "sabon";
+  position: absolute;
+  top: 20px;
+  left: 20px; }
+
+.form-subtitle {
   font-size: 19px;
   line-height: 35px;
-  font-family: "sabon";
-  color: #ec2224; }
+  font-family: "sabon"; }
 
 .checkout-button {
   position: absolute;
@@ -1459,44 +1466,18 @@ main {
   width: 400px;
   height: 50px;
   cursor: pointer;
-  color: #ec2224;
+  color: #000000;
   background-color: transparent;
-  border-bottom: 2px solid #ec2224;
   font-size: 19px;
   line-height: 35px;
   font-family: "sabon";
-  text-shadow: 0 0 0px #ec2224;
-  transition: text-shadow 0.2s ease;
-  -webkit-transition: text-shadow 0.2s ease;
-  -moz-transition: text-shadow 0.2s ease;
-  -ms-transition: text-shadow 0.2s ease;
   border: 0;
-  border-bottom: 2px solid #ec2224;
+  border-bottom: 2px solid #000000;
   outline: 0;
   padding: 0;
   /*  @if $media == large-desktop {
       @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
     }*/ }
-  .checkout-button:hover {
-    text-shadow: 2px 2px 7px #ec2224;
-    /*  @if $media == large-desktop {
-        @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-      }*/
-    /*  @if $media == large-desktop {
-        @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-      }*/
-    /*  @if $media == large-desktop {
-        @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-      }*/ }
-    @media only screen and (min-width: 0px) and (max-device-width: 767px) {
-      .checkout-button:hover {
-        color: #ec2224 !important; } }
-    @media only screen and (min-device-width: 768px) and (max-device-width: 1022px) and (orientation: portrait) {
-      .checkout-button:hover {
-        color: #ec2224 !important; } }
-    @media only screen and (min-device-width: 768px) and (max-device-width: 1022px) and (orientation: landscape) {
-      .checkout-button:hover {
-        color: #ec2224 !important; } }
   @media only screen and (min-width: 0px) and (max-width: 767px) {
     .checkout-button {
       box-sizing: border-box;
@@ -1512,35 +1493,10 @@ main {
     font-size: 19px;
     line-height: 35px;
     font-family: "sabon";
-    text-shadow: 0 0 0px #ec2224;
-    transition: text-shadow 0.2s ease;
-    -webkit-transition: text-shadow 0.2s ease;
-    -moz-transition: text-shadow 0.2s ease;
-    -ms-transition: text-shadow 0.2s ease;
     line-height: normal;
     /*  @if $media == large-desktop {
         @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
       }*/ }
-    .cart-back p:hover {
-      text-shadow: 2px 2px 7px #ec2224;
-      /*  @if $media == large-desktop {
-          @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-        }*/
-      /*  @if $media == large-desktop {
-          @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-        }*/
-      /*  @if $media == large-desktop {
-          @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
-        }*/ }
-      @media only screen and (min-width: 0px) and (max-device-width: 767px) {
-        .cart-back p:hover {
-          color: #ec2224 !important; } }
-      @media only screen and (min-device-width: 768px) and (max-device-width: 1022px) and (orientation: portrait) {
-        .cart-back p:hover {
-          color: #ec2224 !important; } }
-      @media only screen and (min-device-width: 768px) and (max-device-width: 1022px) and (orientation: landscape) {
-        .cart-back p:hover {
-          color: #ec2224 !important; } }
     @media only screen and (min-width: 0px) and (max-width: 767px) {
       .cart-back p {
         height: 35px;
@@ -1560,10 +1516,10 @@ main {
     top: 50%;
     height: 20px;
     margin-top: -10px;
-    color: #ec2224;
+    color: #000000;
     background-color: transparent;
     border: 0;
-    border-bottom: 2px solid #ec2224;
+    border-bottom: 2px solid #000000;
     text-align: left;
     outline: 0;
     border-radius: 0%;
@@ -1582,15 +1538,15 @@ main {
     .form-entry input:hover, .form-entry input:focus {
       outline: 0; }
     .form-entry input::-webkit-input-placeholder {
-      color: #ec2224; }
+      color: #000000; }
     .form-entry input:-moz-placeholder {
       /* Firefox 18- */
-      color: #ec2224; }
+      color: #000000; }
     .form-entry input::-moz-placeholder {
       /* Firefox 19+ */
-      color: #ec2224; }
+      color: #000000; }
     .form-entry input:-ms-input-placeholder {
-      color: #ec2224; }
+      color: #000000; }
 
 select {
   width: 80%;
@@ -1599,10 +1555,10 @@ select {
   top: 50%;
   height: 20px;
   margin-top: -10px;
-  color: #ec2224;
+  color: #000000;
   background-color: transparent;
   border: 0;
-  border-bottom: 2px solid #ec2224;
+  border-bottom: 2px solid #000000;
   text-align: left;
   outline: 0;
   font-size: 12px;
@@ -1624,18 +1580,23 @@ select {
     select {
       width: 100%; } }
   select::-webkit-input-placeholder {
-    color: #ec2224; }
+    color: #000000; }
   select:-moz-placeholder {
     /* Firefox 18- */
-    color: #ec2224; }
+    color: #000000; }
   select::-moz-placeholder {
     /* Firefox 19+ */
-    color: #ec2224; }
+    color: #000000; }
   select:-ms-input-placeholder {
-    color: #ec2224; }
+    color: #000000; }
 
 input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
   border-bottom: 1px solid #FFFF00; }
+
+.cart-error {
+  width: 100%; }
+  .cart-error p {
+    text-align: center; }
 
 .payment {
   width: 100%;
@@ -1702,14 +1663,6 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
       height: 100%;
       position: relative; }
 
-.shipment-h1 {
-  font-size: 19px;
-  line-height: 35px;
-  font-family: "sabon";
-  position: absolute;
-  top: 20px;
-  left: 20px; }
-
 .customer {
   width: 35%;
   display: block;
@@ -1772,12 +1725,12 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
     font-size: 12px;
     line-height: 30px;
     font-family: "folio";
-    color: #ec2224; }
+    color: #000000; }
   .isBillingDifferent input {
     font-size: 12px;
     line-height: 30px;
     font-family: "folio";
-    color: #ec2224; }
+    color: #000000; }
 
 .processed {
   height: 100%;

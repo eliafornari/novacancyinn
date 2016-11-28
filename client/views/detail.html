@@ -5,31 +5,32 @@
       <img class="detail-img"  src="{{i.url.http}}" alt="{{p.description}}" />
     </div>
   </div> -->
-  <h3 class="detail-price" ng-cloak>{{Detail.price.data.formatted.without_tax}}</h3>
+  <div class="detail-content">
+    <h3 class="detail-price" ng-cloak>{{Detail.price.data.formatted.without_tax}}</h3>
 
 
-  <p class="detail-description">
-    {{p.description}}
-  </p>
+    <p class="detail-description">
+      {{p.description}}
+    </p>
 
-
-
-
-  <div class="detail-functions">
-
+    <div class="detail-functions">
       <div class="detail-modifiers">
         <ul class="detail-modifiers-ul" ng-repeat="m in Detail.modifiers">
           <!-- <p class="detail-modifiers-ul-placeholder" ng-click="showSelection(m.id)">{{m.title}} </p> -->
 
-          <div class="detail-modifiers-variations" ng-click="showSelection(m.id)">
-            <li class="detail-modifiers-variations-li" ng-repeat="v in m.variations" ng-click="thisVariation(Detail.id , m.id, m.title, v.id, v.title);" ng-show="selectedVariation[m.id].variation_title==v.title || m.open==true">
+          <div class="detail-modifiers-variations">
+             <!-- ng-click="showSelection(m.id)" -->
+            <li class="detail-modifiers-variations-li" ng-repeat="v in m.variations" ng-click="thisVariation(Detail.id , m.id, m.title, v.id, v.title);" ng-class="{'activeVariant': selectedVariation[m.id].variation_title==v.title}">
+              <!-- ng-show="selectedVariation[m.id].variation_title==v.title || m.open==true" -->
               <a>{{v.title}}</a>
             </li>
           </div>
         </ul>
       </div>
+    </div>
 
   </div>
+
 
   <div class="detail-add">
     <h2 class="detail-add-plus-variation" ng-hide="Detail.has_variation" ng-click="addToCart(Detail.id)">Add To Cart</h2>

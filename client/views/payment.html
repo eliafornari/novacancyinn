@@ -4,9 +4,11 @@
 
   <form name="paymentForm" novalidate class="payment-form" method="post" ng-hide="paymentProcessed" ng-submit="paymentToProcess()">
 
+    <h1 class="form-title">Payment</h1>
+
     <div class="payment-form-div">
 
-      <h2 class="form-title">bill to</h2>
+      <h2 class="form-subtitle">credit card</h2>
       <div class="form-entry">
         <input type="text" name="number" value="card number" ng-model="payment.number" required="required" placeholder="card number" onfocus="this.placeholder = ''" onblur="this.placeholder = 'card number'" min="0" max="10">
         <!-- <div class="">
@@ -37,7 +39,7 @@
       <!-- <p>TAX <span>10%</span></p> -->
       <p>TOTAL <span>{{Totals.totals.total.formatted}}</span></p>
     </div>
-    <button type="submit" class="checkout-button hvr-sweep-to-right" ng-disabled="paymentForm.$invalid">COMPLETE ORDER</button>
+    <button type="submit" class="checkout-button hvr-sweep-to-right" ng-disabled="paymentForm.$invalid">Complete order</button>
     <!-- hvr-sweep-to-right -->
 
   </form>

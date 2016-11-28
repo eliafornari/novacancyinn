@@ -77,36 +77,28 @@ app.get('/authenticate', function(req, res){
 
 
     app.post('/addVariation', function(req, res){
-
-      console.log('request =' + JSON.stringify(req.body))
-
-      var variationArray = req.body
+      // console.log('request =' + JSON.stringify(req.body))
+      var variationArray = req.body;
       for (var i in variationArray){
         var id = variationArray[i].id;
-        var modifier = variationArray[i].modifier_id
-        var variation = variationArray[i].variation_id
-        // console.log('variationArray[i]: '+variationArray[i]);
-        // console.log('id: '+id);
-        // console.log('modifier: '+variationArray[i].modifier_id);
-        // console.log('variation: '+variationArray[i].variation_id);
+        var modifier = variationArray[i].modifier_id;
+        var variation = variationArray[i].variation_id;
         var obj={};
         var objArray = [];
         obj[modifier] = variation
         objArray.push(obj);
-        console.log(objArray);
-
       }
+
+      console.log(req.body);
 
 
       // res.setHeader("Authorization", "Bearer "+token);
 
       moltin.Cart.Insert(id, 1, obj, function(cart) {
-        console.log(cart);
+        // console.log(cart);
         res.json(cart);
-
       }, function(error, response, c) {
         console.log(error);
-        console.log(response);
         console.log(c);
         res.json(error);
           // Something went wrong...
@@ -129,7 +121,8 @@ app.get('/authenticate', function(req, res){
           res.json(items);
       }, function(error, response, c) {
           // Something went wrong...
-          console.log(response);
+          console.log(response.body);
+          console.log(error);
       });
     })
 

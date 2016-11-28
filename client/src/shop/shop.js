@@ -6,6 +6,9 @@ $rootScope.pageClass = "page-shop";
 $rootScope.isDetailOpen = false;
 $rootScope.windowHeight = $window.innerHeight;
 $rootScope.Detail = {};
+$rootScope.selectedVariation;
+$rootScope.Variations;
+$scope.sizeLoading = false;
 
 $rootScope.openDetailFN = (slug)=>{
   if($rootScope.isDetailOpen == true){
@@ -86,16 +89,12 @@ $rootScope.addToCart = function(id){
 
 $rootScope.addVariation = function(){
 
+  console.log($rootScope.selectedVariation);
+
   if($rootScope.selectedVariation){
     $http({
       url: '/addVariation',
       method: 'POST',
-      headers: {
-        // 'Content-Type': 'application/json'
-        // 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-        // 'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      // transformRequest: transformRequestAsFormPost,
       data: $rootScope.selectedVariation
     }).then(function(response){
       // $rootScope.Cart = response;
@@ -116,55 +115,65 @@ $rootScope.addVariation = function(){
 
   //variations
 
-  $rootScope.selectedVariation = {};
   $rootScope.howManyVAriationsSelected = 0;
   $rootScope.detailUpdate = (slug) => {
 
-    $rootScope.selectedVariation={};
-    $rootScope.howManyVAriationsSelected = 0;
-    $rootScope.Detail.total_variations=0;
+    if($rootScope.Detail.slug!=slug){
+      $rootScope.pageLoading=false;
 
-    for (var i in $rootScope.Product){
-      if ($rootScope.Product[i].slug == slug){
-        $rootScope.Detail=$rootScope.Product[i];
-        $rootScope.Detail.total_variations=0;
-        $rootScope.Detail.has_variation = $rootScope.has_variation;
+      $rootScope.selectedVariation={};
+      $rootScope.howManyVAriationsSelected = 0;
+      $rootScope.Detail.total_variations=0;
+      for (var i in $rootScope.Product){
+        if ($rootScope.Product[i].slug == slug){
+          $rootScope.Detail=$rootScope.Product[i];
+          $rootScope.Detail.total_variations=0;
+          $rootScope.Detail.has_variation = $rootScope.has_variation;
+          $rootScope.pageLoading=false;
+          $scope.drag_FN(slug);
 
-        var go = true;
-        //has variation
-        for (i in $rootScope.Detail.modifiers){
-          $rootScope.Detail.modifiers[i].open = false;
-          $rootScope.Detail.total_variations =$rootScope.Detail.total_variations+1;
-          // if($rootScope.Detail.modifiers[i].id){$rootScope.has_variation=true;}else{$rootScope.has_variation=false;}
-          $rootScope.Detail.has_variation = true;
-          $rootScope.showSelection($rootScope.Detail.modifiers[i].id);
-            go = false;
-        }
-
-        if(go==true){
-          //does not have variation
-          $rootScope.Detail.has_variation = false;
+          var go = true;
+          //has variation
           for (i in $rootScope.Detail.modifiers){
+            $rootScope.Detail.modifiers[i].open = false;
+            $rootScope.Detail.total_variations =$rootScope.Detail.total_variations+1;
+            // if($rootScope.Detail.modifiers[i].id){$rootScope.has_variation=true;}else{$rootScope.has_variation=false;}
+            $rootScope.Detail.has_variation = true;
+            // $rootScope.showSelection($rootScope.Detail.modifiers[i].id);
+              go = false;
+          }
+
+          if(go==true){
+            //does not have variation
+            $rootScope.Detail.has_variation = false;
+            for (i in $rootScope.Detail.modifiers){
+
+            }
 
           }
 
         }
-
       }
+
     }
+
+
+
+
+
   }
 
 
 
 
-  $rootScope.showSelection = function(modifier_id){
-    console.log('modifier_id',modifier_id);
-    for (var m in $rootScope.Detail.modifiers){
-      if($rootScope.Detail.modifiers[m].id == modifier_id){
-        $rootScope.Detail.modifiers[m].open = !$rootScope.Detail.modifiers[m].open;
-      }
-    }
-  }
+  // $rootScope.showSelection = function(modifier_id){
+  //   console.log('modifier_id',modifier_id);
+  //   for (var m in $rootScope.Detail.modifiers){
+  //     if($rootScope.Detail.modifiers[m].id == modifier_id){
+  //       $rootScope.Detail.modifiers[m].open = !$rootScope.Detail.modifiers[m].open;
+  //     }
+  //   }
+  // }
 
 
 
@@ -181,6 +190,7 @@ $rootScope.addVariation = function(){
             variation_id: variation_id,
             variation_title: variation_title
           }
+          console.log($rootScope.selectedVariation[i]);
           if($rootScope.howManyVAriationsSelected<$rootScope.Detail.total_variations){
             $rootScope.howManyVAriationsSelected = $rootScope.howManyVAriationsSelected+1;
           }
@@ -213,6 +223,68 @@ $rootScope.addVariation = function(){
     },3000);
 
   });
+
+
+
+  // document.getElementById('target').ondragstart = function() { return false; };
+  var dragging = false;
+  var coord;
+  var right=0;
+  var left=0;
+
+$scope.drag_FN = (slug)=>{
+  $('#'+slug).mousedown(function(event) {
+    event.preventDefault(); console.log("mousedown");
+    dragging = true;
+
+  }).mousemove(function( event ) {
+    if(dragging){
+
+      if(coord){
+        if(coord.pageX < (event.pageX)){
+          right+= 1;
+
+          if(right>10){
+            console.log('boom boom');
+            right=0;
+          }
+
+          console.log('right',right);
+        }else if(coord.pageX > (event.pageX)){
+          console.log('left');
+        }
+      }
+
+      coord = {
+        pageX: event.pageX,
+        pageY: event.pageY
+      }
+
+      // $( "#log" ).append( "<div>" + msg + "</div>" );
+    }
+
+  }).mouseup(function(event) {
+    event.preventDefault();
+    console.log("mouseup");
+    dragging = false;
+
+  });
+
+};
+
+
+
+$rootScope.blockScroll=false;
+
+$rootScope.blockScrollFN=()=>{
+  $rootScope.blockScroll=!$rootScope.blockScroll;
+}
+
+
+
+
+
+
 
 
 
@@ -254,6 +326,18 @@ Shop.directive('detailDirective', function($rootScope, $location, $window, $rout
   return {
     restrict: 'E',
     templateUrl: 'views/detail.html',
+    replace: true,
+    link: function(scope, elem, attrs) {
+
+    }
+  };
+});
+
+
+Shop.directive('fullscreenDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+  return {
+    restrict: 'E',
+    templateUrl: 'views/icon/fullscreen.html',
     replace: true,
     link: function(scope, elem, attrs) {
 

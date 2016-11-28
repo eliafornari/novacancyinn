@@ -1,6 +1,36 @@
-<div class="about">
+<div class="about" ng-controller="aboutCtrl">
 
-  <table>
+
+  <ul class="about-text" ng-click="playPause()">
+
+    <li class="about-text-li" ng-repeat="t in aboutText" ng-show="t.point==view_about" style="top:{{t.y}}%; left:{{t.x}}%">
+      <p class="about-text-p" style="font-family:{{t.type}};font-size:{{t.size}}px;">{{t.text}}</p>
+    </li>
+
+  </ul>
+
+
+
+  <!-- <video src="videofile.ogg" autoplay poster="posterimage.jpg">
+
+  </video> -->
+
+  <div class="about-video">
+<!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/eYb9cbUsPxY?rel=0&amp;controls=0&amp;showinfo=0;autoplay=0" frameborder="0" allowfullscreen ></iframe> -->
+
+
+<div id="video"></div>
+<script src="https://www.youtube.com/iframe_api"></script>
+
+<script>
+
+
+
+
+</script>
+  </div>
+
+  <!-- <table>
     <tr>
       <td>
         <p class="about-p">
@@ -9,7 +39,7 @@
         </p>
       </td>
     </tr>
-  </table>
+  </table> -->
 
 
 

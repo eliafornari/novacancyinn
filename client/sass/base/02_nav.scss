@@ -67,7 +67,7 @@
 .nav-container{
   display: block;
   margin: auto;
-  width:900px;
+  width:800px;
   position: relative;
   @include respond-to(phone){
     width:100vw;
@@ -104,11 +104,11 @@
 
 .nav-left{
   position: absolute;
-  width: 300px;
+  width: 250px;
   float:left;
   height:50px;
   top:50%;
-  left:0;
+  left:25px;
   margin-top: -25px;
   @include respond-to(phone){
     width:100vw;
@@ -120,10 +120,12 @@
   }
 
   a{
-    width: 100px;
+    width: 120px;
     display: inline-block;
     text-align: center;
     float: left;
+    padding-left: 15px;
+    padding-right: 15px;
     color: $purple;
     @include h2();
     @include respond-to(phone){
@@ -139,10 +141,10 @@
 
 .nav-right{
   position: absolute;
-  width: 300px;
+  width: 250px;
   height:50px;
   top:50%;
-  right:0;
+  right: 25px;
   margin-top: -25px;
   @include respond-to(phone){
     width:100vw;
@@ -152,11 +154,13 @@
     margin-top: auto;
   }
   a{
-    width: 100px;
+    width: 120px;
     display: inline-block;
     text-align: center;
     float: left;
     color: $purple;
+    padding-left: 15px;
+    padding-right: 15px;
     @include h2();
     @include respond-to(phone){
       width:100vw;

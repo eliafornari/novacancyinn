@@ -13,13 +13,7 @@
   }
 }
 
-.shipment-h1{
-  @include h2();
-  position: absolute;
-  top:$margin-sides;
-  left:$margin-sides;
 
-}
 
 
 
@@ -76,10 +70,10 @@
   }
   label{
     @include paragraph();
-    color: $red;
+    color: $black;
   }
   input{
     @include paragraph();
-    color: $red;
+    color: $black;
   }
 }
