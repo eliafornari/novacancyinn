@@ -31,7 +31,9 @@
               <tr>
                 <td>
 
-                  <img class="product-li-img" id="target" src="{{p.images[0].url.https}}" alt="{{p.description}}" ng-class="{'opacityProducts': isDetailOpen && !productHovered}" ng-mouseenter="productHovered=true" ng-mouseleave="productHovered=false"/>
+                  <img class="product-li-img" id="target" src="{{p.images[0].url.https}}" alt="{{p.description}}" ng-class="{'opacityProducts': isDetailOpen && !productHovered}" ng-mouseenter="productHovered=true" ng-mouseleave="productHovered=false" ng-show="Detail.slug!=p.slug"/>
+                  <img class="product-li-img" id="target" src="{{p.images[thisImageIndex].url.https}}" alt="{{p.description}}" ng-class="{'opacityProducts': isDetailOpen && !productHovered}" ng-mouseenter="productHovered=true" ng-mouseleave="productHovered=false" ng-click="nextImage(p.slug)" ng-show="Detail.slug==p.slug"/>
+
 
                   <div class="product-detail" ng-show="Detail.slug==p.slug">
                     <detail-directive></detail-directive>
@@ -56,7 +58,7 @@
 
       <div class="dollar" ng-click="openCart()" ng-cloak>
         <h3>
-          Cart <span ng-if="Cart.total_items != 0">({{Cart.total_items}})</span>
+          Cart <span ng-show="Cart.total_items != 0">({{Cart.total_items}})</span>
         </h3>
         <!-- <ul class="dollar-ul">
           <li class="dollar-li" id="dollar-li-{{$index}}" ng-repeat="c in Cart.contents">

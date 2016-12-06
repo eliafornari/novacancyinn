@@ -19,8 +19,10 @@
   .processed-thankyou-p{
     width:100%;
     @include p();
+      color: black;
     .processed-thankyou-a{
       @include p();
+      color: black;
     }
 
   }

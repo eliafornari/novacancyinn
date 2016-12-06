@@ -18,32 +18,34 @@ angular.module('myApp', [
 .run(['$anchorScroll', '$route', '$rootScope', '$location', '$routeParams','$templateCache', function($anchorScroll, $route, $rootScope, $location, $routeParams, $templateCache) {
 
 $rootScope.pageLoading = true;
+$rootScope.pageLoading = true;
 
-//a change of path should not reload the page
+  var original = $location.path;
+  $location.path = function (path, reload) {
+      if (reload === false) {
+          var lastRoute = $route.current;
+          var un = $rootScope.$on('$locationChangeSuccess', function () {
+              $route.current = lastRoute;
+              un();
+          });
+      }
+      else if (reload === true){
+
+        var currentPageTemplate = $route.current.templateUrl;
+          $templateCache.remove(currentPageTemplate);
+
+      var un = $rootScope.$on('$locationChangeSuccess', function () {
+            // $route.current = 'worldoftheblonds/'+$routeParams.category+'/'+$routeParams.event;
+            un();
+            $route.reload();
+        });
+      }
+      return original.apply($location, [path]);
+  };
 
 
-    var original = $location.path;
-    $location.path = function (path, reload) {
-        if (reload === false) {
-            var lastRoute = $route.current;
-            $rootScope.pageLoading = false;
-            var un = $rootScope.$on('$locationChangeSuccess', function () {
-                $route.current = lastRoute;
-                un();
-            });
-        }
-        else if (reload === true){
-            var currentPageTemplate = $route.current.templateUrl;
-            $templateCache.remove(currentPageTemplate);
-            $rootScope.pageLoading = false;
-            var un = $rootScope.$on('$locationChangeSuccess', function () {
-                  $route.current = '/';
-                  un();
-                  $route.reload();
-              });
-        }
-        return original.apply($location, [path]);
-    };
+
+
 
   }])
 
@@ -127,10 +129,7 @@ $sceProvider.enabled(false);
 
     .when('/', {
       templateUrl: 'views/home.html',
-      controller: 'appCtrl',
-      resolve: {
-
-        }
+      controller: 'appCtrl'
 
     })
 
@@ -231,11 +230,10 @@ $rootScope.Home;
     //   $rootScope.desaturate = false;
     // }else if(key == 87){
     //   $rootScope.desaturate = true;
-    // }else if(key == 49){
-    //   $rootScope.font = 'Roboto Mono';
-    // }else if(key == 50){
-    //   $rootScope.font = 'Roboto';
     // }
+    if(key == 66){
+      $rootScope.font = 'brush';
+    }
 
 
 

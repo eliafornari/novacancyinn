@@ -52,8 +52,8 @@ table {
   font-family: folio;
   src: url("/assets/fonts/folio.woff") format("woff"); }
 @font-face {
-  font-family: graebenbach;
-  src: url("/assets/fonts/gbcamweba-webfont.woff") format("woff"); }
+  font-family: brush;
+  src: url("/assets/fonts/BrushScriptStd.otf") format("woff"); }
 /*....................................SCSS VARIABLES..................................*/
 /*....................................................................................*/
 /*.................................................................................*/
@@ -69,14 +69,65 @@ table {
   width: 100vw;
   margin-top: 0; }
 
+.nav.center a {
+  text-shadow: 0 0 0px #884f9e;
+  transition: text-shadow 0.2s ease;
+  -webkit-transition: text-shadow 0.2s ease;
+  -moz-transition: text-shadow 0.2s ease;
+  -ms-transition: text-shadow 0.2s ease;
+  text-decoration: none;
+  border: none; }
+  .nav.center a:hover {
+    text-shadow: 0px 0px 10px #884f9e;
+    /*  @if $media == large-desktop {
+        @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
+      }*/
+    /*  @if $media == large-desktop {
+        @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
+      }*/
+    /*  @if $media == large-desktop {
+        @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
+      }*/ }
+    @media only screen and (min-width: 0px) and (max-device-width: 767px) {
+      .nav.center a:hover {
+        color: #884f9e !important; } }
+    @media only screen and (min-device-width: 768px) and (max-device-width: 1022px) and (orientation: portrait) {
+      .nav.center a:hover {
+        color: #884f9e !important; } }
+    @media only screen and (min-device-width: 768px) and (max-device-width: 1022px) and (orientation: landscape) {
+      .nav.center a:hover {
+        color: #884f9e !important; } }
+
 .nav.up {
   top: 0%;
   height: 100px; }
   .nav.up .nav-logo {
-    width: 100px !important;
-    height: 100px !important; }
+    width: 130px !important;
+    height: 130px !important;
+    top: -10px; }
   .nav.up a {
     color: #000000; }
+
+.nav.brush a {
+  color: transparent;
+  color: black;
+  font-family: 'brush';
+  -webkit-text-fill-color: transparent;
+  /* Will override color (regardless of order) */
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: #000000;
+  border: 0 !important;
+  font-size: 28px;
+  text-shadow: none !important; }
+  .nav.brush a:hover {
+    -webkit-text-stroke-color: #884f9e; }
+.nav.brush a.active {
+  -webkit-text-stroke-color: #884f9e; }
+
+.nav.center.brush a {
+  -webkit-text-stroke-color: #884f9e; }
+  .nav.center.brush a:hover {
+    text-shadow: 0 0 10px #884f9e !important; }
 
 .nav-container {
   display: block;
@@ -91,8 +142,8 @@ table {
       width: 100vw; } }
 
 .nav-logo {
-  width: 200px;
-  height: 200px;
+  width: 250px;
+  height: 250px;
   margin: auto;
   position: relative; }
   .nav-logo .nav-logo-blur {
@@ -103,11 +154,25 @@ table {
     top: 0;
     background-position: center;
     background-size: contain;
-    background-repeat: no-repeat;
-    -webkit-transition: opacity 0.4s;
-    -moz-transition: opacity 0.4s;
-    -ms-transition: opacity 0.4s;
-    transition: opacity 0.4s; }
+    background-repeat: no-repeat; }
+  .nav-logo .nav-logo-base {
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 0;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat; }
+  .nav-logo .nav-logo-anim {
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 0;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat; }
   .nav-logo svg {
     display: block;
     width: 100%;
@@ -194,17 +259,25 @@ table {
         float: none; } }
 
 .nav-logo-blur {
-  opacity: 0; }
+  opacity: 0;
+  -webkit-transition: opacity 0.4s ease;
+  -moz-transition: opacity 0.4s ease;
+  -ms-transition: opacity 0.4s ease;
+  transition: opacity 0.4s ease; }
 
 .nav-logo-blur.blur {
-  opacity: 1 !important; }
+  opacity: 1;
+  -webkit-transition: opacity 0.4s ease;
+  -moz-transition: opacity 0.4s ease;
+  -ms-transition: opacity 0.4s ease;
+  transition: opacity 0.4s ease; }
 
-.nav-logo svg:hover #glow {
-  stroke: white;
-  filter: url(#blur-filter); }
-
-.nav-logo svg:hover #color {
-  stroke: white; }
+.nav-logo-blur.blur-add.blur-add-active {
+  opacity: 1;
+  -webkit-transition: opacity 0.4s ease;
+  -moz-transition: opacity 0.4s ease;
+  -ms-transition: opacity 0.4s ease;
+  transition: opacity 0.4s ease; }
 
 .blink-infinite {
   animation: blink 0.2s steps(5, start) infinite;
@@ -214,17 +287,32 @@ table {
   -o-animation: blink 0.2s steps(5, start) infinite; }
 
 .blink {
+  opacity: 1;
   animation: blink 0.2s steps(5, start) 3;
-  -webkit-animation: blink 0.2s steps(5, start) 3; }
+  -webkit-animation: blink 0.2s steps(5, start) 3;
+  -ms-animation: blink 0.2s steps(5, start) 3;
+  -moz-animation: blink 0.2s steps(5, start) 3;
+  -o-animation: blink 0.2s steps(5, start) 3; }
+
+.blink-late {
+  animation: blink 0.2s 2s steps(5, start) 3;
+  -webkit-animation: blink 0.2s steps(5, start) 3;
+  -ms-animation: blink 0.2s steps(5, start) 3;
+  -moz-animation: blink 0.2s steps(5, start) 3;
+  -o-animation: blink 0.2s steps(5, start) 3; }
 
 .blink-once {
   animation: blink 0.2s steps(5, start) 1;
   -webkit-animation: blink 0.2s steps(5, start) 1; }
 
 @keyframes blink {
+  from {
+    opacity: 0; }
   to {
     opacity: 1; } }
 @-webkit-keyframes blink {
+  from {
+    opacity: 0; }
   to {
     opacity: 1; } }
 .nav-mobile .nav-mobile-table {
@@ -594,7 +682,7 @@ p, a, li {
 
 p, span {
   font-size: 12px;
-  line-height: 30px;
+  line-height: 25px;
   font-family: "folio";
   color: #000000; }
 
@@ -615,7 +703,7 @@ h3 {
 
 p {
   font-size: 12px;
-  line-height: 30px;
+  line-height: 25px;
   font-family: "folio"; }
 
 /*........................A.................................*/
@@ -659,6 +747,32 @@ main {
   display: table; }
 
 /*.............................Loader............................*/
+@keyframes pageenter {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+@-webkit-keyframes pageenter {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+@-moz-keyframes pageenter {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+@-ms-keyframes pageenter {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+@-o-keyframes pageenter {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+/*.................................NG ENTER/LEAVE..................................*/
 /*.............................NG-CLOAK............................*/
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important; }
@@ -672,7 +786,9 @@ main {
   width: 100vw;
   height: 100vh;
   display: block;
-  overflow: scroll; }
+  overflow: scroll;
+  top: 0;
+  position: relative; }
 
 .shop-content {
   width: 100vw;
@@ -797,7 +913,7 @@ html, body {
 .detail-price {
   position: relative;
   display: block;
-  height: 30px;
+  height: 25px;
   width: 100%;
   /*  @if $media == large-desktop {
       @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
@@ -814,9 +930,12 @@ html, body {
     text-align: right; }
 
 .detail-description {
-  width: 100%;
+  width: 80%;
   text-align: left;
-  display: block; }
+  display: block;
+  max-height: 150px;
+  overflow-y: scroll;
+  margin-top: 15px; }
 
 .detail-modifiers {
   position: relative;
@@ -829,7 +948,7 @@ html, body {
       width: auto;
       display: block;
       font-size: 12px;
-      line-height: 30px;
+      line-height: 25px;
       font-family: "folio"; }
     .detail-modifiers .detail-modifiers-ul .detail-modifiers-variations {
       width: auto;
@@ -841,18 +960,18 @@ html, body {
           margin-left: 0; }
         .detail-modifiers .detail-modifiers-ul .detail-modifiers-variations .detail-modifiers-variations-li a {
           font-size: 12px;
-          line-height: 30px;
+          line-height: 25px;
           font-family: "folio"; }
 
 .activeVariant a {
   border-bottom: 1px solid #000000; }
 
 .detail-add {
-  position: absolute;
-  bottom: 100px;
+  position: relative;
   height: auto;
   width: 100%;
-  display: block; }
+  display: block;
+  margin-top: 30px; }
   .detail-add h2 {
     display: block;
     width: 50%;
@@ -917,7 +1036,7 @@ html, body {
       text-align: center; }
       .contact-ul .contact-li .contact-p .contact-a {
         font-size: 12px;
-        line-height: 30px;
+        line-height: 25px;
         font-family: "folio";
         color: #000000; }
 
@@ -970,7 +1089,7 @@ html, body {
   vertical-align: middle; }
   .event-info-left a {
     font-size: 12px;
-    line-height: 30px;
+    line-height: 25px;
     font-family: "folio";
     color: #ec2224;
     text-shadow: 0 0 0px #ec2224;
@@ -979,7 +1098,7 @@ html, body {
     -moz-transition: text-shadow 0.2s ease;
     -ms-transition: text-shadow 0.2s ease; }
     .event-info-left a:hover {
-      text-shadow: 2px 2px 7px #ec2224;
+      text-shadow: 0px 0px 10px #ec2224;
       /*  @if $media == large-desktop {
           @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
         }*/
@@ -1000,7 +1119,7 @@ html, body {
           color: #ec2224 !important; } }
   .event-info-left span {
     font-size: 12px;
-    line-height: 30px;
+    line-height: 25px;
     font-family: "folio"; }
 
 .event-info-right {
@@ -1013,7 +1132,7 @@ html, body {
     width: 100%;
     text-align: right;
     font-size: 12px;
-    line-height: 30px;
+    line-height: 25px;
     font-family: "folio"; }
 
 .event-image {
@@ -1033,16 +1152,16 @@ html, body {
   width: 8vw !important; }
 
 .event-date.shrinkDate-add.shrinkDate-add-active {
-  -webkit-animation: shrink 0.2s ease-in-out;
-  -moz-animation: shrink 0.2s ease-in-out;
-  -ms-animation: shrink 0.2s ease-in-out;
-  animation: shrink 0.2s ease-in-out; }
+  -webkit-animation: shrink 0.2s ease;
+  -moz-animation: shrink 0.2s ease;
+  -ms-animation: shrink 0.2s ease;
+  animation: shrink 0.2s ease; }
 
 .event-date.shrinkDate-remove.shrinkDate-remove-active {
-  -webkit-animation: unShrink 0.2s ease-in-out;
-  -moz-animation: unShrink 0.2s ease-in-out;
-  -ms-animation: unShrink 0.2s ease-in-out;
-  animation: unShrink 0.2s ease-in-out; }
+  -webkit-animation: unShrink 0.2s ease;
+  -moz-animation: unShrink 0.2s ease;
+  -ms-animation: unShrink 0.2s ease;
+  animation: unShrink 0.2s ease; }
 
 @keyframes shrink {
   0% {
@@ -1190,6 +1309,13 @@ html, body {
   width: 100vw;
   height: 100vh; }
 
+.radio-comingsoon {
+  width: 200px;
+  margin: auto; }
+  .radio-comingsoon p {
+    width: 100%;
+    text-align: center; }
+
 .radio-ul {
   width: 55vw;
   margin: auto;
@@ -1223,7 +1349,7 @@ html, body {
       -moz-transition: text-shadow 0.2s ease;
       -ms-transition: text-shadow 0.2s ease; }
       .radio-ul .radio-li p:hover {
-        text-shadow: 2px 2px 7px #ec2224;
+        text-shadow: 0px 0px 10px #ec2224;
         /*  @if $media == large-desktop {
             @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
           }*/
@@ -1281,7 +1407,7 @@ html, body {
   display: block;
   text-align: center;
   font-size: 12px;
-  line-height: 30px;
+  line-height: 25px;
   font-family: "folio";
   color: #ec2224; }
 
@@ -1369,7 +1495,7 @@ html, body {
     .cart-ul .cart-li .cart-remove {
       float: right;
       font-size: 12px;
-      line-height: 30px;
+      line-height: 25px;
       font-family: "folio";
       position: absolute;
       right: 0;
@@ -1380,11 +1506,11 @@ html, body {
         }*/ }
       @media only screen and (min-width: 0px) and (max-width: 767px) {
         .cart-ul .cart-li .cart-remove {
-          line-height: 30px;
+          line-height: 25px;
           height: auto; } }
     .cart-ul .cart-li p {
       font-size: 12px;
-      line-height: 30px;
+      line-height: 25px;
       font-family: "folio";
       float: left;
       line-height: 70px;
@@ -1394,7 +1520,7 @@ html, body {
         }*/ }
       @media only screen and (min-width: 0px) and (max-width: 767px) {
         .cart-ul .cart-li p {
-          line-height: 30px;
+          line-height: 25px;
           height: auto; } }
 
 .cart-total {
@@ -1412,13 +1538,13 @@ html, body {
       width: 90vw; } }
   .cart-total .cart-total-tax {
     font-size: 12px;
-    line-height: 30px;
+    line-height: 25px;
     font-family: "folio";
     height: 70px;
     line-height: 70px; }
   .cart-total .cart-total-amount {
     font-size: 12px;
-    line-height: 30px;
+    line-height: 25px;
     font-family: "folio";
     height: 70px;
     line-height: 70px; }
@@ -1455,9 +1581,16 @@ html, body {
   border-bottom: 1px solid #000000;
   outline: 0;
   padding: 0;
+  transition: width 2s ease;
+  -webkit-transition: width 2s ease;
+  -moz-transition: width 2s ease;
+  -o-transition: width 2s ease;
+  -moz-transition: width 2s ease;
   /*  @if $media == large-desktop {
       @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
     }*/ }
+  .checkout-button:hover {
+    width: 85vw; }
   @media only screen and (min-width: 0px) and (max-width: 767px) {
     .checkout-button {
       box-sizing: border-box;
@@ -1506,7 +1639,7 @@ html, body {
     -webkit-border-radius: 0%;
     -moz-border-radius: 0%;
     font-size: 12px;
-    line-height: 30px;
+    line-height: 25px;
     font-family: "folio";
     /*  @if $media == large-desktop {
         @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
@@ -1542,7 +1675,7 @@ select {
   text-align: left;
   outline: 0;
   font-size: 12px;
-  line-height: 30px;
+  line-height: 25px;
   font-family: "folio";
   border-radius: 0%;
   -webkit-border-radius: 0%;
@@ -1624,13 +1757,13 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
       width: 50%; } }
   .payment-total p {
     font-size: 12px;
-    line-height: 30px;
+    line-height: 25px;
     font-family: "folio";
     width: 100%; }
     .payment-total p span {
       float: right;
       font-size: 12px;
-      line-height: 30px;
+      line-height: 25px;
       font-family: "folio"; }
 
 .payment-header {
@@ -1701,12 +1834,12 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
       margin-left: 30px; } }
   .isBillingDifferent label {
     font-size: 12px;
-    line-height: 30px;
+    line-height: 25px;
     font-family: "folio";
     color: #000000; }
   .isBillingDifferent input {
     font-size: 12px;
-    line-height: 30px;
+    line-height: 25px;
     font-family: "folio";
     color: #000000; }
 
@@ -1725,9 +1858,11 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
   .processed-thankyou .processed-thankyou-p {
     width: 100%;
     font-size: 12px;
-    line-height: 30px;
-    font-family: "folio"; }
+    line-height: 25px;
+    font-family: "folio";
+    color: black; }
     .processed-thankyou .processed-thankyou-p .processed-thankyou-a {
       font-size: 12px;
-      line-height: 30px;
-      font-family: "folio"; }
+      line-height: 25px;
+      font-family: "folio";
+      color: black; }

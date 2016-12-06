@@ -169,6 +169,14 @@
   border-bottom: 1px solid $black;
   outline: 0;
   padding: 0;
+  transition: width 2s ease;
+  -webkit-transition: width 2s ease;
+  -moz-transition: width 2s ease;
+  -o-transition: width 2s ease;
+  -moz-transition: width 2s ease;
+  &:hover{
+    width:85vw;
+  }
 
   @include respond-to(phone){
     box-sizing: border-box;

@@ -12,7 +12,7 @@ $scope.sizeLoading = false;
 
 $rootScope.openDetailFN = (slug)=>{
   if($rootScope.isDetailOpen == true){
-    $location.path('/shop/product/'+slug, false);
+
     $rootScope.detailUpdate(slug);
   }else{
     $rootScope.thisDetail();
@@ -118,8 +118,11 @@ $rootScope.addVariation = function(){
   $rootScope.howManyVAriationsSelected = 0;
   $rootScope.detailUpdate = (slug) => {
 
+
     if($rootScope.Detail.slug!=slug){
+        $location.path('/shop/product/'+slug, false);
       $rootScope.pageLoading=false;
+          $rootScope.thisImageIndex = 0;
 
       $rootScope.selectedVariation={};
       $rootScope.howManyVAriationsSelected = 0;
@@ -212,6 +215,7 @@ $rootScope.addVariation = function(){
     setTimeout(function(){
       if(!$rootScope.Detail.id){
         $rootScope.detailUpdate($routeParams.detail);
+
         $scope.$apply();
         console.log("I loaded it again");
         console.log($rootScope.Detail);
@@ -282,6 +286,35 @@ $rootScope.blockScrollFN=()=>{
 
 
 
+
+$rootScope.thisImageIndex = 0;
+
+
+$scope.nextImage=(slug)=>{
+  console.log(slug, $rootScope.Detail.slug);
+
+  if(slug == $rootScope.Detail.slug){
+    var nextIndex = $rootScope.thisImageIndex + 1;
+    if($rootScope.Detail.images[nextIndex]){
+      console.log("next");
+      $rootScope.thisImageIndex = nextIndex;
+    }else{
+      console.log("first");
+      $rootScope.thisImageIndex=0;
+    }
+  }
+
+
+
+  //
+  // for (var i in $rootScope.Detail.images){
+  //
+  //
+  // }
+
+
+
+}
 
 
 

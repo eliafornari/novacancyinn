@@ -1,4 +1,4 @@
-<nav ng-controller="navCtrl" class="nav" ng-class="{'up': !isLocation('/')}">
+<nav ng-controller="navCtrl" class="nav" ng-class="{'up': !isLocation('/'), 'center': isLocation('/'), 'brush': font=='brush'}">
    <!-- ng-show="isNavOpen" -->
 
 
@@ -9,12 +9,31 @@
              <div class="nav-left" ng-show="!showCart">
                <a class="nav-left-a" href="/shop" ng-class="{'active': isLocation('/shop') || isShopDetail()}">Shop</a>
                <!-- <a class="nav-left-a" href="/archive" ng-class="{'active': isLocation('/archive')}">Archive</a> -->
-               <a class="nav-left-a" href="/event" ng-class="{'active': isLocation('/event')}">Events</a>
+               <a class="nav-left-a" href="/radio" ng-class="{'active': isLocation('/radio')}">Radio</a>
              </div>
-             <div class="nav-logo" ng-mouseenter="showBlur=true" ng-mouseleave="showBlur=false">
+             <div class="nav-logo" ng-mouseenter="showBlur=true" ng-mouseleave="showBlur=false" ng-click="closeCart();">
                <a href="/">
-                 <logo-directive></logo-directive>
-                 <div class="nav-logo-blur" style="background-image: url('/assets/images/novacancyinn_logo_web_blur.png')" ng-class="{'blur': showBlur||isLocation('/'), 'blink-infinite': pageLoading}"></div>
+                 <!-- <logo-directive></logo-directive> -->
+
+
+                 <!-- <div class="nav-logo-anim one" style="background-image: url('/assets/images/animation/novacacnyinn_purple.png')" ng-class="{'blink': pageLoading}" ng-show="isLocation('/')"></div>
+                 <div class="nav-logo-anim two" style="background-image: url('/assets/images/animation/novacacnyinn_red.png')" ng-class="{'blink-late': pageLoading}" ng-show="isLocation('/')"></div>
+                 <div class="nav-logo-anim" style="background-image: url('/assets/images/animation/novacacnyinn_all.png')" ng-show="isLocation('/')"></div> -->
+
+
+                 <div class="nav-logo-anim nav-logo-blur" style="background-image: url('/assets/images/novacancy_logo_glowonly.png')" ng-class="{'blink': isLocation('/'), 'blur': showBlur}" ></div>
+                 <!-- ng-show="isLocation('/')" -->
+                 <!-- ng-class="{'blink': pageLoading}" -->
+                 <div class="nav-logo-anim" style="background-image: url('/assets/images/novacancy_logo.png')"></div>
+
+
+                 <!-- <div class="nav-logo-blur" style="background-image: url('/assets/images/novacancy_logo_glowonly.png')" ng-class="{'blur': showBlur}" ng-if="!isLocation('/')"></div>
+
+                <div class="nav-logo-base" style="background-image: url('/assets/images/novacancy_logo.png')" ng-if="!isLocation('/')"></div> -->
+
+                 <!-- <div class="nav-logo-blur" style="background-image: url('/assets/images/novacancy_logo_glow_sockets.png')" ng-class="{'blur': isLocation('/'), 'blink-infinite': pageLoading}" ng-show="isLocation('/'"></div>
+                 <div class="nav-logo-base" style="background-image: url('/assets/images/novacancy_logo.png')" ng-show="!isLocation('/'"></div>
+                 <div class="nav-logo-blur" style="background-image: url('/assets/images/novacancy_logo_glowonly.png')" ng-class="{'blur': showBlur, 'blink-infinite': pageLoading}" ng-show="!isLocation('/'"></div> -->
                </a>
              </div>
 

@@ -215,24 +215,23 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll']).run(['$anchorScroll', '$route', '$rootScope', '$location', '$routeParams', '$templateCache', function ($anchorScroll, $route, $rootScope, $location, $routeParams, $templateCache) {
 
   $rootScope.pageLoading = true;
-
-  //a change of path should not reload the page
+  $rootScope.pageLoading = true;
 
   var original = $location.path;
   $location.path = function (path, reload) {
     if (reload === false) {
       var lastRoute = $route.current;
-      $rootScope.pageLoading = false;
       var un = $rootScope.$on('$locationChangeSuccess', function () {
         $route.current = lastRoute;
         un();
       });
     } else if (reload === true) {
+
       var currentPageTemplate = $route.current.templateUrl;
       $templateCache.remove(currentPageTemplate);
-      $rootScope.pageLoading = false;
+
       var un = $rootScope.$on('$locationChangeSuccess', function () {
-        $route.current = '/';
+        // $route.current = 'worldoftheblonds/'+$routeParams.category+'/'+$routeParams.event;
         un();
         $route.reload();
       });
@@ -288,8 +287,7 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
 
   .when('/', {
     templateUrl: 'views/home.html',
-    controller: 'appCtrl',
-    resolve: {}
+    controller: 'appCtrl'
 
   })
 
@@ -361,11 +359,10 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
     //   $rootScope.desaturate = false;
     // }else if(key == 87){
     //   $rootScope.desaturate = true;
-    // }else if(key == 49){
-    //   $rootScope.font = 'Roboto Mono';
-    // }else if(key == 50){
-    //   $rootScope.font = 'Roboto';
     // }
+    if (key == 66) {
+      $rootScope.font = 'brush';
+    }
 
     if (key == 69) {
       $rootScope.elia = true;
@@ -775,6 +772,7 @@ angular.module('myApp').controller('navCtrl', function ($scope, $location, $root
   });
 
   $scope.$on('$routeChangeSuccess', function () {
+    console.log($location.path());
     if ($location.path() != '/') {
       console.log('not home');
       $rootScope.backgroundColor = '#FFFFFF';
@@ -1380,7 +1378,7 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
 
   $rootScope.openDetailFN = function (slug) {
     if ($rootScope.isDetailOpen == true) {
-      $location.path('/shop/product/' + slug, false);
+
       $rootScope.detailUpdate(slug);
     } else {
       $rootScope.thisDetail();
@@ -1472,7 +1470,9 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
   $rootScope.detailUpdate = function (slug) {
 
     if ($rootScope.Detail.slug != slug) {
+      $location.path('/shop/product/' + slug, false);
       $rootScope.pageLoading = false;
+      $rootScope.thisImageIndex = 0;
 
       $rootScope.selectedVariation = {};
       $rootScope.howManyVAriationsSelected = 0;
@@ -1543,6 +1543,7 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
     setTimeout(function () {
       if (!$rootScope.Detail.id) {
         $rootScope.detailUpdate($routeParams.detail);
+
         $scope.$apply();
         console.log("I loaded it again");
         console.log($rootScope.Detail);
@@ -1600,6 +1601,29 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
 
   $rootScope.blockScrollFN = function () {
     $rootScope.blockScroll = !$rootScope.blockScroll;
+  };
+
+  $rootScope.thisImageIndex = 0;
+
+  $scope.nextImage = function (slug) {
+    console.log(slug, $rootScope.Detail.slug);
+
+    if (slug == $rootScope.Detail.slug) {
+      var nextIndex = $rootScope.thisImageIndex + 1;
+      if ($rootScope.Detail.images[nextIndex]) {
+        console.log("next");
+        $rootScope.thisImageIndex = nextIndex;
+      } else {
+        console.log("first");
+        $rootScope.thisImageIndex = 0;
+      }
+    }
+
+    //
+    // for (var i in $rootScope.Detail.images){
+    //
+    //
+    // }
   };
 }); //controller
 

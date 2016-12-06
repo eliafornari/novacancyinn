@@ -14,13 +14,19 @@
     font-family: folio;
     src: url('/assets/fonts/folio.woff') format('woff');
 }
+
+@font-face {
+    font-family: brush;
+    src: url('/assets/fonts/BrushScriptStd.otf') format('woff');
+}
+
 //
 // @font-face {
 //     font-family: basil;
 //     src: url('/assets/fonts/BasilQT-Regular.otf') format('woff');
 // }
 //
-@font-face {
-    font-family: graebenbach;
-    src: url('/assets/fonts/gbcamweba-webfont.woff') format('woff');
-}
+// @font-face {
+//     font-family: graebenbach;
+//     src: url('/assets/fonts/gbcamweba-webfont.woff') format('woff');
+// }

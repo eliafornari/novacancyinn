@@ -246,7 +246,7 @@ $transition-slow: 1s;
   -moz-transition:    text-shadow $transition-fast ease;
   -ms-transition:     text-shadow $transition-fast ease;
   &:hover{
-    text-shadow: 2px 2px 7px $color;
+    text-shadow: 0px 0px 10px $color;
 
     // color:$white !important;
     @include respond-to(phone-device) {

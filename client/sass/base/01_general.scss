@@ -277,6 +277,85 @@ main {
 
 
 
+$animation-speed:1s;
+$animation-bezier:ease;
+
+
+@keyframes pageenter {
+  0% { opacity: 0;}
+  100% { opacity: 1;}
+}
+
+@-webkit-keyframes pageenter {
+  0% { opacity: 0;}
+  100% { opacity: 1;}
+}
+
+@-moz-keyframes pageenter {
+  0% { opacity: 0;}
+  100% { opacity: 1;}
+}
+
+@-ms-keyframes pageenter {
+  0% { opacity: 0;}
+  100% { opacity: 1;}
+}
+
+@-o-keyframes pageenter {
+  0% { opacity: 0;}
+  100% { opacity: 1;}
+}
+
+/*.................................NG ENTER/LEAVE..................................*/
+
+$fade-in: 1s;
+
+// .page.ng-enter {
+//   animation: pageenter $fade-in both ease 0s;
+//   -webkit-animation: pageenter $fade-in both ease 0s;
+//   -moz-animation: pageenter $fade-in both ease 0s;
+//   -ms-animation: pageenter $fade-in both ease 0s;
+//   -o-animation: pageenter $fade-in both ease 0s;
+// }
+//
+// .page.page-home.ng-leave {
+//   animation: pageleave 0s ease;
+//   -webkit-animation: pageleave 0s ease;
+//   -moz-animation: pageleave 0s ease;
+//   -ms-animation: pageleave 0s ease;
+//   -o-animation: pageleave 0s ease;
+//     // opacity: 0;
+// }
+
+// .ng-enter       { z-index: 8888; }
+// .ng-leave       { z-index: 9999; }
+
+
+
+// .page.ng-hide{
+//   opacity:0;
+// }
+
+
+// .page-home.ng-enter{
+//   opacity: 1;
+//   -webkit-transition:none;
+//   -moz-transition: none;
+//   -ms-transition: none;
+//   -o-transition: none;
+//   transition: none;
+// }
+//
+// .page.ng-enter{
+//   opacity:1;
+//   -webkit-transition: opacity $animation-speed $animation-bezier;
+//   -moz-transition: opacity $animation-speed $animation-bezier;
+//   -ms-transition: opacity $animation-speed $animation-bezier;
+//   -o-transition: opacity $animation-speed $animation-bezier;
+//   transition: opacity $animation-speed $animation-bezier;
+// }
+
+
 
 
 /*.............................NG-CLOAK............................*/
