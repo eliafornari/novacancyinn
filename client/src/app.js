@@ -156,35 +156,35 @@ $rootScope.Home;
 
 
 
-  $rootScope.Auth;
-    $rootScope.authentication = function(){
-
-          // Simple GET request example:
-          $http({
-            method: 'GET',
-            url: '/authenticate'
-          }).then(function successCallback(response) {
-
-            if(response.data.access_token){
-                console.log("auth");
-                console.log(response);
-                // this callback will be called asynchronously
-                // when the response is available
-                $rootScope.Auth = response.data;
-                var expires = response.data.expires;
-                var identifier = response.data.identifier;
-                var expires_in = response.data.expires_in;
-                var access_token = response.data.access_token;
-                var type = response.data.token_type;
-            }
-            $rootScope.getProductsFN();
-
-            }, function errorCallback(response) {
-              // called asynchronously if an error occurs
-              // or server returns response with an error status.
-            });
-
-    }//addToCart
+  // $rootScope.Auth;
+  //   $rootScope.authentication = function(){
+  //
+  //         // Simple GET request example:
+  //         $http({
+  //           method: 'GET',
+  //           url: '/authenticate'
+  //         }).then(function successCallback(response) {
+  //
+  //           if(response.data.access_token){
+  //               console.log("auth");
+  //               console.log(response);
+  //               // this callback will be called asynchronously
+  //               // when the response is available
+  //               $rootScope.Auth = response.data;
+  //               var expires = response.data.expires;
+  //               var identifier = response.data.identifier;
+  //               var expires_in = response.data.expires_in;
+  //               var access_token = response.data.access_token;
+  //               var type = response.data.token_type;
+  //           }
+  //
+  //
+  //           }, function errorCallback(response) {
+  //             // called asynchronously if an error occurs
+  //             // or server returns response with an error status.
+  //           });
+  //
+  //   }//addToCart
 
     $rootScope.getProductsFN=function(){
       $http({method: 'GET', url: '/getProducts'}).then(function(response){
@@ -197,13 +197,14 @@ $rootScope.Home;
         console.log("an error occurred");
       })
     }
+    $rootScope.getProductsFN();
 
 
 
 
-  setTimeout(function(){
-    $rootScope.authentication();
-  }, 600);
+  // setTimeout(function(){
+  //   $rootScope.authentication();
+  // }, 600);
 
 
 

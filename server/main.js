@@ -10,6 +10,9 @@ let routes  = require('./routes');
 let path = require('path');
 var util = require('util');
 let ejs = require('ejs');
+let sessions = require('client-sessions');
+let request = require('request');
+let crypto = require('crypto');
 let app = express();
 
 
@@ -36,6 +39,110 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 
+app.use(sessions({
+  cookieName: 'mySession', // cookie name dictates the key name added to the request object
+  secret:'jfadjhwnbsjdhmaevnbdkshnbeahsdh', // should be a large unguessable string
+  duration: 3600 * 1000, // how long the session will stay valid in ms
+  activeDuration: 3600 * 1000 // if expiresIn < activeDuration, the session will be extended by activeDuration milliseconds
+}));
+
+function generateCrypto(){
+  var crypto_token;
+ crypto.randomBytes(18, function(err, buffer) {
+  crypto_token = buffer.toString('hex');
+
+ });
+
+return crypto_token;
+}
+
+app.use(function(req, res, next) {
+
+    if(!req.mySession.cartID){
+      // var token = generateCrypto();
+      crypto.randomBytes(18, function(err, buffer) {
+        req.mySession.cartID = buffer.toString('hex');
+      });
+      moltin.Cart.Identifier(true, req.mySession.cartID);
+    }else{
+      moltin.Cart.Identifier(true, req.mySession.cartID);
+    }
+
+
+    if (!req.mySession.access_token || !req.mySession.expires) {
+      res.setHeader('X-Seen-You', 'false');
+      authMoltin(req, res, next);
+
+    }else{
+      var timeLeft = setToHappen(req.mySession.expires);
+
+      if(timeLeft<1000){
+        authMoltin(req, res, next);
+      }else{
+        // authMoltin(req, res, next);
+        moltin.Authenticate(function(data) {
+        });
+        next();
+      }
+    }
+});
+
+
+function authMoltin(req, res, next){
+  moltin.Authenticate(function(data) {
+
+    if(data){
+
+      if(req.mySession.access_token && (req.mySession.access_token==data.access_token)){
+        data.cart=req.mySession.cartID;
+        //     console.log(data);
+        // res.status(200).json(data);
+
+      }else if(data.token){
+        // console.log(data);
+        req.mySession.access_token = data.token;
+        data.cart=req.mySession.cartID;
+        // res.status(200).json(data);
+      }else{
+        req.mySession.access_token = data.access_token;
+        // console.log(req.mySession.access_token);
+        data.cart=req.mySession.cartID;
+        // res.status(200).json(data);
+      }
+
+      req.mySession.expires = data.expires;
+      next();
+
+
+
+    }else{
+      res.status(500);
+    }
+
+  });
+}
+
+
+// app.get('/authenticate', function(req, res){
+//
+//   moltin.Authenticate(function(data) {
+//     console.log(data);
+//     if(data){
+//       res.status(200);
+//       res.json(data);
+//     }else{
+//       res.status(500);
+//     }
+//
+//     req.mySession.expires = data.expires;
+//
+//   });
+// });
+
+function setToHappen(d){
+    var t = d - (new Date()).getTime();
+    return t;
+}
 
 
 app.get('/profile', function(req, res){
@@ -45,22 +152,6 @@ app.get('/profile', function(req, res){
      res.end(img, 'binary');
 
 });
-
-app.get('/authenticate', function(req, res){
-
-  moltin.Authenticate(function(data) {
-    console.log(data);
-    if(data){
-      res.status(200);
-      res.json(data);
-    }else{
-      res.status(500);
-    }
-
-  });
-});
-
-
 
     app.post('/addProduct', function(req, res){
 

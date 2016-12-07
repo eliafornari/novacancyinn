@@ -10,67 +10,102 @@ angular.module('myApp').controller('aboutCtrl', function ($scope, $location, $ro
   $scope.aboutText = [{
     x: "2",
     y: "40",
-    text: "No Man's Land",
+    text: "THE AFTER/AFTER PARTY AKA THENITESHOW",
     type: "folio",
     size: 30,
     point: 1
   }, {
     x: "20",
     y: "20",
-    text: "No Man's Land",
+    text: "CALL UP THE UBER XL. NEED TO TAKE US BACK TO LIKE '79'",
     type: "sabon",
     size: 40,
     point: 2
   }, {
     x: "20",
     y: "80",
-    text: "No Man's Land",
+    text: "#NYFW",
     type: "Book Antiqua",
     size: 50,
     point: 3
   }, {
     x: "50",
     y: "33",
-    text: "No Man's Land",
+    text: "FOR US BY US'",
     type: "helvetica",
     size: 20,
     point: 4
   }, {
     x: "30",
     y: "70",
-    text: "No Location",
+    text: "I NEED OBAMA TO SHOW UP TONIGHT IN THAT TRACK SUIT…THAT'S MY RYDER",
     type: "Times New Roman",
     size: 35,
     point: 5
   }, {
     x: "30",
     y: "40",
-    text: "World",
+    text: "TOO MANY BRANDS NO ENOUGH LIMITED LIABILITY LAWYERS",
     type: "Arial Black",
     size: 35,
     point: 6
   }, {
     x: "50",
     y: "30",
-    text: "Heaven or Las Vegas",
+    text: "LIVE FROM TOKYO",
     type: "Tahoma",
     size: 75,
     point: 7
   }, {
     x: "30",
     y: "20",
-    text: "No Man's Land",
+    text: "CULTURE KIDS' KICKING IT AROUND WORLD LIKE IT'S FIFA",
     type: "Geneva",
     size: 75,
     point: 8
   }, {
     x: "10",
     y: "90",
-    text: "Thank You",
+    text: "ON A SUNNNY DAY IN SILVERLAKE",
     type: "Courier",
     size: 25,
     point: 9
   }
+  //
+  // THIS PARTY IS IN 'CARE' OF SOMETHING…STAY TUNED
+  // CATCHING FLIGHTS LIKE UBERS
+  // RAN UP NORTH TING TONIGHT
+  // @TOMSACHS GAVE US ANOTHER KEY
+  // THE DRESS CODE IS 'ACYDE'
+  // PLAYING ROCK, PAPER, SCISSORS FOR WHO GETS TO WEAR THE 'SHIRT'
+  // RICHARD LONG SOUND SYSTEM, SAY NO MORE...
+  // JUST DROPPED @NOVACANCYINN TEE'S @DOVERSTREETMARKET GINZA IN JAPAN, IT'S SATURDAY THERE…I'M STILL IN LA THO COUNTING PALM TREES ON A FRIDAY EVENING…"MOMENTUM IS AN ART" -JIM JOE'
+  // TURN DOWN SERVICE TOMORROW WITH SOME LA LEGENDS'
+  // IN THE '74 BRONCO BUMPING 'THAT PART'
+  // TURNED OUR FRIENDSHIPS INTO A LIFESTYLE
+  // FACEMASK, DREADS, BUCKET HATS, RIPPED DENIM, NAUTICA & SNAKESKIN BOOTS
+  // A CHILL ONE TONIGHT…I THINK
+  // 'RESTORING' THE FEELING WITH MY BROTHERS
+  // ART DADS™ LLC NIGHT OUT
+  // OUR NEW YORK CULTURAL RESTORATION PROJECT CONTINUES
+  // AND FOR MY LAST MAGIC TRICK, TO THE 'HILLS'
+  // WHITE GUCCI LOAFTERS 'POOLCYDE'
+  // #ADANCEFLOORFULLOFTEARS
+  // EDDIE BAUER EDITION
+  // SCOTCH IN THE DESERT'DE'
+  // BACK IN THE BUILDING BEFORE WE TEAR IT DOWN
+  // PULLING BACK THE DRAPES STARTING TOMORROW
+  // 2016 WORLD TOUR STARTS HERE
+  // CHARGE THE INCIDENTALS TO THE GAME
+  // POPPIN MALARIA PILLS LIKE XANS
+  // RIGHT NOW IN THE HILLS
+  // IF YOU KNOW, YOU KNOW
+  // AT THE DOLLA-NOL MEAN THE DELANO, I MEAN….PHARRELL'LL KNOW'
+  // WE ON AT 1AM
+  // YOU KNOW PROGRAM HIT ME OFF THE GRID FOR THE ADDY OR HOLLA AT YOUR PLUG
+  // EXIT '00' OFF THE LOST HIGHWAY
+  // YOU DO WHAT YOU WANT WHEN YOU POPPIN
+  // SHANGHAI SMASH
 
   // Impact
   // Tahoma
@@ -300,33 +335,35 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
   $rootScope.pageClass = "page-home";
   $rootScope.Home;
 
-  $rootScope.Auth;
-  $rootScope.authentication = function () {
-
-    // Simple GET request example:
-    $http({
-      method: 'GET',
-      url: '/authenticate'
-    }).then(function successCallback(response) {
-
-      if (response.data.access_token) {
-        console.log("auth");
-        console.log(response);
-        // this callback will be called asynchronously
-        // when the response is available
-        $rootScope.Auth = response.data;
-        var expires = response.data.expires;
-        var identifier = response.data.identifier;
-        var expires_in = response.data.expires_in;
-        var access_token = response.data.access_token;
-        var type = response.data.token_type;
-      }
-      $rootScope.getProductsFN();
-    }, function errorCallback(response) {
-      // called asynchronously if an error occurs
-      // or server returns response with an error status.
-    });
-  }; //addToCart
+  // $rootScope.Auth;
+  //   $rootScope.authentication = function(){
+  //
+  //         // Simple GET request example:
+  //         $http({
+  //           method: 'GET',
+  //           url: '/authenticate'
+  //         }).then(function successCallback(response) {
+  //
+  //           if(response.data.access_token){
+  //               console.log("auth");
+  //               console.log(response);
+  //               // this callback will be called asynchronously
+  //               // when the response is available
+  //               $rootScope.Auth = response.data;
+  //               var expires = response.data.expires;
+  //               var identifier = response.data.identifier;
+  //               var expires_in = response.data.expires_in;
+  //               var access_token = response.data.access_token;
+  //               var type = response.data.token_type;
+  //           }
+  //
+  //
+  //           }, function errorCallback(response) {
+  //             // called asynchronously if an error occurs
+  //             // or server returns response with an error status.
+  //           });
+  //
+  //   }//addToCart
 
   $rootScope.getProductsFN = function () {
     $http({ method: 'GET', url: '/getProducts' }).then(function (response) {
@@ -339,10 +376,11 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
       console.log("an error occurred");
     });
   };
+  $rootScope.getProductsFN();
 
-  setTimeout(function () {
-    $rootScope.authentication();
-  }, 600);
+  // setTimeout(function(){
+  //   $rootScope.authentication();
+  // }, 600);
 
   // font-family: 'Roboto Mono', monospace;
   // font-family: 'Roboto', sans-serif;

@@ -104,10 +104,11 @@ html, body {
   // height:100px;
   // width:100px;
   z-index: $z-shop-dollar;
-  p{
-    position: absolute;
+  a{
+    // position: absolute;
     right:0;
     bottom:0;
+    @include h2();
   }
   // .dollar-ul{
   //   width:100%;

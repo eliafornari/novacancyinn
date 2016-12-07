@@ -54,6 +54,12 @@ table {
 @font-face {
   font-family: brush;
   src: url("/assets/fonts/BrushScriptStd.otf") format("woff"); }
+@font-face {
+  font-family: basil;
+  src: url("/assets/fonts/BasilQT-Regular.otf") format("woff"); }
+@font-face {
+  font-family: graebenbach;
+  src: url("/assets/fonts/gbcamweba-webfont.woff") format("woff"); }
 /*....................................SCSS VARIABLES..................................*/
 /*....................................................................................*/
 /*.................................................................................*/
@@ -606,17 +612,17 @@ table {
 
 span::-moz-selection {
   background: transparent;
-  color: #ec2224;
+  color: #000000;
   text-shadow: none; }
 
 span::selection {
   background: transparent;
-  color: #ec2224;
+  color: #000000;
   text-shadow: none; }
 
 a::-moz-selection {
   background: transparent;
-  color: #884f9e;
+  color: #000000;
   text-shadow: none; }
 
 a::selection {
@@ -862,10 +868,12 @@ html, body {
   bottom: 20px;
   left: 20px;
   z-index: 14; }
-  .dollar p {
-    position: absolute;
+  .dollar a {
     right: 0;
-    bottom: 0; }
+    bottom: 0;
+    font-size: 19px;
+    line-height: 35px;
+    font-family: "sabon"; }
 
 .product-detail {
   position: absolute;
@@ -930,7 +938,7 @@ html, body {
     text-align: right; }
 
 .detail-description {
-  width: 80%;
+  width: 90%;
   text-align: left;
   display: block;
   max-height: 150px;
@@ -1569,7 +1577,7 @@ html, body {
   bottom: 20px;
   right: 20px;
   text-align: right;
-  width: 400px;
+  width: 500px;
   height: 50px;
   cursor: pointer;
   color: #000000;
@@ -1790,7 +1798,7 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
         overflow-y: scroll; }
 
 .customer {
-  width: 45%;
+  width: 43%;
   display: inline-block;
   position: relative;
   vertical-align: top;
@@ -1800,7 +1808,7 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
     }*/ }
 
 .address {
-  width: 45%;
+  width: 43%;
   margin-left: 9%;
   display: inline-block;
   position: relative;

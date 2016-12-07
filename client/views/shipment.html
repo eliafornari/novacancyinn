@@ -1,4 +1,4 @@
-<div class="shipment" ng-controller="checkoutCtrl">
+<div class="shipment" ng-controller="checkoutCtrl" ng-init="showBackText_shipment=false">
 
 <!-- 2 -->
 
@@ -186,7 +186,13 @@
 
 
 
-    <button class="checkout-button hvr-sweep-to-right" type="submit" ng-class="{'invalid': shipmentForm.$invalid}" ng-disabled="shipmentForm.$invalid">Payment</button>
+    <button class="checkout-button hvr-sweep-to-right" type="submit" ng-class="{'invalid': shipmentForm.$invalid}" ng-disabled="shipmentForm.$invalid" ng-mouseenter="showBackText_shipment=true" ng-mouseleave="showBackText_shipment=false">
+
+      <h2 ng-show="!showBackText_shipment">Payment</h2>
+      <h2 ng-show="showBackText_shipment">Return the keys and pay for the bill</h2>
+    </button>
+
+
     <!-- hvr-sweep-to-right -->
   </form>
 

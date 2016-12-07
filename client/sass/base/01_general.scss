@@ -7,14 +7,14 @@
 
 ::-moz-selection {
     background: $yellow;
-    color: #000000;
+    color: $black;
     text-shadow: none;
 }
 
 
 ::selection {
     background: $yellow;
-    color: #000000;
+    color: $black;
     text-shadow: none;
 }
 
@@ -22,20 +22,20 @@
 
 span::-moz-selection {
     background: transparent;
-    color: $red;
+    color: $black;
     text-shadow: none;
 }
 
 
 span::selection {
     background: transparent;
-    color: $red;
+    color: $black;
     text-shadow: none;
 }
 
 a::-moz-selection {
     background: transparent;
-    color: $purple;
+    color: $black;
     text-shadow: none;
 }
 
