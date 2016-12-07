@@ -275,16 +275,22 @@
   -moz-animation: blink .2s steps(5, start) infinite;
   -ms-animation: blink .2s steps(5, start) infinite;
   -o-animation: blink .2s steps(5, start) infinite;
+
 }
 
 
 .blink {
   opacity: 1;
-  animation: blink .2s steps(5, start) 3;
-  -webkit-animation: blink .2s steps(5, start) 3;
-  -ms-animation: blink .2s steps(5, start) 3;
-  -moz-animation: blink .2s steps(5, start) 3;
-  -o-animation: blink .2s steps(5, start) 3;
+  animation: blink 1s steps(5, start) 2;
+  -webkit-animation: blink 1s steps(5, start) 2;
+  -ms-animation: blink 1s steps(5, start) 2;
+  -moz-animation: blink 1s steps(5, start) 2;
+  -o-animation: blink 1s steps(5, start) 2;
+
+  -webkit-transition: none;
+  -moz-transition: none;
+  -ms-transition: none;
+  transition: none;
 }
 
 .blink-late{
@@ -305,24 +311,37 @@
 }
 
 
+// @keyframes blink {
+//   from{
+//     opacity: 0;
+//   }
+//   to {
+//     opacity: 1;
+//   }
+// }
+// @-webkit-keyframes blink {
+//   from{
+//     opacity: 0;
+//   }
+//   to {
+//     opacity: 1;
+//   }
+// }
+//
+
+// .blink_me {
+//   animation: blinker 1s linear infinite;
+// }
+
 @keyframes blink {
-  from{
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@-webkit-keyframes blink {
-  from{
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
+  20% { opacity: 0; }
+  22% { opacity: 1; }
+  24% { opacity: 0; }
+  70% { opacity: 0; }
+  74% { opacity: 1; }
+  78% { opacity: 0; }
 
-
+}
 
 
 

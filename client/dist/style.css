@@ -294,11 +294,15 @@ table {
 
 .blink {
   opacity: 1;
-  animation: blink 0.2s steps(5, start) 3;
-  -webkit-animation: blink 0.2s steps(5, start) 3;
-  -ms-animation: blink 0.2s steps(5, start) 3;
-  -moz-animation: blink 0.2s steps(5, start) 3;
-  -o-animation: blink 0.2s steps(5, start) 3; }
+  animation: blink 1s steps(5, start) 2;
+  -webkit-animation: blink 1s steps(5, start) 2;
+  -ms-animation: blink 1s steps(5, start) 2;
+  -moz-animation: blink 1s steps(5, start) 2;
+  -o-animation: blink 1s steps(5, start) 2;
+  -webkit-transition: none;
+  -moz-transition: none;
+  -ms-transition: none;
+  transition: none; }
 
 .blink-late {
   animation: blink 0.2s 2s steps(5, start) 3;
@@ -312,15 +316,18 @@ table {
   -webkit-animation: blink 0.2s steps(5, start) 1; }
 
 @keyframes blink {
-  from {
+  20% {
     opacity: 0; }
-  to {
-    opacity: 1; } }
-@-webkit-keyframes blink {
-  from {
+  22% {
+    opacity: 1; }
+  24% {
     opacity: 0; }
-  to {
-    opacity: 1; } }
+  70% {
+    opacity: 0; }
+  74% {
+    opacity: 1; }
+  78% {
+    opacity: 0; } }
 .nav-mobile .nav-mobile-table {
   width: 100vw;
   height: calc(100vh - 100px);
