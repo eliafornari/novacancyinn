@@ -387,7 +387,7 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
 
   $rootScope.desaturate = true;
   $rootScope.elia = false;
-  $rootScope.font = 'Roboto Mono';
+  // $rootScope.font = 'Roboto Mono';
 
   document.addEventListener("keydown", function (event) {
     console.log(event.which);
@@ -400,6 +400,8 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
     // }
     if (key == 66) {
       $rootScope.font = 'brush';
+    } else if (key == 83) {
+      $rootScope.font = 'sabon';
     }
 
     if (key == 69) {

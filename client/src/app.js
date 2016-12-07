@@ -220,7 +220,7 @@ $rootScope.Home;
 
   $rootScope.desaturate = true;
   $rootScope.elia = false;
-  $rootScope.font = 'Roboto Mono';
+  // $rootScope.font = 'Roboto Mono';
 
 
   document.addEventListener("keydown", function(event) {
@@ -234,6 +234,8 @@ $rootScope.Home;
     // }
     if(key == 66){
       $rootScope.font = 'brush';
+    }else if(key == 83){
+      $rootScope.font = 'sabon';
     }
 
 
