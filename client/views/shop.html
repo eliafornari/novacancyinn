@@ -2,13 +2,13 @@
 
 
 
-      <div class="shop-content" ng-init="isFullscreen=false" ng-class="{'noscroll': blockScroll}">
+      <div class="shop-content" ng-class="{'noscroll': blockScroll}">
          <!-- ng-class="{'openDetail': isDetailOpen}" -->
         <ul class="product-ul">
           <li class="product-li" ng-repeat="p in Product" ng-click="openDetailFN(p.slug)" ng-init="productHovered=false">
 
 
-            <div class="product-fullscreen" ng-if="isFullscreen && Detail.slug==p.slug" ng-click="isFullscreen=false; blockScrollFN()">
+            <div class="product-fullscreen" ng-if="isFullscreen && Detail.slug==p.slug" ng-click="fullscreen(); blockScrollFN()">
               <div class="product-fullscreen-content">
                 <img src="{{f.url.https}}" alt="{{p.slug}}" ng-repeat="f in p.images">
               </div>
@@ -31,15 +31,15 @@
               <tr>
                 <td>
 
-                  <img class="product-li-img" id="target" src="{{p.images[0].url.https}}" alt="{{p.title}}" ng-class="{'opacityProducts': isDetailOpen && !productHovered}" ng-mouseenter="productHovered=true" ng-mouseleave="productHovered=false" ng-show="Detail.slug!=p.slug" ng-cloak/>
-                  <img class="product-li-img" id="target" src="{{p.images[thisImageIndex].url.https}}" alt="{{p.title}}" ng-class="{'opacityProducts': isDetailOpen && !productHovered}" ng-mouseenter="productHovered=true" ng-mouseleave="productHovered=false" ng-click="nextImage(p.slug)" ng-show="Detail.slug==p.slug" ng-cloak/>
+                  <img class="product-li-img" id="target" src="{{p.images[0].url.https}}" alt="{{p.slug}}" ng-class="{'opacityProducts': isDetailOpen && !productHovered}" ng-mouseenter="productHovered=true" ng-mouseleave="productHovered=false" ng-show="Detail.slug!=p.slug" ng-cloak/>
+                  <img class="product-li-img" id="target" src="{{p.images[thisImageIndex].url.https}}" alt="{{p.slug}}" ng-class="{'opacityProducts': isDetailOpen && !productHovered}" ng-mouseenter="productHovered=true" ng-mouseleave="productHovered=false" ng-click="nextImage(p.slug)" ng-if="Detail.slug==p.slug" ng-cloak/>
 
 
                   <div class="product-detail" ng-show="Detail.slug==p.slug">
                     <detail-directive></detail-directive>
                   </div>
 
-                  <div class="product-fullscreen-btn" ng-click="isFullscreen=!isFullscreen; blockScrollFN()" ng-show="Detail.slug==p.slug">
+                  <div class="product-fullscreen-btn" ng-click="fullscreen(); blockScrollFN()" ng-show="Detail.slug==p.slug">
                     <fullscreen-directive></fullscreen-directive>
                   </div>
 

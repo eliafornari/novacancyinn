@@ -318,8 +318,11 @@ $scope.nextImage=(slug)=>{
 }
 
 
+$scope.isFullscreen=false;
 
-
+$scope.fullscreen=()=>{
+  $scope.isFullscreen=!$scope.isFullscreen;
+}
 
 
 

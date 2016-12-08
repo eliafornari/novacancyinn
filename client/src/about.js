@@ -372,10 +372,10 @@ $scope.startWheel_about = ()=>{
   $(".about").bind('mousewheel', function(event, delta) {
       //  console.log(event.deltaX, event.deltaY, event.deltaFactor);
       //  console.log(delta);
-     this.scrollLeft += (event.deltaY * 0.4);
+    //  this.scrollLeft += (event.deltaY * 0.3);
 
 
-     $scope.scroll_about = $scope.scroll_about + (-event.deltaY * 0.4);
+     $scope.scroll_about = $scope.scroll_about + (-event.deltaY * 0.3);
 
 
      var int = parseInt($scope.scroll_about/$rootScope.windowHeight);
