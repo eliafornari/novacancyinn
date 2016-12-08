@@ -19,7 +19,7 @@ angular.module('myApp').controller('aboutCtrl', function ($scope, $location, $ro
     y: "20",
     text: "CALL UP THE UBER XL. NEED TO TAKE US BACK TO LIKE '79'",
     type: "sabon",
-    size: 40,
+    size: 20,
     point: 2
   }, {
     x: "20",
@@ -34,7 +34,9 @@ angular.module('myApp').controller('aboutCtrl', function ($scope, $location, $ro
     text: "FOR US BY US'",
     type: "helvetica",
     size: 20,
-    point: 4
+    point: 4,
+    stretchX: true,
+    stretchY: false
   }, {
     x: "30",
     y: "70",
@@ -54,58 +56,242 @@ angular.module('myApp').controller('aboutCtrl', function ($scope, $location, $ro
     y: "30",
     text: "LIVE FROM TOKYO",
     type: "Tahoma",
-    size: 75,
+    size: 55,
     point: 7
   }, {
     x: "30",
     y: "20",
     text: "CULTURE KIDS' KICKING IT AROUND WORLD LIKE IT'S FIFA",
     type: "Geneva",
-    size: 75,
+    size: 45,
     point: 8
   }, {
     x: "10",
     y: "90",
     text: "ON A SUNNNY DAY IN SILVERLAKE",
+    type: "Times New Roman",
+    size: 35,
+    point: 9
+  }, {
+    x: "40",
+    y: "10",
+    text: "THIS PARTY IS IN 'CARE' OF SOMETHING…STAY TUNED",
+    type: "Impact",
+    size: 15,
+    point: 10
+  }, {
+    x: "80",
+    y: "30",
+    text: "CATCHING FLIGHTS LIKE UBERS",
+    type: "Sabon",
+    size: 25,
+    point: 11
+  }, {
+    x: "20",
+    y: "50",
+    text: "RAN UP NORTH TING TONIGHT",
+    type: "Helvetica",
+    size: 35,
+    point: 12
+  }, {
+    x: "84",
+    y: "50",
+    text: "TOMSACHS GAVE US ANOTHER KEY",
+    type: "monospace",
+    size: 25,
+    point: 13
+  }, {
+    x: "50",
+    y: "50",
+    text: "THE DRESS CODE IS 'ACYDE'",
+    type: "Tahoma",
+    size: 25,
+    point: 14
+  }, {
+    x: "10",
+    y: "30",
+    text: "PLAYING ROCK, PAPER, SCISSORS FOR WHO GETS TO WEAR THE 'SHIRT'",
     type: "Courier",
     size: 25,
-    point: 9
+    point: 15
+  }, {
+    x: "20",
+    y: "60",
+    text: "RICHARD LONG SOUND SYSTEM, SAY NO MORE...",
+    type: "Arial",
+    size: 15,
+    point: 16
+  }, {
+    x: "5",
+    y: "30",
+    text: "JUST DROPPED @NOVACANCYINN TEE'S @DOVERSTREETMARKET GINZA IN JAPAN, IT'S SATURDAY THERE…I'M STILL IN LA THO COUNTING PALM TREES ON A FRIDAY EVENING…'MOMENTUM IS AN ART' -JIM JOE'",
+    type: "Monaco",
+    size: 25,
+    point: 17,
+    stretchX: false,
+    stretchY: true
+  }, {
+    x: "10",
+    y: "90",
+    text: "IN THE '74 BRONCO BUMPING 'THAT PART'",
+    type: "monospace",
+    size: 25,
+    point: 18
+  }, {
+    x: "40",
+    y: "60",
+    text: "TURNED OUR FRIENDSHIPS INTO A LIFESTYLE",
+    type: "Impact",
+    size: 35,
+    point: 19
+  }, {
+    x: "10",
+    y: "70",
+    text: "FACEMASK, DREADS, BUCKET HATS, RIPPED DENIM, NAUTICA & SNAKESKIN BOOTS",
+    type: "folio",
+    size: 25,
+    point: 20
+  }, {
+    x: "70",
+    y: "33",
+    text: "A CHILL ONE TONIGHT…I THINK",
+    type: "Sabon",
+    size: 25,
+    point: 21
+  }, {
+    x: "25",
+    y: "80",
+    text: "'RESTORING' THE FEELING WITH MY BROTHERS",
+    type: "Helvetica",
+    size: 25,
+    point: 22
+  }, {
+    x: "80",
+    y: "20",
+    text: "OUR NEW YORK CULTURAL RESTORATION PROJECT CONTINUES",
+    type: "Courier",
+    size: 25,
+    point: 23
+  }, {
+    x: "4",
+    y: "70",
+    text: "AND FOR MY LAST MAGIC TRICK, TO THE 'HILLS'",
+    type: "Monaco",
+    size: 25,
+    point: 24
+  }, {
+    x: "50",
+    y: "50",
+    text: "WHITE GUCCI LOAFTERS 'POOLCYDE'",
+    type: "Times New Roman",
+    size: 25,
+    point: 25
+  }, {
+    x: "20",
+    y: "90",
+    text: "#ADANCEFLOORFULLOFTEARS",
+    type: "monospace",
+    size: 25,
+    point: 26
+  }, {
+    x: "70",
+    y: "70",
+    text: "EDDIE BAUER EDITION",
+    type: "Courier",
+    size: 25,
+    point: 27
+  }, {
+    x: "30",
+    y: "30",
+    text: "A CHILL ONE TONIGHT…I THINK",
+    type: "Book Antiqua",
+    size: 25,
+    point: 28
+  }, {
+    x: "40",
+    y: "40",
+    text: "SCOTCH IN THE DESERT'DE'",
+    type: "Folio",
+    size: 25,
+    point: 29
+  }, {
+    x: "86",
+    y: "43",
+    text: "BACK IN THE BUILDING BEFORE WE TEAR IT DOWN",
+    type: "Courier",
+    size: 25,
+    point: 30
+  }, {
+    x: "50",
+    y: "90",
+    text: "PULLING BACK THE DRAPES STARTING TOMORROW",
+    type: "Monaco",
+    size: 25,
+    point: 31
+  }, {
+    x: "30",
+    y: "70",
+    text: "CHARGE THE INCIDENTALS TO THE GAME",
+    type: "Tahoma",
+    size: 25,
+    point: 32
+  }, {
+    x: "60",
+    y: "60",
+    text: "POPPIN MALARIA PILLS LIKE XANS",
+    type: "Courier",
+    size: 25,
+    point: 33
+  }, {
+    x: "55",
+    y: "80",
+    text: "RIGHT NOW IN THE HILLS",
+    type: "Impact",
+    size: 25,
+    point: 34
+  }, {
+    x: "10",
+    y: "40",
+    text: "IF YOU KNOW, YOU KNOW",
+    type: "Monaco",
+    size: 25,
+    point: 35
+  }, {
+    x: "10",
+    y: "80",
+    text: "AT THE DOLLA-NOL MEAN THE DELANO, I MEAN….PHARRELL'LL KNOW'",
+    type: "Helvetica",
+    size: 25,
+    point: 36
+  }, {
+    x: "80",
+    y: "30",
+    text: "YOU KNOW PROGRAM HIT ME OFF THE GRID FOR THE ADDY OR HOLLA AT YOUR PLUG",
+    type: "Geneva",
+    size: 25,
+    point: 37
+  }, {
+    x: "20",
+    y: "90",
+    text: "EXIT '00' OFF THE LOST HIGHWAY",
+    type: "Courier",
+    size: 25,
+    point: 38
+  }, {
+    x: "70",
+    y: "70",
+    text: "YOU DO WHAT YOU WANT WHEN YOU POPPIN",
+    type: "Sabon",
+    size: 25,
+    point: 40
+  }, {
+    x: "60",
+    y: "90",
+    text: "SHANGHAI SMASH",
+    type: "Impact",
+    size: 25,
+    point: 41
   }
-  //
-  // THIS PARTY IS IN 'CARE' OF SOMETHING…STAY TUNED
-  // CATCHING FLIGHTS LIKE UBERS
-  // RAN UP NORTH TING TONIGHT
-  // @TOMSACHS GAVE US ANOTHER KEY
-  // THE DRESS CODE IS 'ACYDE'
-  // PLAYING ROCK, PAPER, SCISSORS FOR WHO GETS TO WEAR THE 'SHIRT'
-  // RICHARD LONG SOUND SYSTEM, SAY NO MORE...
-  // JUST DROPPED @NOVACANCYINN TEE'S @DOVERSTREETMARKET GINZA IN JAPAN, IT'S SATURDAY THERE…I'M STILL IN LA THO COUNTING PALM TREES ON A FRIDAY EVENING…"MOMENTUM IS AN ART" -JIM JOE'
-  // TURN DOWN SERVICE TOMORROW WITH SOME LA LEGENDS'
-  // IN THE '74 BRONCO BUMPING 'THAT PART'
-  // TURNED OUR FRIENDSHIPS INTO A LIFESTYLE
-  // FACEMASK, DREADS, BUCKET HATS, RIPPED DENIM, NAUTICA & SNAKESKIN BOOTS
-  // A CHILL ONE TONIGHT…I THINK
-  // 'RESTORING' THE FEELING WITH MY BROTHERS
-  // ART DADS™ LLC NIGHT OUT
-  // OUR NEW YORK CULTURAL RESTORATION PROJECT CONTINUES
-  // AND FOR MY LAST MAGIC TRICK, TO THE 'HILLS'
-  // WHITE GUCCI LOAFTERS 'POOLCYDE'
-  // #ADANCEFLOORFULLOFTEARS
-  // EDDIE BAUER EDITION
-  // SCOTCH IN THE DESERT'DE'
-  // BACK IN THE BUILDING BEFORE WE TEAR IT DOWN
-  // PULLING BACK THE DRAPES STARTING TOMORROW
-  // 2016 WORLD TOUR STARTS HERE
-  // CHARGE THE INCIDENTALS TO THE GAME
-  // POPPIN MALARIA PILLS LIKE XANS
-  // RIGHT NOW IN THE HILLS
-  // IF YOU KNOW, YOU KNOW
-  // AT THE DOLLA-NOL MEAN THE DELANO, I MEAN….PHARRELL'LL KNOW'
-  // WE ON AT 1AM
-  // YOU KNOW PROGRAM HIT ME OFF THE GRID FOR THE ADDY OR HOLLA AT YOUR PLUG
-  // EXIT '00' OFF THE LOST HIGHWAY
-  // YOU DO WHAT YOU WANT WHEN YOU POPPIN
-  // SHANGHAI SMASH
 
   // Impact
   // Tahoma
@@ -119,15 +305,31 @@ angular.module('myApp').controller('aboutCtrl', function ($scope, $location, $ro
   $scope.wheel_about;
   $scope.scroll_about = 0;
   $scope.view_about = 0;
+  $scope.stretchX = false;
+  $scope.stretchY = false;
+  $scope.delta = 0;
 
   $scope.startWheel_about = function () {
     $(".about").bind('mousewheel', function (event, delta) {
       //  console.log(event.deltaX, event.deltaY, event.deltaFactor);
       //  console.log(delta);
       this.scrollLeft += event.deltaY * 0.4;
+
       $scope.scroll_about = $scope.scroll_about + -event.deltaY * 0.4;
 
-      $scope.view_about = parseInt($scope.scroll_about / $rootScope.windowHeight);
+      var int = parseInt($scope.scroll_about / $rootScope.windowHeight);
+      $scope.view_about = int;
+
+      $scope.delta = ($scope.scroll_about / $rootScope.windowHeight - int) * 100;
+
+      if ($scope.view_about == 41) {
+        $scope.scroll_about = 0;
+      }
+
+      //  var objectIndex= $scope.view_about-1;
+      //
+      //  $scope.stretchX=$scope.aboutText[objectIndex].stretchX;
+      //  $scope.stretchY=$scope.aboutText[objectIndex].stretchY;;
 
       event.preventDefault();
       $scope.wheel_about = true;
