@@ -114,6 +114,7 @@ $rootScope.addVariation = function(){
 
 
   //variations
+  $rootScope.thisImageIndex = 0;
 
   $rootScope.howManyVAriationsSelected = 0;
   $rootScope.detailUpdate = (slug) => {

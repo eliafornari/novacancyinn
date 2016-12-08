@@ -1707,6 +1707,7 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
   }; //addToCart
 
   //variations
+  $rootScope.thisImageIndex = 0;
 
   $rootScope.howManyVAriationsSelected = 0;
   $rootScope.detailUpdate = function (slug) {

@@ -1,10 +1,6 @@
 <div class="detail">
 
-  <!-- <div class="detail-images" ng-init="zoomImage=false" ng-click="zoomImage=!zoomImage" ng-class="{'zoom': zoomImage}">
-    <div class="detail-images-single" ng-repeat="i in Detail.images">
-      <img class="detail-img"  src="{{i.url.http}}" alt="{{p.description}}" />
-    </div>
-  </div> -->
+
   <div class="detail-content">
     <h3 class="detail-price" ng-cloak>{{Detail.price.data.formatted.without_tax}}</h3>
 
@@ -37,12 +33,6 @@
     <h2 class="detail-add-plus-variation" ng-show="Detail.has_variation" ng-click="addVariation()" ng-class="{'activeAdd': howManyVAriationsSelected>=Detail.total_variations}">Add To Cart</h2>
   </div>
 
-
-
-
-<!-- <a class="update" ng-click="updatestock(Cart)">
-  update
-</a> -->
 
 
 
