@@ -194,7 +194,7 @@ angular.module('myApp').controller('aboutCtrl', function ($scope, $location, $ro
     size: 25,
     point: 26
   }, {
-    x: "70",
+    x: "10",
     y: "70",
     text: "EDDIE BAUER EDITION",
     type: "Courier",
@@ -236,7 +236,7 @@ angular.module('myApp').controller('aboutCtrl', function ($scope, $location, $ro
     size: 25,
     point: 32
   }, {
-    x: "60",
+    x: "40",
     y: "60",
     text: "POPPIN MALARIA PILLS LIKE XANS",
     type: "Courier",
@@ -244,7 +244,7 @@ angular.module('myApp').controller('aboutCtrl', function ($scope, $location, $ro
     point: 33
   }, {
     x: "55",
-    y: "80",
+    y: "20",
     text: "RIGHT NOW IN THE HILLS",
     type: "Impact",
     size: 25,

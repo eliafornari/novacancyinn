@@ -230,7 +230,7 @@ $scope.aboutText = [
     point: 26
   },
   {
-    x:"70",
+    x:"10",
     y:"70",
     text:"EDDIE BAUER EDITION",
     type:"Courier",
@@ -278,7 +278,7 @@ $scope.aboutText = [
     point: 32
   },
   {
-    x:"60",
+    x:"40",
     y:"60",
     text:"POPPIN MALARIA PILLS LIKE XANS",
     type:"Courier",
@@ -287,7 +287,7 @@ $scope.aboutText = [
   },
   {
     x:"55",
-    y:"80",
+    y:"20",
     text:"RIGHT NOW IN THE HILLS",
     type:"Impact",
     size:25,
