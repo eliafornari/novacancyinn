@@ -34,27 +34,30 @@
 .nav.brush{
   a{
     color:transparent;
-    color: black;
+    color:$purple;
     font-family: 'brush';
-   -webkit-text-fill-color: transparent; /* Will override color (regardless of order) */
-   -webkit-text-stroke-width: 1px;
-   -webkit-text-stroke-color: $black;
+  //  -webkit-text-fill-color: transparent; /* Will override color (regardless of order) */
+  //  -webkit-text-stroke-width: 1px;
+  //  -webkit-text-stroke-color: $black;
     border:0 !important;
     font-size: 28px;
     text-shadow: none !important;
 
     &:hover{
       // text-outline: 1px 0px $purple;
-      -webkit-text-stroke-color: $purple;
+      color:$purple;
+      // -webkit-text-stroke-color: $purple;
     }
   }
   a.active{
-    -webkit-text-stroke-color: $purple;
+    color:$purple;
+    // -webkit-text-stroke-color: $purple;
   }
 }
 .nav.center.brush{
   a{
-   -webkit-text-stroke-color: $purple;
+    color:$purple;
+  //  -webkit-text-stroke-color: $purple;
    &:hover{
      text-shadow: 0 0 10px $purple !important;
    }

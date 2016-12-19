@@ -116,22 +116,18 @@ table {
 
 .nav.brush a {
   color: transparent;
-  color: black;
+  color: #884f9e;
   font-family: 'brush';
-  -webkit-text-fill-color: transparent;
-  /* Will override color (regardless of order) */
-  -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: #000000;
   border: 0 !important;
   font-size: 28px;
   text-shadow: none !important; }
   .nav.brush a:hover {
-    -webkit-text-stroke-color: #884f9e; }
+    color: #884f9e; }
 .nav.brush a.active {
-  -webkit-text-stroke-color: #884f9e; }
+  color: #884f9e; }
 
 .nav.center.brush a {
-  -webkit-text-stroke-color: #884f9e; }
+  color: #884f9e; }
   .nav.center.brush a:hover {
     text-shadow: 0 0 10px #884f9e !important; }
 
