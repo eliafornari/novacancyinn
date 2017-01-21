@@ -31,6 +31,14 @@
     height:auto;
     position: relative;
     margin-top:20vh;
+    @include respond-to(phone){
+      height: 80vh;
+    }
+    table{
+      @include respond-to(phone){
+        height: auto;
+      }
+    }
     &:nth-child(1){
       margin-top: 15vh;
     }
@@ -54,6 +62,10 @@
   bottom: 0;
   z-index: $z-shop-fullscreen-btn;
   // bottom:10vh;
+  @include respond-to(phone){
+    bottom: auto;
+    top:0;
+  }
   svg{
     width: 100%;
     height: 100%;

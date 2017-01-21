@@ -1,6 +1,11 @@
 .contact{
   width:100vw;
   height:100vh;
+  @include respond-to(phone){
+    height: calc(100vh - 100px);
+    margin-top: 100px;
+    position: relative;
+  }
 }
 
 .contact-ul{

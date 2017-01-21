@@ -359,7 +359,7 @@ angular.module('myApp').controller('aboutCtrl', function ($scope, $location, $ro
       height: '100%',
       width: '100%',
       playerVars: (_playerVars = { 'autoplay': 0, 'controls': 0 }, _defineProperty(_playerVars, 'controls', 0), _defineProperty(_playerVars, 'fs', 0), _defineProperty(_playerVars, 'rel', 0), _defineProperty(_playerVars, 'showinfo', 0), _defineProperty(_playerVars, 'autohide', 1), _defineProperty(_playerVars, 'color', 'white'), _playerVars),
-      videoId: 'eYb9cbUsPxY',
+      videoId: 'n-U-vG-Y9Ho',
       events: {
         'onReady': onPlayerReady,
         'onStateChange': onPlayerStateChange

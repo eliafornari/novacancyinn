@@ -334,13 +334,39 @@ table {
   z-index: 16;
   border-top: 1px solid #ec2224;
   box-sizing: border-box; }
+  .nav-mobile .nav-mobile-table .nav-logo {
+    width: 200px; }
+  .nav-mobile .nav-mobile-table .nav-container {
+    width: 100%; }
+    .nav-mobile .nav-mobile-table .nav-container .nav-left {
+      width: 100%;
+      text-align: center;
+      float: none;
+      left: auto;
+      right: auto; }
+      .nav-mobile .nav-mobile-table .nav-container .nav-left .nav-left-a {
+        width: 100%;
+        border-bottom: 0 !important;
+        height: 8vh;
+        line-height: 8vh; }
+    .nav-mobile .nav-mobile-table .nav-container .nav-right {
+      width: 100%;
+      text-align: center;
+      float: none;
+      left: auto;
+      right: auto; }
+      .nav-mobile .nav-mobile-table .nav-container .nav-right .nav-right-a {
+        width: 100%;
+        border-bottom: 0 !important;
+        height: 8vh;
+        line-height: 8vh; }
 .nav-mobile .nav-mobile-table.nav-home {
   border-top: 0;
   height: 100vh;
   top: 0px;
   background-color: transparent; }
 
-.mobile-nav-bar {
+.nav-mobile-bar {
   position: fixed;
   width: 100vw;
   height: 100px;
@@ -350,7 +376,7 @@ table {
   z-index: 16;
   border-bottom: 1px solid #ec2224;
   box-sizing: border-box; }
-  .mobile-nav-bar .mobile-nav-logo {
+  .nav-mobile-bar .nav-mobile-logo {
     position: absolute;
     left: 20px;
     top: 10px;
@@ -359,17 +385,17 @@ table {
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat; }
-    .mobile-nav-bar .mobile-nav-logo svg {
+    .nav-mobile-bar .nav-mobile-logo svg {
       display: block;
       width: 100%;
       height: 100%; }
-  .mobile-nav-bar .mobile-nav-burger {
+  .nav-mobile-bar .nav-mobile-burger {
     position: absolute;
     width: 100px;
     height: 100px;
     right: 20px;
     top: 0; }
-    .mobile-nav-bar .mobile-nav-burger p {
+    .nav-mobile-bar .nav-mobile-burger h2 {
       width: 100%;
       height: 100%;
       display: block;
@@ -815,7 +841,20 @@ main {
     width: 100%;
     height: auto;
     position: relative;
-    margin-top: 20vh; }
+    margin-top: 20vh;
+    /*  @if $media == large-desktop {
+        @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
+      }*/ }
+    @media only screen and (min-width: 0px) and (max-width: 767px) {
+      .product-ul .product-li {
+        height: 80vh; } }
+    .product-ul .product-li table {
+      /*  @if $media == large-desktop {
+          @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
+        }*/ }
+      @media only screen and (min-width: 0px) and (max-width: 767px) {
+        .product-ul .product-li table {
+          height: auto; } }
     .product-ul .product-li:nth-child(1) {
       margin-top: 15vh; }
     .product-ul .product-li .product-li-img {
@@ -835,7 +874,14 @@ main {
   height: 13px;
   right: 30vw;
   bottom: 0;
-  z-index: 11; }
+  z-index: 11;
+  /*  @if $media == large-desktop {
+      @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
+    }*/ }
+  @media only screen and (min-width: 0px) and (max-width: 767px) {
+    .product-fullscreen-btn {
+      bottom: auto;
+      top: 0; } }
   .product-fullscreen-btn svg {
     width: 100%;
     height: 100%;
@@ -883,14 +929,36 @@ html, body {
   top: 0;
   right: 0;
   width: 27vw;
-  height: 100%; }
+  height: 100%;
+  /*  @if $media == large-desktop {
+      @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
+    }*/ }
+  @media only screen and (min-width: 0px) and (max-width: 767px) {
+    .product-detail {
+      right: auto;
+      bottom: auto;
+      width: 100vw;
+      position: relative; } }
 
 .product-name {
   position: absolute;
   left: 0px;
   top: 0;
   height: 100%;
-  width: 27vw; }
+  width: 27vw;
+  /*  @if $media == large-desktop {
+      @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
+    }*/ }
+  @media only screen and (min-width: 0px) and (max-width: 767px) {
+    .product-name {
+      height: 40vw; } }
+  .product-name table {
+    /*  @if $media == large-desktop {
+        @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
+      }*/ }
+    @media only screen and (min-width: 0px) and (max-width: 767px) {
+      .product-name table {
+        height: 100% !important; } }
   .product-name h2 {
     width: 90%;
     margin: auto;
@@ -903,10 +971,24 @@ html, body {
   height: 100%;
   position: absolute;
   margin-top: 0vh;
-  z-index: 10; }
+  z-index: 10;
+  /*  @if $media == large-desktop {
+      @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
+    }*/ }
+  @media only screen and (min-width: 0px) and (max-width: 767px) {
+    .detail {
+      width: 100vw;
+      padding-top: 5vh;
+      position: relative; } }
 
 .detail-content {
-  margin-top: 10vh; }
+  margin-top: 10vh;
+  /*  @if $media == large-desktop {
+      @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
+    }*/ }
+  @media only screen and (min-width: 0px) and (max-width: 767px) {
+    .detail-content {
+      margin-top: 0; } }
 
 .detail-functions {
   position: relative;
@@ -916,10 +998,6 @@ html, body {
   /*  @if $media == large-desktop {
       @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
     }*/ }
-  @media only screen and (min-width: 0px) and (max-width: 767px) {
-    .detail-functions {
-      bottom: 20px;
-      width: 100px; } }
 
 .detail-price {
   position: relative;
@@ -931,10 +1009,7 @@ html, body {
     }*/ }
   @media only screen and (min-width: 0px) and (max-width: 767px) {
     .detail-price {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      width: 50px; } }
+      text-align: center; } }
   .detail-price h3 {
     height: 100%;
     width: 100%;
@@ -946,7 +1021,14 @@ html, body {
   display: block;
   max-height: 150px;
   overflow-y: scroll;
-  margin-top: 15px; }
+  margin-top: 15px;
+  /*  @if $media == large-desktop {
+      @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
+    }*/ }
+  @media only screen and (min-width: 0px) and (max-width: 767px) {
+    .detail-description {
+      text-align: center;
+      width: 100%; } }
 
 .detail-modifiers {
   position: relative;
@@ -963,7 +1045,18 @@ html, body {
       font-family: "folio"; }
     .detail-modifiers .detail-modifiers-ul .detail-modifiers-variations {
       width: auto;
-      display: inline-block; }
+      display: inline-block;
+      /*  @if $media == large-desktop {
+          @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
+        }*/ }
+      @media only screen and (min-width: 0px) and (max-width: 767px) {
+        .detail-modifiers .detail-modifiers-ul .detail-modifiers-variations {
+          width: auto;
+          display: inline-block;
+          margin: auto;
+          left: 50%;
+          position: relative;
+          transform: translateX(-50%); } }
       .detail-modifiers .detail-modifiers-ul .detail-modifiers-variations .detail-modifiers-variations-li {
         display: inline-block;
         margin-left: 10px; }
@@ -995,7 +1088,15 @@ html, body {
 
 .about {
   height: 100vh;
-  width: 100vw; }
+  width: 100vw;
+  /*  @if $media == large-desktop {
+      @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
+    }*/ }
+  @media only screen and (min-width: 0px) and (max-width: 767px) {
+    .about {
+      height: calc(100vh - 100px);
+      margin-top: 100px;
+      position: relative; } }
 
 .delta {
   position: fixed;
@@ -1045,7 +1146,14 @@ html, body {
   position: fixed;
   z-index: 0;
   top: 0;
-  left: 0; }
+  left: 0;
+  /*  @if $media == large-desktop {
+      @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
+    }*/ }
+  @media only screen and (min-width: 0px) and (max-width: 767px) {
+    .about-video {
+      height: 100%;
+      position: absolute; } }
   .about-video iframe {
     position: absolute;
     width: 200vw;
@@ -1053,7 +1161,23 @@ html, body {
     top: 50%;
     left: 50%;
     margin-top: -100vh;
-    margin-left: -100vw; }
+    margin-left: -100vw;
+    /*  @if $media == large-desktop {
+        @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
+      }*/ }
+    @media only screen and (min-width: 0px) and (max-width: 767px) {
+      .about-video iframe {
+        transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        /* IE 9 */
+        -webkit-transform: translateY(-50%);
+        /* Safari */
+        -moz-transform: translateY(-50%);
+        /* Safari */
+        transform-origin: 0 0;
+        margin-top: 0;
+        width: 240vw;
+        margin-left: -120vw; } }
   .about-video #player {
     position: absolute;
     width: 200vw;
@@ -1065,7 +1189,15 @@ html, body {
 
 .contact {
   width: 100vw;
-  height: 100vh; }
+  height: 100vh;
+  /*  @if $media == large-desktop {
+      @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
+    }*/ }
+  @media only screen and (min-width: 0px) and (max-width: 767px) {
+    .contact {
+      height: calc(100vh - 100px);
+      margin-top: 100px;
+      position: relative; } }
 
 .contact-ul {
   width: 70vw;
@@ -1462,15 +1594,6 @@ html, body {
   /*  @if $media == large-desktop {
       @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
     }*/ }
-  @media only screen and (min-width: 0px) and (max-width: 767px) {
-    .cart {
-      height: 100vh;
-      width: 100vw;
-      bottom: 0px;
-      top: auto;
-      bottom: 0;
-      margin: 0;
-      left: 0; } }
 
 .cart-close {
   position: fixed;
@@ -1478,7 +1601,13 @@ html, body {
   top: 20px;
   width: 40px;
   height: 40px;
-  z-index: 19; }
+  z-index: 19;
+  /*  @if $media == large-desktop {
+      @media only screen and (min-width: $break-large-desktop + 1) and (max-width: $break-infinite) { @content; }
+    }*/ }
+  @media only screen and (min-width: 0px) and (max-width: 767px) {
+    .cart-close {
+      top: 120px; } }
   .cart-close svg {
     width: 100%;
     height: 100%; }
@@ -1501,7 +1630,6 @@ html, body {
   @media only screen and (min-width: 0px) and (max-width: 767px) {
     .cart-ul {
       left: 20px;
-      margin-top: 50px;
       width: 90vw; } }
   .cart-ul .cart-li {
     width: 100%;
