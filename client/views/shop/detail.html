@@ -16,7 +16,7 @@
 
           <div class="detail-modifiers-variations">
              <!-- ng-click="showSelection(m.id)" -->
-            <li class="detail-modifiers-variations-li" ng-repeat="v in m.variations" ng-click="thisVariation(Detail.id , m.id, m.title, v.id, v.title);" ng-class="{'activeVariant': selectedVariation[m.id].variation_title==v.title}">
+            <li class="detail-modifiers-variations-li" ng-repeat="v in m.variations" ng-click="thisVariation(Detail.id , m.id, m.title, v.id, v.title);" ng-class="{'activeVariant': selectedVariation[m.id].variation_title==v.title}" ng-if="v.stock_level>0">
               <!-- ng-show="selectedVariation[m.id].variation_title==v.title || m.open==true" -->
               <a>{{v.title}}</a>
             </li>
@@ -28,7 +28,12 @@
   </div>
 
 
-  <div class="detail-add">
+<div class="detail-add" ng-if="Detail.stock_level<=0">
+  <h2 class="" >Out of stock</h2>
+</div>
+
+  <div class="detail-add" ng-if="Detail.stock_level>0">
+
     <h2 class="detail-add-plus-variation" ng-hide="Detail.has_variation" ng-click="addToCart(Detail.id)">Add To Cart</h2>
     <h2 class="detail-add-plus-variation" ng-show="Detail.has_variation" ng-click="addVariation()" ng-class="{'activeAdd': howManyVAriationsSelected>=Detail.total_variations}">Add To Cart</h2>
   </div>

@@ -37,17 +37,29 @@ angular.module('myApp')
   })
 
   $scope.$on('$routeChangeSuccess', function(){
-    console.log($location.path());
+
     if($location.path() != '/'){
       console.log('not home');
       $rootScope.backgroundColor = '#FFFFFF';
         $rootScope.pageLoading = false;
     }
+
     setTimeout(function(){
       $rootScope.pageLoading = false;
       $rootScope.$apply();
     }, 1000);
   })
+
+
+
+
+  $scope.isCheckout=()=>{
+    var second = $scope.getSecondPath();
+    if(['cart','shipment','payment', 'processed'].indexOf(second)> -1){
+      return true;
+    }else{return false;}
+  };
+
 
 
   $scope.getFirstPath=()=>{
@@ -66,6 +78,8 @@ angular.module('myApp')
     first = first.split("/")[2];
     return first;
   }
+
+
 
   $scope.getThirdPath=()=>{
     var first = $location.path();

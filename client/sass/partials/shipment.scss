@@ -1,5 +1,5 @@
 .shipment{
-  width:100%;
+  width: 100vw;
   height:100%;
   .shipment-content{
     width: 100%;
@@ -23,6 +23,14 @@
 }
 
 
+
+.form-error{
+  width: 100%;
+  display: block;
+  position: absolute;
+  text-align: right;
+  z-index:-1;
+}
 
 
 

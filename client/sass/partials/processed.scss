@@ -11,22 +11,23 @@
 }
 
 
-.processed-thankyou{
+.processed-content{
   width: 80vw;
   height: auto;
   margin: auto;
   margin-top: $margin-top;
-  .processed-thankyou-p{
+  .processed-content-p{
     width:100%;
     @include p();
-      color: black;
-    .processed-thankyou-a{
+    color: black;
+    span{
+      width:100%;
       @include p();
       color: black;
+      .processed-content-a{
+        @include p();
+        color: black;
+      }
     }
-
   }
-
-
-
 }

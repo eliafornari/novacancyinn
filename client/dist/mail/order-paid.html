@@ -3,7 +3,7 @@
 <tbody>
 	<tr>
 	   <td>
-	      <p><img src="https://s3-us-west-2.amazonaws.com/asset.alyx/logo/ALYX_TYPE_LOGO_FINAL.svg" style="width: 150px;" alt="ALYX"/></p>
+	      <p><img src="https://s3-us-west-2.amazonaws.com/asset.novacancyinn/logo/novacacnyinn_logo.svg" style="width: 150px;" alt="No Vacancy Inn"/></p>
 	   </td>
 	   <td style="text-align: right;">
 	   <p><strong>Order reference: #{{ id }}</strong></p>
@@ -69,7 +69,7 @@
 				<tr>
 					<!-- <td colspan="3">&nbsp;</td> -->
 					<td><strong>Total:</strong></td>
-					<td align="left">€ {{ total }}</td>
+					<td align="left">${{ total }}</td>
 				</tr>
 			</tfoot>
 
@@ -83,7 +83,7 @@
 					{% endif %}
 					</td>
 					<td align="left" colspan="3">{{ item.quantity }}</td>
-					<td align="left" colspan="3">€ {{ item.totals.value }}</td>
+					<td align="left" colspan="3">{{ item.totals.value }}</td>
 					<!-- item.totals.value -->
 			 	</tr>
 			{% endfor %}

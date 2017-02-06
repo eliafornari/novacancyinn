@@ -1,8 +1,11 @@
 
-<div class="payment" ng-controller="checkoutCtrl" ng-init="showBackText_payment=false">
+<div class="payment" ng-controller="paymentCtrl" ng-init="showBackText_payment=false">
+
+
+
 <!-- 3 -->
 
-  <form name="paymentForm" novalidate class="payment-form" method="post" ng-hide="paymentProcessed" ng-submit="paymentToProcess()">
+  <form name="paymentForm" novalidate class="payment-form" ng-submit="checkPayment()">
 
     <h1 class="form-title">Payment</h1>
 
@@ -37,20 +40,33 @@
             </div>
             <p> <span>visa</span> <span>mastercard</span> <span>american express</span></p>
           </div>
-          <div class="payment-total">
-            <p>Shipping <span>{{Totals.totals.shipping_price.formatted}}</span></p>
-            <p>Tax <span>10%</span></p>
-            <p>Total <span>{{Totals.totals.total.formatted}}</span></p>
+          <div class="payment-total" ng-if="!Order.totals.formatted">
+            <p ng-if="Order.totals.subtotal.formatted">SUBTOTAL <span>{{Order.totals.subtotal.formatted}}</span></p>
+            <p>SHIPPING <span>{{Order.totals.shipping_price.formatted}}</span></p>
+            <p ng-if="Order.totals.tax.formatted">TAX <span>{{Order.totals.tax.formatted}}</span></p>
+            <p>TOTAL <span>{{Order.totals.total.formatted}}</span></p>
           </div>
+
+          <div class="payment-total" ng-if="Order.totals.formatted">
+            <p ng-if="Order.totals.formatted.subtotal">SUBTOTAL <span>{{Order.totals.formatted.subtotal}}</span></p>
+            <p>SHIPPING <span>{{Order.totals.formatted.shipping_price}}</span></p>
+            <p>TAX <span>{{Order.totals.formatted.tax}}</span></p>
+            <p>TOTAL <span>{{Order.totals.formatted.total}}</span></p>
+          </div>
+
+
+
     </div>
 
 
+<p>payment form valid: {{paymentForm.$valid}}</p>
 
 
-
-    <button type="submit" class="checkout-button hvr-sweep-to-right" ng-disabled="paymentForm.$invalid" ng-mouseenter="showBackText_payment=true" ng-mouseleave="showBackText_payment=false">
-      <h2 ng-show="!showBackText_payment">Complete order</h2>
-      <h2 ng-show="showBackText_payment">Let me call you a cab Sir.</h2>
+    <button type="submit" class="checkout-button hvr-sweep-to-right" ng-disabled="paymentForm.$invalid" >
+       <!--ng-mouseenter="showBackText_payment=true" ng-mouseleave="showBackText_payment=false" -->
+      <h2>Complete order</h2>
+       <!-- ng-show="!showBackText_payment" -->
+      <!-- <h2 ng-show="showBackText_payment">Let me call you a cab Sir.</h2> -->
     </button>
 
     <!-- hvr-sweep-to-right -->
@@ -62,8 +78,8 @@
 
 
 
-  <div class="cart-back" ng-click="backFromPayment()">
-    <p class="hvr-color">back</p>
+  <div class="cart-back">
+    <a href="/shop/shipment">back</a>
   </div>
 
 

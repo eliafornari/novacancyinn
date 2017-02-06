@@ -496,13 +496,27 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
   // $locationChangeStart
 
   .when('/shop/product/:detail', {
-    templateUrl: 'views/shop.html',
+    templateUrl: 'views/shop/shop.html',
     // controller: 'detailCtrl',
     reloadOnSearch: false
   }).when('/shop', {
-    templateUrl: 'views/shop.html',
+    templateUrl: 'views/shop/shop.html',
     controller: 'shopCtrl',
     reloadOnSearch: false
+  }).when('/shop/cart', {
+    templateUrl: 'views/shop/cart.html'
+  }).when('/shop/shipment', {
+    templateUrl: 'views/shop/shipment.html'
+  }).when('/shop/shipment/terms', {
+    templateUrl: 'views/shop/shipment.html'
+  }).when('/shop/choice', {
+    templateUrl: 'views/shop/choice.html'
+  }).when('/shop/payment', {
+    templateUrl: 'views/shop/payment.html'
+  }).when('/shop/processed/:order/:method', {
+    templateUrl: 'views/shop/processed.html'
+  }).when('/shop/processed/:order/:method/canceled', {
+    templateUrl: 'views/shop/processed-canceled.html'
   }).when('/radio', {
     templateUrl: 'views/radio.html',
     controller: 'radioCtrl'
@@ -524,7 +538,7 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
 
   .when('/', {
     templateUrl: 'views/home.html',
-    controller: 'appCtrl'
+    controller: 'homeCtrl'
 
   })
 
@@ -537,69 +551,48 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
   $rootScope.pageClass = "page-home";
   $rootScope.Home;
 
-  // $rootScope.Auth;
-  //   $rootScope.authentication = function(){
-  //
-  //         // Simple GET request example:
-  //         $http({
-  //           method: 'GET',
-  //           url: '/authenticate'
-  //         }).then(function successCallback(response) {
-  //
-  //           if(response.data.access_token){
-  //               console.log("auth");
-  //               console.log(response);
-  //               // this callback will be called asynchronously
-  //               // when the response is available
-  //               $rootScope.Auth = response.data;
-  //               var expires = response.data.expires;
-  //               var identifier = response.data.identifier;
-  //               var expires_in = response.data.expires_in;
-  //               var access_token = response.data.access_token;
-  //               var type = response.data.token_type;
-  //           }
-  //
-  //
-  //           }, function errorCallback(response) {
-  //             // called asynchronously if an error occurs
-  //             // or server returns response with an error status.
-  //           });
-  //
-  //   }//addToCart
+  $rootScope.Pagination;
+  $rootScope.Product = [];
 
-  $rootScope.getProductsFN = function () {
-    $http({ method: 'GET', url: '/getProducts' }).then(function (response) {
+  $rootScope.getProductsFN = function (offset) {
+    $http({ method: 'GET', url: '/product/list?offset=' + offset }).then(function (response) {
       console.log("product: ");
       console.log(response);
-      $rootScope.Product = response.data;
+      $rootScope.Product = $rootScope.Product.concat(response.data.result);
+      $rootScope.Pagination = response.data.pagination;
       console.log(response.data);
+      $rootScope.pageLoading = false;
+      $rootScope.$broadcast("productArrived");
       $rootScope.pageLoading = false;
     }).then(function () {
       console.log("an error occurred");
     });
   };
-  $rootScope.getProductsFN();
+  $rootScope.getProductsFN(0);
 
-  // setTimeout(function(){
-  //   $rootScope.authentication();
-  // }, 600);
+  setTimeout(function () {
+    angular.element($window).bind("scroll", function () {
+      var windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
+      var body = document.body,
+          html = document.documentElement;
+      var docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+      var windowBottom = windowHeight + window.pageYOffset;
 
-  // font-family: 'Roboto Mono', monospace;
-  // font-family: 'Roboto', sans-serif;
+      if (windowBottom >= docHeight) {
+        // alert('bottom reached');
+        if ($rootScope.Pagination.offsets.next) {
+          $rootScope.getProductsFN($rootScope.Pagination.offsets.next);
+        }
+      }
+    });
+  }, 600);
 
   $rootScope.desaturate = true;
   $rootScope.elia = false;
-  // $rootScope.font = 'Roboto Mono';
 
   document.addEventListener("keydown", function (event) {
-    console.log(event.which);
     var key = event.which;
 
-    // if(key == 66){
-    //   $rootScope.desaturate = false;
-    // }else if(key == 87){
-    //   $rootScope.desaturate = true;
-    // }
     if (key == 66) {
       $rootScope.font = 'brush';
     } else if (key == 83) {
@@ -616,6 +609,52 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
     }
     $rootScope.$apply();
   });
+
+  //get countries and states data
+  $rootScope.countries = [];
+  $rootScope.states = [];
+
+  $rootScope.getCountries = function () {
+    $http({
+      method: 'GET',
+      url: '/data/countries'
+    }).then(function successCallback(response) {
+
+      $rootScope.countries = response.data.countries;
+      $rootScope.states = response.data.states;
+      console.log("states");
+      console.log(response.data);
+    }, function errorCallback(response) {
+
+      $scope.error = { value: true, text: 'countries not available, this page will be reloaded' };
+      setTimeout({
+        // $route.reload();
+      }, 2000);
+    });
+  };
+  $rootScope.getCountries();
+
+  //get cart
+  $rootScope.updateCart = function () {
+    $http({
+      url: '/getCart',
+      method: 'GET',
+      headers: {
+        // 'Content-Type': 'application/json'
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      transformRequest: transformRequestAsFormPost
+    }).then(function (response) {
+      $rootScope.Cart = response.data;
+      $rootScope.pageLoading = false;
+      console.log(response);
+
+      // if(!$rootScope.Cart.total_items==0){
+      //   console.log("cart has some stuff");
+      //   $rootScope.attachItemID($rootScope.Cart.contents);
+      // }
+    });
+  }; //updateCart
 
   $rootScope.windowHeight = $window.innerHeight;
 
@@ -829,6 +868,7 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
 var jquerymousewheel = require('./vendor/jquery.mousewheel.js')($);
 var infiniteScroll = require("./vendor/infiniteScroll.js");
 var jqueryUI = require('./vendor/jquery-ui.min.js');
+var mailchimp = require('./vendor/mailchimp.js');
 var home = require("./home.js");
 var about = require("./about.js");
 var events = require("./event.js");
@@ -838,8 +878,10 @@ var service = require("./services.js");
 var cart = require("./shop/cart.js");
 var shop = require("./shop/shop.js");
 var shop = require("./shop/checkout.js");
+var shop = require("./shop/payment.js");
+var shop = require("./shop/processed.js");
 
-},{"./about.js":1,"./event.js":3,"./home.js":4,"./nav.js":5,"./radio.js":6,"./services.js":7,"./shop/cart.js":8,"./shop/checkout.js":9,"./shop/shop.js":10,"./vendor/infiniteScroll.js":11,"./vendor/jquery-ui.min.js":12,"./vendor/jquery.mousewheel.js":13,"angular":21,"angular-animate":15,"angular-resource":17,"angular-route":19,"jquery":34,"prismic.io":42}],3:[function(require,module,exports){
+},{"./about.js":1,"./event.js":3,"./home.js":4,"./nav.js":5,"./radio.js":6,"./services.js":7,"./shop/cart.js":8,"./shop/checkout.js":9,"./shop/payment.js":10,"./shop/processed.js":11,"./shop/shop.js":12,"./vendor/infiniteScroll.js":13,"./vendor/jquery-ui.min.js":14,"./vendor/jquery.mousewheel.js":15,"./vendor/mailchimp.js":16,"angular":24,"angular-animate":18,"angular-resource":20,"angular-route":22,"jquery":37,"prismic.io":45}],3:[function(require,module,exports){
 'use strict';
 
 angular.module('myApp')
@@ -917,9 +959,9 @@ Home.controller('homeCtrl', function ($scope, $location, $rootScope, $routeParam
 
   $rootScope.windowHeight = $window.innerHeight;
   $rootScope.pageClass = "page-home";
-
   $scope.homeImages = [];
   $scope.currentImage;
+  $rootScope.showCart = false;
 
   $rootScope.getContentType('home', 'my.home.index');
 
@@ -1014,17 +1056,27 @@ angular.module('myApp').controller('navCtrl', function ($scope, $location, $root
   });
 
   $scope.$on('$routeChangeSuccess', function () {
-    console.log($location.path());
+
     if ($location.path() != '/') {
       console.log('not home');
       $rootScope.backgroundColor = '#FFFFFF';
       $rootScope.pageLoading = false;
     }
+
     setTimeout(function () {
       $rootScope.pageLoading = false;
       $rootScope.$apply();
     }, 1000);
   });
+
+  $scope.isCheckout = function () {
+    var second = $scope.getSecondPath();
+    if (['cart', 'shipment', 'payment', 'processed'].indexOf(second) > -1) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   $scope.getFirstPath = function () {
     var first = $location.path();
@@ -1291,6 +1343,7 @@ Cart.controller('cartCtrl', function ($scope, $location, $rootScope, $timeout, $
   $rootScope.Cart;
   $rootScope.showCart = false;
   console.log("ran again");
+  $rootScope.updateCart();
 
   $rootScope.openCart = function () {
     $rootScope.showCart = !$rootScope.showCart;
@@ -1306,50 +1359,6 @@ Cart.controller('cartCtrl', function ($scope, $location, $rootScope, $timeout, $
     console.log(newValue);
     $rootScope.Cart = newValue;
   });
-
-  $rootScope.countries = [];
-
-  $rootScope.getCountries = function () {
-    $http({
-      method: 'GET',
-      url: 'assets/countries.json'
-    }).then(function successCallback(response) {
-
-      $rootScope.countries = response.data;
-      console.log(response.data);
-    }, function errorCallback(response) {
-
-      $scope.error = { value: true, text: 'countries not available, this page will be reloaded' };
-      setTimeout({
-        // $route.reload();
-      }, 2000);
-    });
-  };
-  $rootScope.getCountries();
-
-  $scope.phoneRegex = '^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$';
-  $scope.postcodeRegex = '^\\d{5}-\\d{4}|\\d{5}|[A-Z]\\d[A-Z] \\d[A-Z]\\d$';
-
-  $rootScope.updateCart = function () {
-    $http({
-      url: '/getCart',
-      method: 'GET',
-      headers: {
-        // 'Content-Type': 'application/json'
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      transformRequest: transformRequestAsFormPost
-    }).then(function (response) {
-      $rootScope.Cart = response.data;
-      $rootScope.pageLoading = false;
-      console.log(response);
-
-      // if(!$rootScope.Cart.total_items==0){
-      //   console.log("cart has some stuff");
-      //   $rootScope.attachItemID($rootScope.Cart.contents);
-      // }
-    });
-  }; //updateCart
 
   //attaching item function
   // $rootScope.attachItemID=function(obj){
@@ -1379,40 +1388,45 @@ Cart.controller('cartCtrl', function ($scope, $location, $rootScope, $timeout, $
     });
   };
 
-  $scope.cartToShipment = function () {
+  $rootScope.cartToShipment = function () {
     if ($rootScope.Cart.total_items > 0) {
-      $rootScope.template = $rootScope.templates[1];
+      $location.path('/shop/shipment', true);
     } else {
       $rootScope.noProductsError = true;
       setTimeout(function () {
-        $rootScope.showCart = false;
         $rootScope.noProductsError = false;
         $rootScope.$apply();
       }, 2000);
     }
   };
 
-  $rootScope.backFromShipment = function () {
-    $rootScope.template = $rootScope.templates[0];
-  };
-
-  $rootScope.backFromPayment = function () {
-
-    $rootScope.template = $rootScope.templates[1];
-
-    $rootScope.paymentProcessed = false;
-    $rootScope.errorMessage = false;
-    $rootScope.thankYou = false;
-    $rootScope.cartLoading = false;
-  };
-
-  $rootScope.backFromProcessed = function () {
-    $rootScope.template = $rootScope.templates[2];
-    $rootScope.paymentProcessed = false;
-    $rootScope.errorMessage = false;
-    $rootScope.thankYou = false;
-    $rootScope.cartLoading = false;
-  };
+  // $rootScope.backFromShipment=()=>{
+  //   $rootScope.template = $rootScope.templates[0];
+  // }
+  //
+  //
+  // $rootScope.backFromPayment = ()=>{
+  //
+  //   $rootScope.template = $rootScope.templates[1];
+  //
+  //   $rootScope.paymentProcessed = false;
+  //   $rootScope.errorMessage = false;
+  //   $rootScope.thankYou = false;
+  //   $rootScope.cartLoading = false;
+  // }
+  //
+  //
+  //
+  // $rootScope.backFromProcessed = ()=>{
+  //   $rootScope.template = $rootScope.templates[2];
+  //   $rootScope.paymentProcessed = false;
+  //   $rootScope.errorMessage = false;
+  //   $rootScope.thankYou = false;
+  //   $rootScope.cartLoading = false;
+  // }
+  //
+  //
+  //
 });
 
 },{}],9:[function(require,module,exports){
@@ -1421,24 +1435,17 @@ Cart.controller('cartCtrl', function ($scope, $location, $rootScope, $timeout, $
 var Checkout = angular.module('myApp');
 
 Checkout.controller('checkoutCtrl', function ($scope, $location, $rootScope, $timeout, $http, transformRequestAsFormPost) {
-  $rootScope.thankYou, $rootScope.payment;
-  $rootScope.isGradient = true;
 
-  $rootScope.customer, $rootScope.shipment, $rootScope.billing, $rootScope.Totals;
-
-  $rootScope.payment = {
-    id: '',
-    number: '5555555555554444',
-    expiry_month: '02',
-    expiry_year: '2018',
-    cvv: '756'
-  };
+  $rootScope.Order;
+  $rootScope.shipment_forwardActive = false;
 
   $rootScope.checkout = {
-    customer: { first_name: '',
+    customer: {
+      first_name: '',
       last_name: '',
       email: ''
     },
+    gateway: 'stripe',
     shipment_method: '1336838094099317449',
     shipment: { first_name: '',
       last_name: '',
@@ -1461,99 +1468,50 @@ Checkout.controller('checkoutCtrl', function ($scope, $location, $rootScope, $ti
     }
   };
 
-  $rootScope.shipmentToPayment = function () {
-    console.log($rootScope.checkout);
-    $rootScope.template = $rootScope.templates[2];
+  //shipment
 
-    $http.post('/cartToOrder', $rootScope.checkout).then(function (data) {
-      console.log(data);
+  $rootScope.shipmentToPayment = function (event) {
+    console.log($scope.checkoutForm.$valid);
+    console.log($scope.checkoutForm);
+    if ($scope.checkoutForm.$valid) {
 
-      $rootScope.Totals = data.data;
-      $rootScope.payment.id = $rootScope.Totals.id;
-      console.log('id: ' + $rootScope.payment.id);
-      console.log($rootScope.Totals);
-      console.log("posted successfully");
-    }, function (data) {
-      console.error("error in posting");
-    });
-  }; //cartToOrder
-
-  $rootScope.paymentToProcess = function () {
-    $rootScope.cartLoading = true;
-    $rootScope.Processed = false;
-    $rootScope.template = $rootScope.templates[3];
-    console.log("payment started");
-
-    $http({
-      url: '/orderToPayment',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      transformRequest: transformRequestAsFormPost,
-      data: $rootScope.payment
-    }).then(function (response) {
-
-      console.log("payment succeeded");
-      console.log(response.data);
-
-      if (response.data.data.paid) {
-        $rootScope.cartLoading = false;
-        $rootScope.Processed = response;
-        console.log(response.data);
-        $scope.updatestock($rootScope.Cart);
-        $scope.emptyCart();
-      } else {
-        console.log('paid false');
-        $rootScope.Processed = response;
-      }
-
-      // $scope.findOrder($rootScope.Processed);
-    }, function (response) {
-      console.log("payment failed!");
-      console.log(response);
-      $rootScope.Processed = response;
-      $rootScope.cartLoading = false;
-    });
-  }; //cartToOrder
-
-  //tentative function to update teh overall stock
-  $scope.findOrder = function (contents) {
-    console.log("angular http");
-    var data = contents.data;
-    data['auth'] = $rootScope.Auth;
-    console.log(data);
+      $http.post('/cartToOrder', $rootScope.checkout).then(function (response) {
+        $rootScope.Order = response.data;
+        // $rootScope.payment.id = response.data.id;
+        $location.path('/shop/payment', true);
+        // mailchimp.register($rootScope.checkout);
+      }, function (response) {
+        $rootScope.error = { value: true, text: response.data };
+        // event.preventDefault();
+        setTimeout(function () {
+          $rootScope.error = { value: false, text: '' };
+          $rootScope.$apply();
+        }, 2000);
+        console.error("error in posting");
+      });
+    } else {
+      $rootScope.error = { value: true, text: 'fill in the form correctly' };
+      // event.preventDefault();
+      setTimeout(function () {
+        $rootScope.error = { value: false, text: '' };
+        $rootScope.$apply();
+      }, 2000);
+    }
   };
 
-  // $scope.getOrders = ()=>{
-  //   var req = {
-  //    method: 'GET',
-  //    url: 'https://api.molt.in/'+'v1/orders/'+data.order.id+'/items',
-  //    headers: {
-  //      'Authorization': "Bearer "+data.auth.access_token
-  //    }
+  // $scope.$watch('checkoutForm.$valid', function(newVal, oldVal){
+  //   if ($scope.checkoutForm.$valid){
+  //     $rootScope.shipment_forwardActive = true;
+  //   }else{
+  //     $rootScope.shipment_forwardActive = false;
   //   }
-  //   $http(req).then(function(response){
-  //     console.log(response);
-  //     $scope.updatestock(response);
-  //   }, function(response){
-  //     console.log(response);
-  //   });
-  // }
+  // }, true);
 
-  $scope.updatestock = function (data) {
-    $http.post('/updatestock', data).success(function (data, status, headers, config) {
-      console.log("updatestock");
-      console.log(data);
-    }).error(function (data, status, header, config) {
-      console.log(data);
-    });
-  };
+  $scope.phoneRegex = '^(\\+\\d{1,2}\s)?\\(?\\d{3}\\)?[\s.-]\\d{3}[\\s.-]\\d{4}$';
+  $scope.postcodeRegex = '^\\d{5}-\\d{4}|\\d{5}|[A-Z]\\d[A-Z] \\d[A-Z]\\d$';
 
   $scope.$watch('isBillingDifferent', function (value) {
-    console.log($scope.isBillingDifferent);
     if (!$scope.isBillingDifferent) {
-      console.log($rootScope.checkout);
       $rootScope.checkout.billing.first_name = $rootScope.checkout.shipment.first_name;
       $rootScope.checkout.billing.last_name = $rootScope.checkout.shipment.last_name;
       $rootScope.checkout.billing.address_1 = $rootScope.checkout.shipment.address_1;
@@ -1565,12 +1523,12 @@ Checkout.controller('checkoutCtrl', function ($scope, $location, $rootScope, $ti
     }
   });
 
+  var Europe = ['AL', 'AD', 'AM', 'AT', 'AZ', 'BY', 'BA', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'GE', 'DE', 'GR', 'HU', 'IS', 'IE', 'KZ', 'XK', 'LV', 'LI', 'LT', 'LU', 'MK', 'MT', 'MD', 'MC', 'ME', 'NL', 'NO', 'PL', 'PT', 'RO', 'RU', 'SM', 'RS', 'SK', 'SI', 'ES', 'SE', 'CH', 'TR', 'UA', 'GB'];
+  var NorthAmerica = ['US', 'CA', 'MX'];
   $scope.$watch('checkout', function (value) {
-    console.log(value);
     // $rootScope.checkout.customer.first_name = $rootScope.checkout.shipment.first_name;
     // $rootScope.checkout.customer.last_name = $rootScope.checkout.shipment.last_name;
     if (!$scope.isBillingDifferent) {
-      console.log($rootScope.checkout);
       $rootScope.checkout.billing.first_name = $rootScope.checkout.shipment.first_name;
       $rootScope.checkout.billing.last_name = $rootScope.checkout.shipment.last_name;
       $rootScope.checkout.billing.address_1 = $rootScope.checkout.shipment.address_1;
@@ -1581,29 +1539,393 @@ Checkout.controller('checkoutCtrl', function ($scope, $location, $rootScope, $ti
       $rootScope.checkout.billing.phone = $rootScope.checkout.shipment.phone;
     }
 
-    console.log('country: ' + $rootScope.checkout.shipment.country);
-    if ($rootScope.checkout.shipment.country == 'US') {
+    if (NorthAmerica.indexOf($rootScope.checkout.shipment.country) != -1) {
       $rootScope.checkout.shipment_method = '1336838094099317449';
-      console.log('US');
+    } else if ($rootScope.checkout.shipment.country == 'IT') {
+      $rootScope.checkout.shipment_method = '1336838640038314698';
+    } else if (Europe.indexOf($rootScope.checkout.shipment.country) != -1) {
+      $rootScope.checkout.shipment_method = '1336838640038314698';
+    } else if ($rootScope.checkout.shipment.country == 'RU') {
+      $rootScope.checkout.shipment_method = '1336838640038314698';
     } else {
       $rootScope.checkout.shipment_method = '1336838640038314698';
-      console.log('INT');
     }
   }, true);
+});
 
-  $scope.emptyCart = function () {
-    $http.post('/emptyCart').success(function (data, status, headers, config) {
-      console.log("updatestock");
-      console.log(data);
-      $rootScope.Cart = {};
-    }).error(function (data, status, header, config) {
-      console.log(data);
-      $rootScope.Cart = {};
+},{}],10:[function(require,module,exports){
+'use strict';
+
+var Payment = angular.module('myApp');
+
+Payment.controller('paymentCtrl', function ($scope, $location, $rootScope, $timeout, $http, transformRequestAsFormPost, anchorSmoothScroll) {
+  $rootScope.payment;
+  console.log("paymentCtrl");
+  $rootScope.Transaction;
+  $rootScope.Processed = { value: false, error: false, data: '' };
+
+  $rootScope.payment = {
+    id: $rootScope.Order.id,
+    gateway: '',
+    first_name: $rootScope.checkout.billing.first_name,
+    last_name: $rootScope.checkout.billing.last_name,
+    number: '',
+    expiry_month: '',
+    expiry_year: '',
+    cvv: ''
+  };
+
+  // $scope.$watch('paymentForm.$valid', function(newVal, oldVal){
+  //   if ($scope.paymentForm.$valid){
+  //     $rootScope.payment_forwardActive = true;
+  //   }else{
+  //     $rootScope.payment_forwardActive = false;
+  //   }
+  // }, false);
+
+  $rootScope.checkPayment = function () {
+    console.log("checkPayment runs");
+    if ($rootScope.checkout.gateway == 'stripe') {
+      console.log("payment form");
+      console.log($scope.paymentForm);
+      if ($scope.paymentForm.$valid) {
+        $rootScope.changeOrderGateway();
+      } else {
+        $rootScope.error = { value: true, text: 'data invalid' };
+        setTimeout(function () {
+          $rootScope.error = { value: false, text: 'data invalid' };
+          $rootScope.$apply();
+        }, 2000);
+      }
+    } else {
+      $rootScope.changeOrderGateway();
+    }
+  };
+
+  $rootScope.changeOrderGateway = function () {
+    console.log("changeOrderGateway runs");
+    console.log("gateway: " + $rootScope.checkout.gateway);
+    var orderID = $rootScope.Order.id;
+    if ($rootScope.checkout.gateway == 'stripe') {
+      $rootScope.paymentToProcess();
+    } else if ($rootScope.checkout.gateway == 'paypal-express') {
+      var obj = { gateway: $rootScope.checkout.gateway };
+      $http.post('/order/' + orderID + '/put', obj).then(function (response) {
+        $rootScope.paymentToProcess_paypal();
+      }, function (error) {
+        console.log(error);
+        $rootScope.pageLoading = false;
+      });
+    }
+  };
+
+  $rootScope.paymentToProcess = function () {
+    console.log("paymentToProcess runs");
+
+    $rootScope.payment.gateway = $rootScope.checkout.gateway;
+    $rootScope.pageLoading = true;
+
+    $http({
+      url: '/order/payment',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      transformRequest: transformRequestAsFormPost,
+      data: $rootScope.payment
+    }).then(function (response) {
+      if (response.data.data.paid) {
+        $rootScope.cartLoading = false;
+        $rootScope.Processed = { value: true, error: false, data: response.data.order };
+        $rootScope.Transaction = response.data.data;
+        $rootScope.pageLoading = false;
+        $location.path('/shop/processed/' + response.data.order.id + '/' + $rootScope.checkout.gateway, true);
+      }
+    }, function (response) {
+      console.log("payment failed!");
+      console.log(response);
+      $rootScope.Processed = { value: true, error: true, data: response.data };
+      $rootScope.pageLoading = false;
+      $rootScope.cartLoading = false;
+      $location.path('/shop/processed/' + $rootScope.checkout.id + '/' + $rootScope.checkout.gateway + '/canceled', true);
+    });
+  }; //paymentToProcess
+
+  $rootScope.paymentToProcess_paypal = function () {
+
+    $rootScope.payment.gateway = $rootScope.checkout.gateway;
+    $rootScope.pageLoading = true;
+
+    $http({
+      url: '/order/payment',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      transformRequest: transformRequestAsFormPost,
+      data: $rootScope.payment
+    }).then(function (response) {
+
+      window.open(response.data.url, "_self", "", false);
+
+      if (response.data.data.paid) {
+        $rootScope.cartLoading = false;
+        $rootScope.paymentProcessed = true;
+        $rootScope.thankYou = response.data;
+        // $location.path('/shop/processed/'+orderID+'/'+$rootScope.checkout.gateway, true);
+      }
+    }, function (response) {
+      console.log("payment failed!");
+      console.log(response);
+      $rootScope.paymentProcessed = true;
+      $rootScope.pageLoading = false;
+    });
+  }; //paymentToProcess
+
+  $rootScope.backFromPayment = function () {
+    $rootScope.paymentProcessed = false;
+    $rootScope.errorMessage = false;
+    $rootScope.thankYou = false;
+    $rootScope.cartLoading = false;
+  };
+});
+
+},{}],11:[function(require,module,exports){
+'use strict';
+
+var Processed = angular.module('myApp');
+
+Processed.controller('processedCtrl', function ($scope, $location, $rootScope, $timeout, $http, transformRequestAsFormPost, anchorSmoothScroll, $routeParams) {
+
+  //retrieve order data
+  $rootScope.retrieveOrder = function () {
+    var orderID = $routeParams.order;
+    console.log("retrieveOrder");
+    $http({
+      url: '/order/' + orderID + '/get',
+      method: 'GET'
+    }).then(function (response) {
+      if (response.data.status.data.key == 'unpaid') {
+        $rootScope.completePayment_Paypal();
+      } else {
+        $rootScope.Processed = { value: true, error: false, data: response.data };
+      }
+    }, function (error) {
+      console.log(error);
+      $rootScope.Processed = { value: false, error: true, data: error.data };
+    });
+  };
+
+  //first process
+  setTimeout(function () {
+    if ($routeParams.method == 'paypal-express') {
+      $rootScope.retrieveOrder();
+      // $rootScope.Processed = {value: false, error:false, data:response.data};
+      // $rootScope.changeOrderStatus(response.data);
+    } else if ($routeParams.method == 'stripe') {
+      $rootScope.changeOrderStatus($rootScope.Transaction);
+    }
+  }, 600);
+
+  //paypal complete purchase function
+  $rootScope.completePayment_Paypal = function () {
+    var orderID = $routeParams.order;
+    var obj = { token: $routeParams.token, PayerID: $routeParams.PayerID };
+
+    $http.post('/checkout/payment/complete_purchase/' + orderID, obj).then(function (response) {
+      $rootScope.Processed = { value: true, error: false, data: response.data };
+      console.log(response);
+      if (response.data.result.order.status.data.key == 'paid') {
+        $rootScope.pageLoading = false;
+        console.log("/checkout/payment/complete_purchase/");
+        console.log(response.data);
+        $rootScope.Transaction = { "empty": "" };
+        $rootScope.changeOrderStatus($rootScope.Transaction);
+      }
+    }, function (error) {
+      console.log(error);
+      $rootScope.pageLoading = false;
+      $rootScope.Processed = { value: true, error: true, data: error.data };
+    });
+  };
+
+  $rootScope.changeOrderStatus = function (data) {
+    var orderID = $routeParams.order;
+    var obj = {};
+
+    if ($routeParams.method == 'paypal-express') {
+      obj = { payment_number: $routeParams.token };
+      // $scope.eraseCart();
+    } else if ($routeParams.method == 'stripe') {
+      obj = { payment_number: data.id };
+      console.log("stripe payment number:", obj);
+    }
+
+    $http.post('/order/' + orderID + '/put', obj).then(function (response) {
+      console.log("changeOrderStatus");
+      $rootScope.Processed = { value: true, error: false, data: response.data };
+      console.log(response);
+      console.log("response.data.status.value.key");
+      if (response.data.status.data.key != 'paid') {
+        $rootScope.pageLoading = false;
+        console.log("not paid");
+      } else if (response.data.status.data.key == 'paid') {
+        $rootScope.getOrderItems();
+      }
+    }, function (error) {
+      console.log(error);
+      $rootScope.pageLoading = false;
+      $rootScope.Processed = { value: true, error: true, data: error.data };
+    });
+  };
+
+  $rootScope.getOrderItems = function () {
+    console.log("getOrderItems");
+    var orderID = $routeParams.order;
+    $http({
+      url: '/order/' + orderID + '/items',
+      method: 'GET'
+    }).then(function (response) {
+      console.log(response);
+      $rootScope.Processed.data.items = response.data;
+      if ($routeParams.method == 'paypal-express') {
+        console.log('method:', $routeParams.method);
+
+        if ($rootScope.Product) {
+          $scope.searchProduct(response.data.result);
+        } else {
+          $rootScope.$on('productArrived', function () {
+            console.log("productArrived");
+            $scope.searchProduct(response.data.result);
+          });
+        }
+      } else {
+        $scope.searchProduct(response.data.result);
+      }
+
+      $scope.eraseCart();
+    }, function (error) {
+      console.log(error);
+      $rootScope.Processed = { value: false, error: true, data: error.data };
+    });
+  };
+
+  $scope.searchProduct = function (data) {
+    console.log("searchProduct");
+    var contents = data;
+
+    for (var i in contents) {
+
+      if (contents[i].product.data.modifiers.length != 0) {
+        console.log("has modifiers");
+        var key = Object.keys(contents[i].product.data.modifiers)[0];
+        var thisProduct = contents[i].product.data.modifiers[key].data.product;
+
+        for (var p in $rootScope.Product) {
+          if ($rootScope.Product[p].id == thisProduct) {
+            console.log("this product id");
+            console.log(thisProduct);
+            // var thisProduct = $rootScope.Product[p].id;
+            var quantity = contents[i].quantity;
+            console.log("quantity", quantity);
+            console.log($rootScope.Product[p].stock_level);
+            var stock = $rootScope.Product[p].stock_level - contents[i].quantity;
+            $scope.updateStockLevel(thisProduct, stock);
+          }
+        }
+
+        // if($routeParams.method=='paypal-express'){
+        //   $http({
+        //     url: '/product/'+thisProduct+'/variations/get',
+        //     method: 'GET',
+        //   }).then(function(response){
+        //     console.log("get variations");
+        //
+        //     for (var p in $rootScope.Product){
+        //       if($rootScope.Product[p].id==thisProduct){
+        //         console.log("this product id");
+        //         console.log(thisProduct);
+        //
+        //         $rootScope.Variations=response.data.result;
+        //         $scope.sizeLoading = false;
+        //
+        //         for (var m in $rootScope.Product[p].modifiers){
+        //           for (var v in $rootScope.Product[p].modifiers[m].variations){
+        //
+        //             for (var t in $rootScope.Variations){
+        //               var key = Object.keys($rootScope.Variations[t].modifiers)[0];
+        //               var title = $rootScope.Variations[t].modifiers[key].var_title;
+        //
+        //               if(title==$rootScope.Product[p].modifiers[m].variations[v].title){
+        //                 $rootScope.Product[p].modifiers[m].variations[v].stock_level = $rootScope.Variations[t].stock_level;
+        //                 console.log("$rootScope.Product[p].modifiers[m].variations[v].stock_level",$rootScope.Product[p].modifiers[m].variations[v].stock_level);
+        //
+        //                 if(contents[i].product.data.modifiers[key].var_title == $rootScope.Variations[t].modifiers[key].var_title){
+        //                   var v_thisProduct = contents[i].product.data.id;
+        //                   var v_quantity = contents[i].quantity;
+        //                   var v_stock = $rootScope.Product[p].modifiers[m].variations[v].stock_level - contents[i].quantity;
+        //                   console.log("v_thisProduct", v_thisProduct);
+        //                   console.log("v_quantity", v_quantity);
+        //                   console.log("v_stock", v_stock);
+        //                   $scope.updateStockLevel(v_thisProduct, v_stock);
+        //                 }
+        //               }
+        //             }
+        //           }
+        //         }
+        //       }
+        //     }
+        //
+        //   },function(error){
+        //     console.log(error);
+        //       $route.reload();
+        //
+        //   });
+        // }
+      }
+      // else if((contents[i].product.data.modifiers.length==0) && ($routeParams.method=='paypal-express')){
+      //   //temporary paypal fix for items with no variation
+      //   console.log("temporary paypal fix for items with no variation");
+      //     //if the item has no vaiation
+      //     var thisProduct = contents[i].product.data.id;
+      //     console.log("contents[i].product.data.id",contents[i].product.data.id);
+      //     // $scope.updateStockLevel(thisProduct, stock);
+      //
+      //     for (var p in $rootScope.Product){
+      //       if($rootScope.Product[p].id==thisProduct){
+      //         // var thisProduct = $rootScope.Product[p].id;
+      //         var quantity = contents[i].quantity;
+      //         var stock = $rootScope.Product[p].stock_level - contents[i].quantity;
+      //         console.log("quantity", quantity);
+      //         console.log("stock", stock);
+      //         $scope.updateStockLevel(thisProduct, stock);
+      //       }
+      //     }
+      //
+      // }
+    } //for loop
+  };
+
+  // update global stock level of the product
+  $scope.updateStockLevel = function (thisProduct, stock) {
+    $http.post('/product/' + thisProduct + '/stock_level/' + stock).then(function (response) {
+      console.log(response);
+    }, function (error) {
+      console.log(error);
+    });
+  };
+
+  // erase shopping cart
+  $scope.eraseCart = function () {
+    $http.post('/cart/erase').then(function (response) {
+      console.log(response);
+    }, function (error) {
+      console.log(error);
     });
   };
 });
 
-},{}],10:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 var Shop = angular.module('myApp');
@@ -1684,25 +2006,25 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
   //......VARIATIONS
 
   $rootScope.addVariation = function () {
+    if ($scope.maxVariation($rootScope.selectedVariation) == true) {
 
-    console.log($rootScope.selectedVariation);
-
-    if ($rootScope.selectedVariation) {
-      $http({
-        url: '/addVariation',
-        method: 'POST',
-        data: $rootScope.selectedVariation
-      }).then(function (response) {
-        // $rootScope.Cart = response;
-        $rootScope.updateCart();
-        console.log(response);
-      });
-    } else {
-      $scope.variationErrorMessage = "select a size first";
-      setTimeout(function () {
-        $scope.variationErrorMessage = false;
-        $rootScope.$apply();
-      });
+      if ($rootScope.selectedVariation) {
+        $http({
+          url: '/addVariation',
+          method: 'POST',
+          data: $rootScope.selectedVariation
+        }).then(function (response) {
+          // $rootScope.Cart = response;
+          $rootScope.updateCart();
+          console.log(response);
+        });
+      } else {
+        $scope.variationErrorMessage = "select a size first";
+        setTimeout(function () {
+          $scope.variationErrorMessage = false;
+          $rootScope.$apply();
+        });
+      }
     }
   }; //addToCart
 
@@ -1727,6 +2049,7 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
           $rootScope.Detail.has_variation = $rootScope.has_variation;
           $rootScope.pageLoading = false;
           $scope.drag_FN(slug);
+          $scope.getVariationsLevel($rootScope.Detail.id);
 
           var go = true;
           //has variation
@@ -1798,6 +2121,67 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
     }, 3000);
   });
 
+  $scope.sizeLoading = false;
+
+  $scope.getVariationsLevel = function (productId) {
+    $scope.sizeLoading = true;
+    $http({
+      url: '/product/' + productId + '/variations/get',
+      method: 'GET'
+    }).then(function (response) {
+      $rootScope.Variations = response.data.result;
+      $scope.sizeLoading = false;
+      var n = 0;
+      for (var m in $rootScope.Detail.modifiers) {
+
+        $scope.arrFromMyObj = Object.keys($rootScope.Detail.modifiers[m].variations).map(function (key) {
+          return $rootScope.Detail.modifiers[m].variations[key];
+        });
+        $rootScope.Detail.modifiers[m].variations = $scope.arrFromMyObj;
+
+        for (var v in $rootScope.Detail.modifiers[m].variations) {
+          for (var t in $rootScope.Variations) {
+            var key = Object.keys($rootScope.Variations[t].modifiers)[0];
+            var title = $rootScope.Variations[t].modifiers[key].var_title;
+            if (title == $rootScope.Detail.modifiers[m].variations[v].title) {
+              $rootScope.Detail.modifiers[m].variations[v].stock_level = $rootScope.Variations[t].stock_level;
+            }
+          }
+        }
+      }
+    }, function (error) {
+      console.log(error);
+      $route.reload();
+    });
+  };
+
+  //not allow add variation if max stock level
+  $scope.maxVariation = function (obj) {
+    for (var m in obj) {
+      var modifierId = obj[m].modifier_id;
+      var variationId = obj[m].variation_id;
+      if ($rootScope.Cart.contents.length == 0) {
+        return true;
+      } else {
+        for (var i in $rootScope.Cart.contents) {
+          if ($rootScope.Cart.contents[i].options[modifierId] == variationId) {
+            if ($rootScope.Cart.contents[i].stock_level > $rootScope.Cart.contents[i].quantity && $rootScope.Cart.contents[i].quantity < 2) {
+              return true;
+            } else {
+              $rootScope.error = { value: true, text: "you reached the maximum amount of this variation" };
+              setTimeout(function () {
+                $rootScope.error = { value: false, text: "" };
+                $rootScope.$apply();
+              }, 2000);
+              return false;
+            }
+          }
+        }
+        return true;
+      }
+    }
+  };
+
   // document.getElementById('target').ondragstart = function() { return false; };
   var dragging = false;
   var coord;
@@ -1846,27 +2230,17 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
     $rootScope.blockScroll = !$rootScope.blockScroll;
   };
 
+  //image flip
   $rootScope.thisImageIndex = 0;
-
   $scope.nextImage = function (slug) {
-    console.log(slug, $rootScope.Detail.slug);
-
     if (slug == $rootScope.Detail.slug) {
       var nextIndex = $rootScope.thisImageIndex + 1;
       if ($rootScope.Detail.images[nextIndex]) {
-        console.log("next");
         $rootScope.thisImageIndex = nextIndex;
       } else {
-        console.log("first");
         $rootScope.thisImageIndex = 0;
       }
     }
-
-    //
-    // for (var i in $rootScope.Detail.images){
-    //
-    //
-    // }
   };
 
   $scope.isFullscreen = false;
@@ -1881,7 +2255,7 @@ Shop.controller('detailCtrl', function ($scope, $location, $rootScope, $routePar
 Shop.directive('detailDirective', function ($rootScope, $location, $window, $routeParams, $timeout) {
   return {
     restrict: 'E',
-    templateUrl: 'views/detail.html',
+    templateUrl: 'views/shop/detail.html',
     replace: true,
     link: function link(scope, elem, attrs) {}
   };
@@ -1896,7 +2270,7 @@ Shop.directive('fullscreenDirective', function ($rootScope, $location, $window, 
   };
 });
 
-},{}],11:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 /* ng-infinite-scroll - v1.0.0 - 2013-02-23 */
@@ -1969,7 +2343,7 @@ mod.directive('infiniteScroll', ['$rootScope', '$window', '$timeout', function (
   };
 }]);
 
-},{}],12:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -3101,7 +3475,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }));
 });
 
-},{}],13:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -3340,7 +3714,125 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 });
 
-},{}],14:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
+/**
+ * angular-mailchimp
+ * http://github.com/keithio/angular-mailchimp
+ * License: MIT
+ */
+
+'use strict';
+
+angular.module('mailchimp', ['ng', 'ngResource', 'ngSanitize'])
+
+/**
+ * Form controller for a new Mailchimp subscription.
+ */
+.controller('MailchimpSubscriptionCtrl', ['$log', '$resource', '$scope', '$rootScope', function ($log, $resource, $scope, $rootScope) {
+
+  $rootScope.mailchimp = {
+    'ADDRESS': {
+      'addr1': '',
+      'city': '',
+      'state': '',
+      'zip': '',
+      'country': ''
+    }
+  };
+
+  // Handle clicks on the form submission.
+  $scope.addSubscription = function (mailchimp) {
+    var actions,
+        MailChimpSubscription,
+        params = {},
+        url;
+
+    // Create a resource for interacting with the MailChimp API
+    url = '//' + mailchimp.username + '.' + mailchimp.dc + '.list-manage.com/subscribe/post-json';
+
+    console.log(mailchimp);
+
+    var fields = Object.keys(mailchimp);
+
+    //COMPILING ADDRESS
+    var newaddress = [];
+    for (i in mailchimp.ADDRESS) {
+      console.log(i);
+      if (i == 'addr1') {
+        newaddress = newaddress + mailchimp.ADDRESS[i];
+      } else {
+        newaddress = newaddress + '   ' + mailchimp.ADDRESS[i];
+      }
+    }
+    mailchimp.ADDRESS = newaddress;
+    console.log('ADDRESS: ' + mailchimp.ADDRESS);
+
+    //COMPILING DATE
+    var date = [];
+    for (i in mailchimp.MMERGE4) {
+      console.log(i);
+      if (i == 'MONTH') {
+        date = date + mailchimp.MMERGE4[i];
+      } else {
+        date = date + '/' + mailchimp.MMERGE4[i];
+      }
+    }
+    mailchimp.MMERGE4 = date;
+    console.log('DATE: ' + mailchimp.MMERGE4);
+
+    for (var i = 0; i < fields.length; i++) {
+      params[fields[i]] = mailchimp[fields[i]];
+    }
+
+    params.c = 'JSON_CALLBACK';
+
+    actions = {
+      'save': {
+        method: 'jsonp'
+      }
+    };
+    MailChimpSubscription = $resource(url, params, actions);
+
+    // Send subscriber data to MailChimp
+    MailChimpSubscription.save(
+    // Successfully sent data to MailChimp.
+    function (response) {
+      // Define message containers.
+      mailchimp.errorMessage = '';
+      mailchimp.successMessage = '';
+
+      // Store the result from MailChimp
+      mailchimp.result = response.result;
+      console.log(response);
+
+      // Mailchimp returned an error.
+      if (response.result === 'error') {
+        if (response.msg) {
+          // Remove error numbers, if any.
+          var errorMessageParts = response.msg.split(' - ');
+          if (errorMessageParts.length > 1) errorMessageParts.shift(); // Remove the error number
+          mailchimp.errorMessage = errorMessageParts.join(' ');
+        } else {
+          mailchimp.errorMessage = 'Sorry! An unknown error occured.';
+        }
+      }
+      // MailChimp returns a success.
+      else if (response.result === 'success') {
+          mailchimp.successMessage = response.msg;
+        }
+
+      //Broadcast the result for global msgs
+      $rootScope.$broadcast('mailchimp-response', response.result, response.msg);
+    },
+
+    // Error sending data to MailChimp
+    function (error) {
+      $log.error('MailChimp Error: %o', error);
+    });
+  };
+}]);
+
+},{}],17:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -7488,11 +7980,11 @@ angular.module('ngAnimate', [])
 
 })(window, window.angular);
 
-},{}],15:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 require('./angular-animate');
 module.exports = 'ngAnimate';
 
-},{"./angular-animate":14}],16:[function(require,module,exports){
+},{"./angular-animate":17}],19:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -8352,11 +8844,11 @@ angular.module('ngResource', ['ng']).
 
 })(window, window.angular);
 
-},{}],17:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 require('./angular-resource');
 module.exports = 'ngResource';
 
-},{"./angular-resource":16}],18:[function(require,module,exports){
+},{"./angular-resource":19}],21:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -9423,11 +9915,11 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 })(window, window.angular);
 
-},{}],19:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 require('./angular-route');
 module.exports = 'ngRoute';
 
-},{"./angular-route":18}],20:[function(require,module,exports){
+},{"./angular-route":21}],23:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -40901,11 +41393,11 @@ $provide.value("$locale", {
 })(window);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],21:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":20}],22:[function(require,module,exports){
+},{"./angular":23}],25:[function(require,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -41031,9 +41523,9 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	exports.fromByteArray = uint8ToBase64
 }(typeof exports === 'undefined' ? (this.base64js = {}) : exports))
 
-},{}],23:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 
-},{}],24:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -41145,7 +41637,7 @@ exports.allocUnsafeSlow = function allocUnsafeSlow(size) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"buffer":25}],25:[function(require,module,exports){
+},{"buffer":28}],28:[function(require,module,exports){
 (function (global){
 /*!
  * The buffer module from node.js, for the browser.
@@ -42697,7 +43189,7 @@ function blitBuffer (src, dst, offset, length) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"base64-js":22,"ieee754":30,"isarray":33}],26:[function(require,module,exports){
+},{"base64-js":25,"ieee754":33,"isarray":36}],29:[function(require,module,exports){
 module.exports = {
   "100": "Continue",
   "101": "Switching Protocols",
@@ -42762,7 +43254,7 @@ module.exports = {
   "511": "Network Authentication Required"
 }
 
-},{}],27:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 (function (Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -42873,7 +43365,7 @@ function objectToString(o) {
 }
 
 }).call(this,{"isBuffer":require("../../is-buffer/index.js")})
-},{"../../is-buffer/index.js":32}],28:[function(require,module,exports){
+},{"../../is-buffer/index.js":35}],31:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -43177,7 +43669,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],29:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 var http = require('http');
 
 var https = module.exports;
@@ -43193,7 +43685,7 @@ https.request = function (params, cb) {
     return http.request.call(this, params, cb);
 }
 
-},{"http":51}],30:[function(require,module,exports){
+},{"http":54}],33:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = nBytes * 8 - mLen - 1
@@ -43279,7 +43771,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],31:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -43304,7 +43796,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],32:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 /**
  * Determine if an object is Buffer
  *
@@ -43323,14 +43815,14 @@ module.exports = function (obj) {
     ))
 }
 
-},{}],33:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 var toString = {}.toString;
 
 module.exports = Array.isArray || function (arr) {
   return toString.call(arr) == '[object Array]';
 };
 
-},{}],34:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.0.0
  * https://jquery.com/
@@ -53369,7 +53861,7 @@ if ( !noGlobal ) {
 return jQuery;
 } ) );
 
-},{}],35:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -54170,7 +54662,7 @@ module.exports = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./cache":36,"./documents":37,"./experiments":38,"./predicates":41,"./requests":43}],36:[function(require,module,exports){
+},{"./cache":39,"./documents":40,"./experiments":41,"./predicates":44,"./requests":46}],39:[function(require,module,exports){
 
 "use strict";
 
@@ -54225,7 +54717,7 @@ ApiCache.prototype = {
 
 module.exports = ApiCache;
 
-},{"./lru":40}],37:[function(require,module,exports){
+},{"./lru":43}],40:[function(require,module,exports){
 "use strict";
 
 /**
@@ -54811,7 +55303,7 @@ module.exports = {
   GroupDoc: GroupDoc
 };
 
-},{"./fragments":39}],38:[function(require,module,exports){
+},{"./fragments":42}],41:[function(require,module,exports){
 
 "use strict";
 
@@ -54896,7 +55388,7 @@ module.exports = {
   Variation: Variation
 };
 
-},{}],39:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 "use strict";
 
 var documents = require('./documents');
@@ -56150,7 +56642,7 @@ module.exports = {
   insertSpans: insertSpans
 };
 
-},{"./documents":37}],40:[function(require,module,exports){
+},{"./documents":40}],43:[function(require,module,exports){
 
 /**
  * A doubly linked list-based Least Recently Used (LRU) cache. Will keep most
@@ -56403,7 +56895,7 @@ LRUCache.prototype.toString = function() {
 
 module.exports = LRUCache;
 
-},{}],41:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 
 "use strict";
 
@@ -56685,7 +57177,7 @@ module.exports = {
 
 };
 
-},{}],42:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 "use strict";
 
 var experiments = require('./experiments'),
@@ -56763,7 +57255,7 @@ module.exports = {
 
 module.exports.Prismic = module.exports; // Backward compatibility
 
-},{"./api":35,"./documents":37,"./experiments":38,"./fragments":39,"./predicates":41}],43:[function(require,module,exports){
+},{"./api":38,"./documents":40,"./experiments":41,"./fragments":42,"./predicates":44}],46:[function(require,module,exports){
 (function (process){
 
 "use strict";
@@ -57004,7 +57496,7 @@ module.exports = {
 };
 
 }).call(this,require('_process'))
-},{"../package.json":44,"_process":46,"http":51,"https":29,"url":63}],44:[function(require,module,exports){
+},{"../package.json":47,"_process":49,"http":54,"https":32,"url":66}],47:[function(require,module,exports){
 module.exports={
   "name": "prismic.io",
   "description": "JavaScript development kit for prismic.io",
@@ -57095,7 +57587,7 @@ module.exports={
   "readme": "ERROR: No README data found!"
 }
 
-},{}],45:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -57142,7 +57634,7 @@ function nextTick(fn, arg1, arg2, arg3) {
 }
 
 }).call(this,require('_process'))
-},{"_process":46}],46:[function(require,module,exports){
+},{"_process":49}],49:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -57263,7 +57755,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],47:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 (function (global){
 /*! https://mths.be/punycode v1.4.1 by @mathias */
 ;(function(root) {
@@ -57800,7 +58292,7 @@ process.umask = function() { return 0; };
 }(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],48:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -57886,7 +58378,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],49:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -57973,13 +58465,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],50:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":48,"./encode":49}],51:[function(require,module,exports){
+},{"./decode":51,"./encode":52}],54:[function(require,module,exports){
 (function (global){
 var ClientRequest = require('./lib/request')
 var extend = require('xtend')
@@ -58061,7 +58553,7 @@ http.METHODS = [
 	'UNSUBSCRIBE'
 ]
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./lib/request":53,"builtin-status-codes":26,"url":63,"xtend":66}],52:[function(require,module,exports){
+},{"./lib/request":56,"builtin-status-codes":29,"url":66,"xtend":69}],55:[function(require,module,exports){
 (function (global){
 exports.fetch = isFunction(global.fetch) && isFunction(global.ReadableByteStream)
 
@@ -58105,7 +58597,7 @@ function isFunction (value) {
 xhr = null // Help gc
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],53:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 (function (process,global,Buffer){
 var capability = require('./capability')
 var inherits = require('inherits')
@@ -58386,7 +58878,7 @@ var unsafeHeaders = [
 ]
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
-},{"./capability":52,"./response":54,"_process":46,"buffer":25,"inherits":31,"readable-stream":60,"to-arraybuffer":62}],54:[function(require,module,exports){
+},{"./capability":55,"./response":57,"_process":49,"buffer":28,"inherits":34,"readable-stream":63,"to-arraybuffer":65}],57:[function(require,module,exports){
 (function (process,global,Buffer){
 var capability = require('./capability')
 var inherits = require('inherits')
@@ -58570,7 +59062,7 @@ IncomingMessage.prototype._onXHRProgress = function () {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
-},{"./capability":52,"_process":46,"buffer":25,"inherits":31,"readable-stream":60}],55:[function(require,module,exports){
+},{"./capability":55,"_process":49,"buffer":28,"inherits":34,"readable-stream":63}],58:[function(require,module,exports){
 // a duplex stream is just a stream that is both readable and writable.
 // Since JS doesn't have multiple prototypal inheritance, this class
 // prototypally inherits from Readable, and then parasitically from
@@ -58646,7 +59138,7 @@ function forEach(xs, f) {
     f(xs[i], i);
   }
 }
-},{"./_stream_readable":57,"./_stream_writable":59,"core-util-is":27,"inherits":31,"process-nextick-args":45}],56:[function(require,module,exports){
+},{"./_stream_readable":60,"./_stream_writable":62,"core-util-is":30,"inherits":34,"process-nextick-args":48}],59:[function(require,module,exports){
 // a passthrough stream.
 // basically just the most minimal sort of Transform stream.
 // Every written chunk gets output as-is.
@@ -58673,7 +59165,7 @@ function PassThrough(options) {
 PassThrough.prototype._transform = function (chunk, encoding, cb) {
   cb(null, chunk);
 };
-},{"./_stream_transform":58,"core-util-is":27,"inherits":31}],57:[function(require,module,exports){
+},{"./_stream_transform":61,"core-util-is":30,"inherits":34}],60:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -59569,7 +60061,7 @@ function indexOf(xs, x) {
   return -1;
 }
 }).call(this,require('_process'))
-},{"./_stream_duplex":55,"_process":46,"buffer":25,"buffer-shims":24,"core-util-is":27,"events":28,"inherits":31,"isarray":33,"process-nextick-args":45,"string_decoder/":61,"util":23}],58:[function(require,module,exports){
+},{"./_stream_duplex":58,"_process":49,"buffer":28,"buffer-shims":27,"core-util-is":30,"events":31,"inherits":34,"isarray":36,"process-nextick-args":48,"string_decoder/":64,"util":26}],61:[function(require,module,exports){
 // a transform stream is a readable/writable stream where you do
 // something with the data.  Sometimes it's called a "filter",
 // but that's not a great name for it, since that implies a thing where
@@ -59750,7 +60242,7 @@ function done(stream, er) {
 
   return stream.push(null);
 }
-},{"./_stream_duplex":55,"core-util-is":27,"inherits":31}],59:[function(require,module,exports){
+},{"./_stream_duplex":58,"core-util-is":30,"inherits":34}],62:[function(require,module,exports){
 (function (process){
 // A bit simpler than readable streams.
 // Implement an async ._write(chunk, encoding, cb), and it'll handle all
@@ -60279,7 +60771,7 @@ function CorkedRequest(state) {
   };
 }
 }).call(this,require('_process'))
-},{"./_stream_duplex":55,"_process":46,"buffer":25,"buffer-shims":24,"core-util-is":27,"events":28,"inherits":31,"process-nextick-args":45,"util-deprecate":65}],60:[function(require,module,exports){
+},{"./_stream_duplex":58,"_process":49,"buffer":28,"buffer-shims":27,"core-util-is":30,"events":31,"inherits":34,"process-nextick-args":48,"util-deprecate":68}],63:[function(require,module,exports){
 (function (process){
 var Stream = (function (){
   try {
@@ -60299,7 +60791,7 @@ if (!process.browser && process.env.READABLE_STREAM === 'disable' && Stream) {
 }
 
 }).call(this,require('_process'))
-},{"./lib/_stream_duplex.js":55,"./lib/_stream_passthrough.js":56,"./lib/_stream_readable.js":57,"./lib/_stream_transform.js":58,"./lib/_stream_writable.js":59,"_process":46}],61:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":58,"./lib/_stream_passthrough.js":59,"./lib/_stream_readable.js":60,"./lib/_stream_transform.js":61,"./lib/_stream_writable.js":62,"_process":49}],64:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -60522,7 +61014,7 @@ function base64DetectIncompleteChar(buffer) {
   this.charLength = this.charReceived ? 3 : 0;
 }
 
-},{"buffer":25}],62:[function(require,module,exports){
+},{"buffer":28}],65:[function(require,module,exports){
 var Buffer = require('buffer').Buffer
 
 module.exports = function (buf) {
@@ -60551,7 +61043,7 @@ module.exports = function (buf) {
 	}
 }
 
-},{"buffer":25}],63:[function(require,module,exports){
+},{"buffer":28}],66:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -61285,7 +61777,7 @@ Url.prototype.parseHost = function() {
   if (host) this.hostname = host;
 };
 
-},{"./util":64,"punycode":47,"querystring":50}],64:[function(require,module,exports){
+},{"./util":67,"punycode":50,"querystring":53}],67:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -61303,7 +61795,7 @@ module.exports = {
   }
 };
 
-},{}],65:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 (function (global){
 
 /**
@@ -61374,7 +61866,7 @@ function config (name) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],66:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 module.exports = extend
 
 var hasOwnProperty = Object.prototype.hasOwnProperty;

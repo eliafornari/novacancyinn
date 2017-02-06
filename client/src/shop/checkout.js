@@ -1,25 +1,20 @@
+'use strict'
+
 var Checkout = angular.module('myApp');
 
 Checkout.controller('checkoutCtrl', function($scope, $location, $rootScope, $timeout,	$http, transformRequestAsFormPost){
-  $rootScope.thankYou, $rootScope.payment;
-  $rootScope.isGradient = true;
 
-  $rootScope.customer, $rootScope.shipment, $rootScope.billing, $rootScope.Totals;
 
-  $rootScope.payment = {
-                          id: '',
-                          number: '5555555555554444',
-                          expiry_month: '02',
-                          expiry_year:  '2018',
-                          cvv:  '756'
-                        };
+$rootScope.Order;
+$rootScope.shipment_forwardActive=false;
 
-$rootScope.checkout={
-  customer:
-           { first_name: '',
-             last_name: '',
+$rootScope.checkout = {
+          customer:{
+              first_name: '',
+              last_name: '',
               email:''
-           },
+          },
+          gateway:'stripe',
           shipment_method: '1336838094099317449',
           shipment:
                    { first_name: '',
@@ -45,113 +40,65 @@ $rootScope.checkout={
    };
 
 
-  $rootScope.shipmentToPayment = function(){
-    console.log($rootScope.checkout);
-    $rootScope.template = $rootScope.templates[2];
 
-    $http.post('/cartToOrder', $rootScope.checkout)
-    .then(function(data) {
-      console.log(data);
 
-      $rootScope.Totals=data.data;
-      $rootScope.payment.id = $rootScope.Totals.id;
-      console.log('id: '+$rootScope.payment.id);
-      console.log($rootScope.Totals);
-          console.log("posted successfully");
-      }, function(data) {
+//shipment
+
+  $rootScope.shipmentToPayment = (event) =>{
+    console.log($scope.checkoutForm.$valid);
+    console.log($scope.checkoutForm);
+    if($scope.checkoutForm.$valid){
+
+      $http.post('/cartToOrder', $rootScope.checkout)
+
+      .then(function(response) {
+        $rootScope.Order=response.data;
+        // $rootScope.payment.id = response.data.id;
+        $location.path('/shop/payment', true);
+        // mailchimp.register($rootScope.checkout);
+      }, function(response) {
+        $rootScope.error = {value: true, text:response.data};
+        // event.preventDefault();
+        setTimeout(function(){
+          $rootScope.error = {value: false, text:''};
+          $rootScope.$apply();
+        }, 2000);
           console.error("error in posting");
-      })
-
-  }//cartToOrder
+      });
 
 
-
-
-
-  $rootScope.paymentToProcess = function(){
-    $rootScope.cartLoading = true;
-    $rootScope.Processed = false;
-    $rootScope.template = $rootScope.templates[3];
-    console.log("payment started");
-
-        $http({
-          url: '/orderToPayment',
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          transformRequest: transformRequestAsFormPost,
-          data: $rootScope.payment
-        }).then( function(response){
-
-            console.log("payment succeeded");
-            console.log(response.data);
-
-            if(response.data.data.paid){
-              $rootScope.cartLoading = false;
-              $rootScope.Processed = response;
-              console.log(response.data);
-              $scope.updatestock($rootScope.Cart);
-              $scope.emptyCart();
-            }else{
-              console.log('paid false');
-              $rootScope.Processed = response;
-            }
-
-          // $scope.findOrder($rootScope.Processed);
-
-
-        }, function(response){
-          console.log("payment failed!");
-          console.log(response);
-          $rootScope.Processed = response;
-          $rootScope.cartLoading = false;
-        })
-  }//cartToOrder
-
-
-
-//tentative function to update teh overall stock
-  $scope.findOrder = function(contents){
-    console.log("angular http");
-    var data = contents.data;
-    data['auth'] = $rootScope.Auth;
-    console.log(data);
+    }else{
+      $rootScope.error = {value: true, text:'fill in the form correctly'};
+      // event.preventDefault();
+      setTimeout(function(){
+        $rootScope.error = {value: false, text:''};
+        $rootScope.$apply();
+      }, 2000);
+    }
   }
 
 
-// $scope.getOrders = ()=>{
-//   var req = {
-//    method: 'GET',
-//    url: 'https://api.molt.in/'+'v1/orders/'+data.order.id+'/items',
-//    headers: {
-//      'Authorization': "Bearer "+data.auth.access_token
-//    }
-//   }
-//   $http(req).then(function(response){
-//     console.log(response);
-//     $scope.updatestock(response);
-//   }, function(response){
-//     console.log(response);
-//   });
-// }
+  // $scope.$watch('checkoutForm.$valid', function(newVal, oldVal){
+  //   if ($scope.checkoutForm.$valid){
+  //     $rootScope.shipment_forwardActive = true;
+  //   }else{
+  //     $rootScope.shipment_forwardActive = false;
+  //   }
+  // }, true);
 
-$scope.updatestock = function(data){
-  $http.post('/updatestock', data)
-   .success(function (data, status, headers, config) {
-     console.log("updatestock");
-     console.log(data);
-   })
-   .error(function (data, status, header, config) {
-     console.log(data);
-   });
-}
+
+
+
+
+
+
+$scope.phoneRegex = '^(\\+\\d{1,2}\s)?\\(?\\d{3}\\)?[\s.-]\\d{3}[\\s.-]\\d{4}$';
+$scope.postcodeRegex = '^\\d{5}-\\d{4}|\\d{5}|[A-Z]\\d[A-Z] \\d[A-Z]\\d$';
+
 
 
 $scope.$watch('isBillingDifferent', function(value){
-  console.log($scope.isBillingDifferent);
   if(!$scope.isBillingDifferent){
-    console.log($rootScope.checkout);
       $rootScope.checkout.billing.first_name = $rootScope.checkout.shipment.first_name;
       $rootScope.checkout.billing.last_name = $rootScope.checkout.shipment.last_name;
       $rootScope.checkout.billing.address_1 = $rootScope.checkout.shipment.address_1;
@@ -164,12 +111,12 @@ $scope.$watch('isBillingDifferent', function(value){
 
 });
 
+var Europe = ['AL','AD','AM','AT','AZ','BY','BA','BG','HR','CY','CZ','DK','EE','FI','FR','GE','DE','GR','HU','IS','IE','KZ','XK','LV','LI','LT','LU','MK','MT','MD','MC','ME','NL','NO','PL','PT','RO','RU','SM','RS','SK','SI','ES','SE','CH','TR','UA','GB'];
+var NorthAmerica = ['US','CA','MX'];
 $scope.$watch('checkout', function(value){
-  console.log(value);
   // $rootScope.checkout.customer.first_name = $rootScope.checkout.shipment.first_name;
   // $rootScope.checkout.customer.last_name = $rootScope.checkout.shipment.last_name;
   if(!$scope.isBillingDifferent){
-    console.log($rootScope.checkout);
       $rootScope.checkout.billing.first_name = $rootScope.checkout.shipment.first_name;
       $rootScope.checkout.billing.last_name = $rootScope.checkout.shipment.last_name;
       $rootScope.checkout.billing.address_1 = $rootScope.checkout.shipment.address_1;
@@ -180,31 +127,18 @@ $scope.$watch('checkout', function(value){
       $rootScope.checkout.billing.phone = $rootScope.checkout.shipment.phone;
   }
 
-  console.log('country: '+$rootScope.checkout.shipment.country);
-  if($rootScope.checkout.shipment.country=='US'){
-    $rootScope.checkout.shipment_method='1336838094099317449'
-    console.log('US');
-  }else{
+  if(NorthAmerica.indexOf( $rootScope.checkout.shipment.country ) != -1){
+    $rootScope.checkout.shipment_method='1336838094099317449';
+  }else if ($rootScope.checkout.shipment.country=='IT'){
     $rootScope.checkout.shipment_method='1336838640038314698'
-    console.log('INT');
+  }else if (Europe.indexOf( $rootScope.checkout.shipment.country ) != -1){
+    $rootScope.checkout.shipment_method='1336838640038314698'
+  }else if ($rootScope.checkout.shipment.country==('RU')){
+    $rootScope.checkout.shipment_method='1336838640038314698'
+  }else{
+    $rootScope.checkout.shipment_method='1336838640038314698';
   }
 }, true)
-
-
-
-
-$scope.emptyCart = ()=>{
-  $http.post('/emptyCart')
-   .success(function (data, status, headers, config) {
-     console.log("updatestock");
-     console.log(data);
-     $rootScope.Cart ={};
-   })
-   .error(function (data, status, header, config) {
-     console.log(data);
-     $rootScope.Cart ={};
-   });
-}
 
 
 

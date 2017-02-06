@@ -76,16 +76,58 @@ $sceProvider.enabled(false);
   // $locationChangeStart
 
     .when('/shop/product/:detail', {
-      templateUrl: 'views/shop.html',
+      templateUrl: 'views/shop/shop.html',
       // controller: 'detailCtrl',
       reloadOnSearch: false
     })
 
     .when('/shop', {
-      templateUrl: 'views/shop.html',
+      templateUrl: 'views/shop/shop.html',
       controller: 'shopCtrl',
       reloadOnSearch: false
     })
+
+
+
+
+
+
+        .when('/shop/cart', {
+          templateUrl: 'views/shop/cart.html'
+        })
+
+        .when('/shop/shipment', {
+          templateUrl: 'views/shop/shipment.html',
+        })
+
+        .when('/shop/shipment/terms', {
+          templateUrl: 'views/shop/shipment.html',
+        })
+
+        .when('/shop/choice', {
+          templateUrl: 'views/shop/choice.html'
+        })
+
+        .when('/shop/payment', {
+          templateUrl: 'views/shop/payment.html'
+        })
+
+        .when('/shop/processed/:order/:method', {
+          templateUrl: 'views/shop/processed.html'
+        })
+
+        .when('/shop/processed/:order/:method/canceled', {
+          templateUrl: 'views/shop/processed-canceled.html',
+        })
+
+
+
+
+
+
+
+
+
 
     .when('/radio', {
       templateUrl: 'views/radio.html',
@@ -129,7 +171,7 @@ $sceProvider.enabled(false);
 
     .when('/', {
       templateUrl: 'views/home.html',
-      controller: 'appCtrl'
+      controller: 'homeCtrl'
 
     })
 
@@ -155,83 +197,57 @@ $rootScope.Home;
 
 
 
+  $rootScope.Pagination;
+  $rootScope.Product=[];
 
-  // $rootScope.Auth;
-  //   $rootScope.authentication = function(){
-  //
-  //         // Simple GET request example:
-  //         $http({
-  //           method: 'GET',
-  //           url: '/authenticate'
-  //         }).then(function successCallback(response) {
-  //
-  //           if(response.data.access_token){
-  //               console.log("auth");
-  //               console.log(response);
-  //               // this callback will be called asynchronously
-  //               // when the response is available
-  //               $rootScope.Auth = response.data;
-  //               var expires = response.data.expires;
-  //               var identifier = response.data.identifier;
-  //               var expires_in = response.data.expires_in;
-  //               var access_token = response.data.access_token;
-  //               var type = response.data.token_type;
-  //           }
-  //
-  //
-  //           }, function errorCallback(response) {
-  //             // called asynchronously if an error occurs
-  //             // or server returns response with an error status.
-  //           });
-  //
-  //   }//addToCart
-
-    $rootScope.getProductsFN=function(){
-      $http({method: 'GET', url: '/getProducts'}).then(function(response){
+    $rootScope.getProductsFN=function(offset){
+      $http({method: 'GET', url: '/product/list?offset='+offset}).then(function(response){
         console.log("product: ");
         console.log(response);
-        $rootScope.Product = response.data;
+        $rootScope.Product = $rootScope.Product.concat(response.data.result);
+        $rootScope.Pagination = response.data.pagination;
         console.log(response.data);
+        $rootScope.pageLoading = false;
+        $rootScope.$broadcast("productArrived");
         $rootScope.pageLoading = false;
       }).then(function(){
         console.log("an error occurred");
       })
     }
-    $rootScope.getProductsFN();
-
-
-
-
-  // setTimeout(function(){
-  //   $rootScope.authentication();
-  // }, 600);
+    $rootScope.getProductsFN(0);
 
 
 
 
 
 
+setTimeout(function(){
+  angular.element($window).bind("scroll", function() {
+      var windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
+      var body = document.body, html = document.documentElement;
+      var docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight,  html.scrollHeight, html.offsetHeight);
+      var windowBottom = windowHeight + window.pageYOffset;
 
+      if (windowBottom >= docHeight) {
+          // alert('bottom reached');
+          if($rootScope.Pagination.offsets.next){
+            $rootScope.getProductsFN($rootScope.Pagination.offsets.next);
+          }
 
-  // font-family: 'Roboto Mono', monospace;
-  // font-family: 'Roboto', sans-serif;
+      }
+  });
+}, 600);
+
 
 
 
   $rootScope.desaturate = true;
   $rootScope.elia = false;
-  // $rootScope.font = 'Roboto Mono';
 
 
   document.addEventListener("keydown", function(event) {
-    console.log(event.which);
     var key = event.which
 
-    // if(key == 66){
-    //   $rootScope.desaturate = false;
-    // }else if(key == 87){
-    //   $rootScope.desaturate = true;
-    // }
     if(key == 66){
       $rootScope.font = 'brush';
     }else if(key == 83){
@@ -261,6 +277,65 @@ $rootScope.Home;
 
 
 
+
+
+  //get countries and states data
+    $rootScope.countries = [];
+    $rootScope.states = [];
+
+    $rootScope.getCountries = function(){
+      $http({
+        method: 'GET',
+        url: '/data/countries'
+      }).then(function successCallback(response) {
+
+        $rootScope.countries = response.data.countries;
+        $rootScope.states = response.data.states;
+        console.log("states");
+        console.log(response.data);
+
+
+      }, function errorCallback(response) {
+
+        $scope.error = {value: true, text:'countries not available, this page will be reloaded'};
+        setTimeout({
+          // $route.reload();
+        }, 2000);
+      });
+    };
+    $rootScope.getCountries();
+
+
+
+
+
+
+
+
+
+//get cart
+  $rootScope.updateCart = function(){
+        $http({
+          url: '/getCart',
+          method: 'GET',
+          headers: {
+            // 'Content-Type': 'application/json'
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          transformRequest: transformRequestAsFormPost,
+          // data: {
+          //       }
+        }).then(function(response){
+          $rootScope.Cart = response.data;
+          $rootScope.pageLoading = false;
+          console.log(response);
+
+          // if(!$rootScope.Cart.total_items==0){
+          //   console.log("cart has some stuff");
+          //   $rootScope.attachItemID($rootScope.Cart.contents);
+          // }
+        });
+  }//updateCart
 
 
 
@@ -527,6 +602,7 @@ $rootScope.enableScroll =()=>{
 var jquerymousewheel = require('./vendor/jquery.mousewheel.js')($);
 var infiniteScroll = require("./vendor/infiniteScroll.js");
 var jqueryUI = require('./vendor/jquery-ui.min.js');
+var mailchimp = require('./vendor/mailchimp.js');
 var home = require("./home.js");
 var about = require("./about.js");
 var events = require("./event.js");
@@ -536,3 +612,5 @@ var service = require("./services.js");
 var cart = require("./shop/cart.js");
 var shop = require("./shop/shop.js");
 var shop = require("./shop/checkout.js");
+var shop = require("./shop/payment.js");
+var shop = require("./shop/processed.js");

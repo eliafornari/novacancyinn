@@ -90,9 +90,7 @@ app.use(function(req, res, next) {
 
 function authMoltin(req, res, next){
   moltin.Authenticate(function(data) {
-
     if(data){
-
       if(req.mySession.access_token && (req.mySession.access_token==data.access_token)){
         data.cart=req.mySession.cartID;
         //     console.log(data);
@@ -113,31 +111,12 @@ function authMoltin(req, res, next){
       req.mySession.expires = data.expires;
       next();
 
-
-
     }else{
       res.status(500);
     }
-
   });
 }
 
-
-// app.get('/authenticate', function(req, res){
-//
-//   moltin.Authenticate(function(data) {
-//     console.log(data);
-//     if(data){
-//       res.status(200);
-//       res.json(data);
-//     }else{
-//       res.status(500);
-//     }
-//
-//     req.mySession.expires = data.expires;
-//
-//   });
-// });
 
 function setToHappen(d){
     var t = d - (new Date()).getTime();
@@ -180,10 +159,6 @@ app.get('/profile', function(req, res){
         objArray.push(obj);
       }
 
-      console.log(req.body);
-
-
-      // res.setHeader("Authorization", "Bearer "+token);
 
       moltin.Cart.Insert(id, 1, obj, function(cart) {
         // console.log(cart);
@@ -201,13 +176,10 @@ app.get('/profile', function(req, res){
 
 
     app.post('/removeProduct', function(req, res){
-      console.log(req);
 
       var id = req.body.id;
-      console.log(id);
       moltin.Cart.Remove(id, function(items) {
           // Everything is awesome...
-          console.log("all good");
           res.status(200);
           res.json(items);
       }, function(error, response, c) {
@@ -217,7 +189,7 @@ app.get('/profile', function(req, res){
       });
     })
 
-    app.get('/getProducts', function(req, res){
+    app.get('/product/list', function(req, res){
       getProduct(req, res);
     });
 
@@ -230,16 +202,34 @@ app.get('/profile', function(req, res){
       cartToOrder(req, res, data);
     });
 
+    app.get('/order/:order/items', function(req, res){
+       getOrderItems(req, res);
+     });
 
-    app.post('/orderToPayment', function(req, res){
+   app.get('/order/:order/get', function(req, res){
+     getOrderByID(req, res);
+   });
+
+
+   app.post('/order/:order/put', function(req, res){
+     putOrder(req, res);
+   });
+
+
+    app.post('/order/payment', function(req, res){
       var order = req.body;
       orderToPayment(req, res, order);
     });
 
-    app.post('/emptyCart', function(req, res){
+    app.post('/cart/erase', function(req, res){
       emptyCart(req, res);
     });
 
+
+
+    app.get('/product/:id/variations/get', function(req, res){
+      getVariationsLevel(req, res);
+    });
 
 
 
@@ -284,18 +274,49 @@ app.get('/profile', function(req, res){
 
     var Product=[];
     function getProduct(req, res){
-        moltin.Product.List(null, function(data) {
-          console.log(data);
-          Product = data;
-            res.json(data);
 
-        }, function(error) {
-            // Something went wrong...
-            console.log("Something went wrong in getting the products..");
-        });
+      var url;
+      var page = req.params.page;
+      var offset = req.query.offset;
+
+      if(page==1){
+        url = 'https://api.molt.in/v1/products/search?limit=5';
+      }else{
+        url = 'https://api.molt.in/v1/products/search?limit=5&offset='+offset;
+      }
+
+      var access_token = req.mySession.access_token;
+
+      request({
+        url: url,
+        headers: {
+          'Authorization': 'Bearer '+access_token
+        }
+      }, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+          var info = JSON.parse(body);
+          console.log(info);
+          res.status(response.statusCode).json(info);
+        }else{
+          var info = JSON.parse(body);
+          console.log(info);
+          res.status(response.statusCode).json(info);
+        }
+      });
+
     }
 
 
+
+
+
+
+
+
+
+
+
+  var California = ['California', 'CALIFORNIA', 'CA','ca','Ca', 'california', 'Cali', 'cali'];
 
 
     function cartToOrder(req, res, data){
@@ -340,152 +361,294 @@ app.get('/profile', function(req, res){
           }
         }, function(order) {
 
-          console.log("wait for the order");
           console.log(order);
 
-          res.json(order);
-            // Handle the order
+          if (California.indexOf( order.ship_to.data.county ) != -1){
+               var tax_value = (order.totals.subtotal.raw * 0.0725);
+               var total_value = (order.totals.shipping_price.raw  + tax_value + order.totals.subtotal.raw);
+               var tax = {};
+               var total = {};
+               var totals = {};
+
+               tax['raw']=parseInt();
+               tax ={
+                 'formatted': '$'+tax_value.toFixed(2),
+                 'rounded': Math.round(tax_value),
+                 'raw':tax_value.toFixed(2)
+               }
+               total=total_value.toFixed(2);
+               totals['tax']=tax;
+               totals['total']=total;
+
+               var id=order.id;
+               addTax(req, res, totals, id);
+
+             } else {
+               res.json(order);
+             }
+
 
         }, function(error, response, c) {
           console.log(response);
           res.json(error);
           // Something went wrong...
         });
-
-
     }
+
+
+
+//add tax if shipment state is the same as our company
+  function addTax(req, res, obj, id){
+     moltin.Order.Update(id, obj, function(order) {
+       res.status(200).json(order);
+     }, function(error, response, c) {
+         res.status(400).json(error);
+         console.log(error);
+         // Something went wrong...
+     });
+
+   };
+
+
+
 
 
 
 
     function orderToPayment(req, res, order){
-      console.log(order);
-      var card_number = order.number.toString();
-      console.log(card_number);
-      var expiry_month = order.expiry_month;
-      var expiry_year = order.expiry_year;
-      var cvv = order.cvv;
-      var obj={};
-      obj = {
-                data: {
-                number: card_number,
-                expiry_month: expiry_month,
-                expiry_year: expiry_year,
-                cvv: cvv
-              }
+      if(order.gateway == 'paypal-express'){
+        console.log("order id",order.id);
+        var obj={};
+        obj={
+            data: {
+              key: 'value'
+            },
+              return_url: 'https://novacancyinn.com/shop/processed/'+order.id+'/paypal-express',
+              cancel_url: 'https://novacancyinn.com/shop/processed/'+order.id+'/paypal-express/canceled'
             }
-      moltin.Checkout.Payment('purchase', order.id, obj, function(payment, error, status) {
 
-          console.log("payment successful");
-          console.log(payment);
-          res.status(200).json(payment);
+        moltin.Checkout.Payment('purchase', order.id, obj, function(payment, error, status) {
+            console.log("payment successful");
+            console.log(payment);
+            res.status(200).json(payment);
 
-      }, function(error, response, c) {
-        console.log("payment failed!");
-        console.log("response: "+response);
-        console.log("c: "+c);
-        console.log("error: "+error);
+        }, function(error, response, c) {
+          console.log("payment failed!");
+          console.log("c: "+c);
+          console.log("error: "+error);
+          res.status(c).json(response);
 
-        res.status(c).json(response);
-        // Something went wrong...
-      })
-    }
+        });
 
 
-
-
-    app.post('/updatestock', function(req, res){
-      searchProduct(req, res);
-    });
-
-
-    function searchProduct(req, res){
-      var contents = req.body.contents;
-      console.log("updateOverallStockFN");
-      console.log(contents);
-
-        for (var i in contents){
-          for(var m in contents[i].modifiers){
-            var modifier_id = contents[i].modifiers[m].id;
-            for (var p in Product){
-              for(var v in Product[p].modifiers){
-                console.log('modifier_id: '+modifier_id);
-                console.log('this one: '+Product[p].modifiers[v].id);
-                if(modifier_id == Product[p].modifiers[v].id){
-
-                  var thisProduct = Product[p].id;
-                  var quantity = contents[i].quantity;
-                  var stock = Product[p].stock_level - contents[i].quantity;
-                  console.log('thisProduct: '+thisProduct);
-                  updateProductStock(thisProduct, stock);
+      }else if(order.gateway == 'stripe'){
+        console.log(order.gateway);
+        var card_number = order.number.toString();
+        var expiry_month = order.expiry_month;
+        var expiry_year = order.expiry_year;
+        var cvv = order.cvv;
+        console.log("order.id: "+order.id);
+        var obj={};
+        obj = {
+                  data: {
+                    first_name: order.first_name,
+                    last_name: order.last_name,
+                    number: card_number,
+                    expiry_month: expiry_month,
+                    expiry_year: expiry_year,
+                    cvv: cvv
                 }
               }
 
-            }
+            moltin.Checkout.Payment('purchase', order.id, obj, function(payment, error, status) {
 
-          }
+                console.log("payment successful");
+                console.log(payment);
+                console.log(error);
+                console.log(status);
+                res.status(200).json(payment);
 
+            }, function(error, response, c) {
+              console.log("payment failed!");
+              console.log("c: "+c);
+              console.log("error: "+error);
+              console.log(response.body);
 
-        }//for loop
+                res.status(c).json(response);
 
-
-    }
-
-
-
-
-    function updateProductStock(id, stock){
-
-      console.log("newStock: "+stock);
-
-      moltin.Product.Update(id, {
-          stock_level:  stock
-      }, function(product) {
-
-          console.log(product);
-          console.log("overall stock update successful");
-          res.status(200).json(product);
-
-      }, function(error, response, c) {
-        console.log("payment failed!");
-        console.log("response: "+response);
-        console.log("c: "+c);
-        console.log("error: "+error);
-        res.status(c).json(response);
-          // Something went wrong...
-      });
-
-    }
-
-
-
-
-
-    function eraseAllOrders(){
-
-      moltin.Order.List(null, function(order) {
-          // console.log(order);
-          for (var i in order){
-
-            var id = order[i].id;
-            id = id.toString();
-
-            console.log(id);
-
-            moltin.Order.Delete(id, function(data) {
-
-              console.log(data);
-                // Success
-            }, function(error) {
-                // Something went wrong...
+              // Something went wrong...
             });
 
-          }
-      }, function(error) {
-          // Something went wrong...
-      });
+      }//if stripe
 
     }
+
+
+
+
+    app.post('/product/:id/stock_level/:quantity', function(req, res){
+      updateProductStock(req, res);
+    });
+
+
+
+
+
+
+
+    function updateProductStock(req, res){
+
+      var id = req.params.id;
+      var quantity = req.params.quantity;
+
+        moltin.Product.Update(id, {
+            stock_level:  quantity
+        }, function(product) {
+            req.mySession.updated_stock = true;
+            res.status(200).json(product);
+
+        }, function(error, response, c) {
+          console.log("stock level update failed!");
+          console.log("c: "+c);
+          console.log("error: "+error);
+          res.status(c).json(response);
+            // Something went wrong...
+        });
+
+    }
+
+
+
+
+
+
+  function eraseAllOrders(){
+    moltin.Order.List(null, function(order) {
+        // console.log(order);
+        for (var i in order){
+          var id = order[i].id;
+          id = id.toString();
+          moltin.Order.Delete(id, function(data) {
+            console.log(data);
+          }, function(error) {
+              // Something went wrong...
+          });
+        }
+    }, function(error) {
+        // Something went wrong...
+    });
+  }
+
+
+
+
+
+
+
+
+
+
+function getVariationsLevel(req, res){
+  var id = req.params.id.toString();
+  var url = 'https://api.molt.in/v1/products/'+id+'/variations';
+  var access_token = req.mySession.access_token;
+  var options = {
+    url: url,
+    headers: {
+      'Authorization': 'Bearer '+access_token
+    }
+  };
+
+  function callback(error, response, body) {
+    if (!error && response.statusCode == 200) {
+      var info = JSON.parse(body);
+      res.status(response.statusCode).json(info);
+    }else{
+      var info = JSON.parse(body);
+      res.status(response.statusCode).json(info);
+    }
+  }
+  request(options, callback);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+function getOrderByID(req, res){
+  var orderID = req.params.order;
+  moltin.Order.Get(orderID, function(order) {
+      res.status(200).json(order);
+  }, function(error) {
+    res.status(400).json(error);
+      // Something went wrong...
+  });
+};
+
+
+
+
+function putOrder (req, res){
+  var orderID = req.params.order;
+  var obj = req.body;
+  moltin.Order.Update(orderID, obj, function(order) {
+    res.status(200).json(order);
+  }, function(error, response, c) {
+      res.status(400).json(error);
+      console.log(error);
+      // Something went wrong...
+  });
+}
+
+
+
+function getOrderItems(req, res){
+  var id = req.params.order;
+  var url = 'https://api.molt.in/v1/orders/'+id+'/items';
+  var access_token = req.mySession.access_token;
+  var options = {
+    url: url,
+    headers: {
+      'Authorization': 'Bearer '+access_token
+    }
+  };
+
+  function callback(error, response, body) {
+    if (!error && response.statusCode == 200) {
+      var info = JSON.parse(body);
+      res.status(response.statusCode).json(info);
+    }else{
+      var info = JSON.parse(body);
+      res.status(response.statusCode).json(info);
+    }
+  }
+  request(options, callback);
+}
+
+
+
+//get support data
+    app.get('/data/countries', function(req, res){
+      // Get content from file
+     var countries = fs.readFileSync("./server/data/countries.json");
+     var states = fs.readFileSync("./server/data/states.json");
+    countries = JSON.parse(countries);
+    states = JSON.parse(states);
+    var joined = {
+      countries, countries,
+      states: states
+    }
+     res.json(joined);
+
+    });
 
 
 

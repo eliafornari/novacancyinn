@@ -7,7 +7,7 @@
 
 
     <!-- 2 -->
-    <form name="shipmentForm" novalidate class="shipment-form" method="post" ng-submit="shipmentToPayment()">
+    <form name="checkoutForm" novalidate class="shipment-form" method="post" ng-submit="shipmentToPayment()">
 
         <h1 class="h1 form-title">Shipment</h1>
 
@@ -68,9 +68,15 @@
 
 
                 <div class="form-entry">
-                  <input type="text" name="county_shipment" value="county" ng-model="checkout.shipment.county" required placeholder="county" onfocus="this.placeholder = ''" onblur="this.placeholder = 'county'">
+                  <input type="text" name="county_shipment" value="county" ng-model="checkout.shipment.county" required placeholder="county" onfocus="this.placeholder = ''" onblur="this.placeholder = 'county'" ng-if="checkout.shipment.country!='US'">
                     <span class="form-error" ng-show="checkoutForm.county_shipment.$error.required && checkoutForm.county_shipment.$touched">required</span>
                   </input>
+
+                  <select name="county_shipment" ng-model="checkout.shipment.county" required ng-if="checkout.shipment.country=='US'">
+                    <option value="" disabled selected>state</option>
+                    <option ng-repeat="state in states" value="{{state.code}}">{{state.name}}</option>
+                    <span class="form-error" ng-show="checkoutForm.county_shipment.$error.required && checkoutForm.county_shipment.$touched">required</span>
+                  </select>
                 </div>
 
                 <div class="form-entry">
@@ -94,7 +100,7 @@
                 </div>
 
                 <div class="form-entry">
-                  <input type="text" name="phone_shipment" value="phone" ng-model="checkout.shipment.phone" ng-pattern="phoneRegex" required  ng-minlength="10" placeholder="phone" onfocus="this.placeholder = ''" onblur="this.placeholder = 'phone'">
+                  <input type="text" name="phone_shipment" value="phone" ng-model="checkout.shipment.phone" required  min="10" max="18" placeholder="phone" onfocus="this.placeholder = ''" onblur="this.placeholder = 'phone'">
                     <span class="form-error" ng-show="checkoutForm.phone_shipment.$error.required && checkoutForm.phone_shipment.$touched">required</span>
                     <span class="form-error" ng-show="checkoutForm.phone_shipment.$error.minlength && checkoutForm.phone_shipment.$touched">phone is too short.</span>
                     <span class="form-error" ng-show="checkoutForm.phone_shipment.$error.pattern && checkoutForm.phone_shipment.$touched && checkoutForm.phone_shipment.$error.minlength">phone number is not in the correct format.</span>
@@ -141,9 +147,16 @@
 
 
                 <div class="form-entry">
-                  <input type="text" name="county_billing" value="county" ng-model="checkout.billing.county" required placeholder="county" onfocus="this.placeholder = ''" onblur="this.placeholder = 'county'">
+                  <input type="text" name="county_billing" value="county" ng-model="checkout.billing.county" required placeholder="county" onfocus="this.placeholder = ''" onblur="this.placeholder = 'county'" ng-if="checkout.billing.country!='US'">
                     <span class="form-error" ng-show="checkoutForm.county_billing.$error.required && checkoutForm.county_billing.$touched">required</span>
                   </input>
+
+
+                  <select name="county_billing" ng-model="checkout.billing.county" required ng-if="checkout.billing.country=='US'">
+                    <option value="" disabled selected>state</option>
+                    <option ng-repeat="state in states" value="{{state.code}}">{{state.name}}</option>
+                    <span class="form-error" ng-show="checkoutForm.county_billing.$error.required && checkoutForm.county_billing.$touched">required</span>
+                  </select>
                 </div>
 
                 <div class="form-entry">
@@ -167,7 +180,7 @@
                 </div>
 
                 <div class="form-entry">
-                  <input type="text" name="phone_billing" value="phone" ng-model="checkout.billing.phone" ng-pattern="phoneRegex" required  ng-minlength="10" placeholder="phone" onfocus="this.placeholder = ''" onblur="this.placeholder = 'phone'">
+                  <input type="text" name="phone_billing" value="phone" ng-model="checkout.billing.phone" required  min="10" max="18" placeholder="phone" onfocus="this.placeholder = ''" onblur="this.placeholder = 'phone'">
                     <span class="form-error" ng-show="checkoutForm.phone_billing.$error.required && checkoutForm.phone_billing.$touched">required</span>
                     <span class="form-error" ng-show="checkoutForm.phone_billing.$error.minlength && checkoutForm.phone_billing.$touched">phone is too short.</span>
                     <span class="form-error" ng-show="checkoutForm.phone_billing.$error.pattern && checkoutForm.phone_billing.$touched && !checkoutForm.phone_billing.$error.minlength">phone number is not in the correct format.</span>
@@ -188,16 +201,16 @@
 
     <button class="checkout-button hvr-sweep-to-right" type="submit" ng-class="{'invalid': shipmentForm.$invalid}" ng-disabled="shipmentForm.$invalid" ng-mouseenter="showBackText_shipment=true" ng-mouseleave="showBackText_shipment=false">
 
-      <h2 ng-show="!showBackText_shipment">Payment</h2>
-      <h2 ng-show="showBackText_shipment">Return the keys and pay for the bill</h2>
+      <h2>Payment</h2>
+      <!-- <h2 ng-show="showBackText_shipment">Return the keys and pay for the bill</h2> -->
     </button>
 
 
     <!-- hvr-sweep-to-right -->
   </form>
 
-  <div class="cart-back" ng-click="backFromShipment()">
-    <p class="hvr-bob">back</p>
+  <div class="cart-back">
+    <a href="/shop/cart">back</a>
   </div>
 
 </div>

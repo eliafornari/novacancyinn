@@ -1,11 +1,11 @@
 
 .shop{
   width:100vw;
-  height:100vh;
+  height:auto;
   display: block;
-  overflow: scroll;
-  top: 0;
-  position: relative;
+  // overflow: scroll;
+  // top: 0;
+  // position: relative;
   // height:100vh;
   // background-color: #FFFFFF;
 }
@@ -37,6 +37,13 @@
     table{
       @include respond-to(phone){
         height: auto;
+      }
+      tr{
+        td{
+          @include respond-to(phone){
+            height: auto;
+          }
+        }
       }
     }
     &:nth-child(1){
@@ -121,6 +128,7 @@ html, body {
     right:0;
     bottom:0;
     @include h2();
+    color: $black;
   }
   // .dollar-ul{
   //   width:100%;

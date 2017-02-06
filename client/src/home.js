@@ -15,11 +15,9 @@ Home.controller('homeCtrl', function($scope, $location, $rootScope, $routeParams
 
 $rootScope.windowHeight = $window.innerHeight;
 $rootScope.pageClass = "page-home";
-
-
-
 $scope.homeImages = [];
 $scope.currentImage;
+$rootScope.showCart=false;
 
 
 
