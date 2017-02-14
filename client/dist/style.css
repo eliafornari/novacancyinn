@@ -401,6 +401,20 @@ table {
       display: block;
       line-height: 100px;
       text-align: right; }
+  .nav-mobile-bar .nav-mobile-cart-close {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    right: 20px;
+    top: 150px; }
+    .nav-mobile-bar .nav-mobile-cart-close a {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border: 0 !important; }
+      .nav-mobile-bar .nav-mobile-cart-close a svg {
+        width: 100%;
+        height: 100%; }
 
 @keyframes nav_mobile_slideup {
   0% {

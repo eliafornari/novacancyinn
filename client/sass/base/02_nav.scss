@@ -446,6 +446,24 @@ $nav_height_mobile: calc(100vh - 100px);
       text-align: right;
     }
   }
+  .nav-mobile-cart-close{
+    position: absolute;
+    width: 40px;
+    height:40px;
+    right: $margin-sides;
+    top:150px;
+    a{
+      width: 100%;
+      height: 100%;
+      display: block;
+      border:0!important;
+      svg{
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+  }
 
 
 }

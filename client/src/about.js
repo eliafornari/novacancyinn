@@ -411,8 +411,8 @@ $scope.stopWheel_about = ()=>{
 
 
 setTimeout(function(){
-//   $scope.loadVideo();
-$scope.onYouTubeIframeAPIReady();
+  //   $scope.loadVideo();
+  $scope.onYouTubeIframeAPIReady();
 
 }, 1000);
 
@@ -471,40 +471,33 @@ $scope.onYouTubeIframeAPIReady=()=>{
 
 
 
-$scope.loadVideo=()=>{
+// $scope.loadVideo=()=>{
 
-
-  // 2. This code loads the IFrame Player API code asynchronously.
-  var tag = document.createElement('script');
-
-
-
-  tag.src = "https://www.youtube.com/iframe_api";
-  var firstScriptTag = document.getElementsByTagName('script')[0];
-  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-  // 3. This function creates an <iframe> (and YouTube player)
-  //    after the API code downloads.
-  var player;
-  function onYouTubeIframeAPIReady() {
-    player = new YT.Player('player', {
-      height: '100%',
-      width: '100%',
-      playerVars: { 'autoplay': 0, 'controls': 0,  controls:0, fs:0, rel:0, showinfo:0, autohide:1, color:'white'},
-      videoId: 'eYb9cbUsPxY',
-      events: {
-        'onReady': onPlayerReady,
-        'onStateChange': onPlayerStateChange
-      }
-    });
-  }
-
-
-
-
-
-
-} //load video function
+//   // 2. This code loads the IFrame Player API code asynchronously.
+//   var tag = document.createElement('script');
+//
+//   tag.src = "https://www.youtube.com/iframe_api";
+//   var firstScriptTag = document.getElementsByTagName('script')[0];
+//   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+//
+//   // 3. This function creates an <iframe> (and YouTube player)
+//   //    after the API code downloads.
+//   var player;
+//   function onYouTubeIframeAPIReady() {
+//     player = new YT.Player('player', {
+//       height: '100%',
+//       width: '100%',
+//       playerVars: { 'autoplay': 0, 'controls': 0,  controls:0, fs:0, rel:0, showinfo:0, autohide:1, color:'white'},
+//       videoId: 'eYb9cbUsPxY',
+//       events: {
+//         'onReady': onPlayerReady,
+//         'onStateChange': onPlayerStateChange
+//       }
+//     });
+//   }
+//
+//
+// } //load video function
 
 
 

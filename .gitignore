@@ -10,9 +10,10 @@
 # NODE MODULES #
 ############
 node_modules
+node_modules/*
 bower_components
-public/node_modules
-public/bower_components
+client/node_modules
+client/bower_components
 
 # Packages #
 ############

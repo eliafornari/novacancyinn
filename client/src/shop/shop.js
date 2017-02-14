@@ -12,7 +12,6 @@ $scope.sizeLoading = false;
 
 $rootScope.openDetailFN = (slug)=>{
   if($rootScope.isDetailOpen == true){
-
     $rootScope.detailUpdate(slug);
   }else{
     $rootScope.thisDetail();

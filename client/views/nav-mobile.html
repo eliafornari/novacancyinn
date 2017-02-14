@@ -41,9 +41,17 @@
       <div class="nav-logo-blur" style="background-image: url('/assets/images/novacancyinn_logo_web_blur.png')" ng-class="{'blur': showBlur||isLocation('/') , 'blink-infinite': pageLoading}"></div>
     </a>
   </div>
+
+  <div class="nav-mobile-cart-close" ng-show="isCheckout()" ng-cloak>
+    <a href="/shop">
+      <ex-directive></ex-directive>
+    </a>
+  </div>
+
   <div class="nav-mobile-burger" ng-click="openMenu_m()">
     <h2>menu</h2>
   </div>
+
 </div>
 
 
