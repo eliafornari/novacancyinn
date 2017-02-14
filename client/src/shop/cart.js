@@ -4,13 +4,11 @@ Cart.controller('cartCtrl', function($scope, $location, $rootScope, $timeout,	$h
 
   $rootScope.Cart;
   $rootScope.showCart = false;
-  console.log("ran again");
   $rootScope.updateCart();
 
   $rootScope.openCart = function(){
     $rootScope.showCart = !$rootScope.showCart;
     $rootScope.updateCart();
-    console.log("opencart");
   }
 
   $rootScope.closeCart = function(){
@@ -19,8 +17,7 @@ Cart.controller('cartCtrl', function($scope, $location, $rootScope, $timeout,	$h
 
 
   $rootScope.$watch('Cart', function(newValue) {
-      console.log(newValue);
-      $rootScope.Cart = newValue;
+    $rootScope.Cart = newValue;
   });
 
 
@@ -57,10 +54,8 @@ $rootScope.removeItem = function(id){
                 id: id
               }
       }).then(function(response){
-        console.log("object removed");
         $rootScope.Cart = response;
         $rootScope.updateCart();
-        console.log(response);
       });
 }
 

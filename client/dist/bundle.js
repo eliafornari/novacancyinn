@@ -387,14 +387,11 @@ angular.module('myApp').controller('aboutCtrl', function ($scope, $location, $ro
     }
 
     $scope.playPause = function () {
-      console.log("clicked");
       // player.pauseVideo();
       if (state) {
         player.pauseVideo();
-        console.log("pause");
       } else {
         player.playVideo();
-        console.log("play");
       }
     };
   };
@@ -556,11 +553,8 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
 
   $rootScope.getProductsFN = function (offset) {
     $http({ method: 'GET', url: '/product/list?offset=' + offset }).then(function (response) {
-      console.log("product: ");
-      console.log(response);
       $rootScope.Product = $rootScope.Product.concat(response.data.result);
       $rootScope.Pagination = response.data.pagination;
-      console.log(response.data);
       $rootScope.pageLoading = false;
       $rootScope.$broadcast("productArrived");
       $rootScope.pageLoading = false;
@@ -603,7 +597,6 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
       $rootScope.elia = true;
       setTimeout(function () {
         $rootScope.elia = false;
-        console.log($rootScope.elia);
         $rootScope.$apply();
       }, 3000);
     }
@@ -619,11 +612,8 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
       method: 'GET',
       url: '/data/countries'
     }).then(function successCallback(response) {
-
       $rootScope.countries = response.data.countries;
       $rootScope.states = response.data.states;
-      console.log("states");
-      console.log(response.data);
     }, function errorCallback(response) {
 
       $scope.error = { value: true, text: 'countries not available, this page will be reloaded' };
@@ -647,8 +637,6 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
     }).then(function (response) {
       $rootScope.Cart = response.data;
       $rootScope.pageLoading = false;
-      console.log(response);
-
       // if(!$rootScope.Cart.total_items==0){
       //   console.log("cart has some stuff");
       //   $rootScope.attachItemID($rootScope.Cart.contents);
@@ -766,10 +754,9 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
 
         if (type == 'event') {
           $rootScope.Event = response.results;
-          console.log("event");
-          console.log(response.results);
+
           if (eventRan == false) {
-            console.log("eventReady");
+
             eventRan = true;
             setTimeout(function () {
               $rootScope.$broadcast('eventReady');
@@ -779,10 +766,7 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
           }
         } else if (type == 'home') {
           $rootScope.Home = response.results;
-          console.log("home");
-          console.log(response.results);
           if (homeRan == false) {
-            console.log("homeReady");
             homeRan = true;
             $rootScope.$broadcast('homeReady');
           } else {
@@ -790,9 +774,7 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
           }
         } else if (type == 'radio') {
           $rootScope.Radio = response.results;
-          console.log(response.results);
           if (radioRan == false) {
-            console.log("radioReady");
             radioRan = true;
             $rootScope.$broadcast('radioReady');
           } else {
@@ -1048,7 +1030,6 @@ angular.module('myApp').controller('navCtrl', function ($scope, $location, $root
 
   $scope.$on('$routeChangeStart', function () {
     if ($location.path() == '/shop' || $location.path() == '/shop/product/' + $routeParams.detail) {
-      console.log("isShop");
       $rootScope.pageLoading = false;
     } else {
       // $rootScope.pageLoading = true;
@@ -1058,7 +1039,6 @@ angular.module('myApp').controller('navCtrl', function ($scope, $location, $root
   $scope.$on('$routeChangeSuccess', function () {
 
     if ($location.path() != '/') {
-      console.log('not home');
       $rootScope.backgroundColor = '#FFFFFF';
       $rootScope.pageLoading = false;
     }
@@ -1160,9 +1140,7 @@ angular.module('myApp').controller('navCtrl', function ($scope, $location, $root
 angular.module('myApp').filter('turnIntoSoundcloud', function ($sce) {
   return function (id) {
     if (id) {
-
       id = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/' + id + '&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true';
-      console.log(id);
       return $sce.trustAsResourceUrl(id);
     }
   };
@@ -1342,13 +1320,11 @@ Cart.controller('cartCtrl', function ($scope, $location, $rootScope, $timeout, $
 
   $rootScope.Cart;
   $rootScope.showCart = false;
-  console.log("ran again");
   $rootScope.updateCart();
 
   $rootScope.openCart = function () {
     $rootScope.showCart = !$rootScope.showCart;
     $rootScope.updateCart();
-    console.log("opencart");
   };
 
   $rootScope.closeCart = function () {
@@ -1356,7 +1332,6 @@ Cart.controller('cartCtrl', function ($scope, $location, $rootScope, $timeout, $
   };
 
   $rootScope.$watch('Cart', function (newValue) {
-    console.log(newValue);
     $rootScope.Cart = newValue;
   });
 
@@ -1381,10 +1356,8 @@ Cart.controller('cartCtrl', function ($scope, $location, $rootScope, $timeout, $
         id: id
       }
     }).then(function (response) {
-      console.log("object removed");
       $rootScope.Cart = response;
       $rootScope.updateCart();
-      console.log(response);
     });
   };
 
@@ -1471,10 +1444,7 @@ Checkout.controller('checkoutCtrl', function ($scope, $location, $rootScope, $ti
   //shipment
 
   $rootScope.shipmentToPayment = function (event) {
-    console.log($scope.checkoutForm.$valid);
-    console.log($scope.checkoutForm);
     if ($scope.checkoutForm.$valid) {
-
       $http.post('/cartToOrder', $rootScope.checkout).then(function (response) {
         $rootScope.Order = response.data;
         // $rootScope.payment.id = response.data.id;
@@ -1560,7 +1530,6 @@ var Payment = angular.module('myApp');
 
 Payment.controller('paymentCtrl', function ($scope, $location, $rootScope, $timeout, $http, transformRequestAsFormPost, anchorSmoothScroll) {
   $rootScope.payment;
-  console.log("paymentCtrl");
   $rootScope.Transaction;
   $rootScope.Processed = { value: false, error: false, data: '' };
 
@@ -1584,10 +1553,7 @@ Payment.controller('paymentCtrl', function ($scope, $location, $rootScope, $time
   // }, false);
 
   $rootScope.checkPayment = function () {
-    console.log("checkPayment runs");
     if ($rootScope.checkout.gateway == 'stripe') {
-      console.log("payment form");
-      console.log($scope.paymentForm);
       if ($scope.paymentForm.$valid) {
         $rootScope.changeOrderGateway();
       } else {
@@ -1603,8 +1569,6 @@ Payment.controller('paymentCtrl', function ($scope, $location, $rootScope, $time
   };
 
   $rootScope.changeOrderGateway = function () {
-    console.log("changeOrderGateway runs");
-    console.log("gateway: " + $rootScope.checkout.gateway);
     var orderID = $rootScope.Order.id;
     if ($rootScope.checkout.gateway == 'stripe') {
       $rootScope.paymentToProcess();
@@ -1620,11 +1584,8 @@ Payment.controller('paymentCtrl', function ($scope, $location, $rootScope, $time
   };
 
   $rootScope.paymentToProcess = function () {
-    console.log("paymentToProcess runs");
-
     $rootScope.payment.gateway = $rootScope.checkout.gateway;
     $rootScope.pageLoading = true;
-
     $http({
       url: '/order/payment',
       method: 'POST',
@@ -1700,7 +1661,6 @@ Processed.controller('processedCtrl', function ($scope, $location, $rootScope, $
   //retrieve order data
   $rootScope.retrieveOrder = function () {
     var orderID = $routeParams.order;
-    console.log("retrieveOrder");
     $http({
       url: '/order/' + orderID + '/get',
       method: 'GET'
@@ -1734,11 +1694,8 @@ Processed.controller('processedCtrl', function ($scope, $location, $rootScope, $
 
     $http.post('/checkout/payment/complete_purchase/' + orderID, obj).then(function (response) {
       $rootScope.Processed = { value: true, error: false, data: response.data };
-      console.log(response);
       if (response.data.result.order.status.data.key == 'paid') {
         $rootScope.pageLoading = false;
-        console.log("/checkout/payment/complete_purchase/");
-        console.log(response.data);
         $rootScope.Transaction = { "empty": "" };
         $rootScope.changeOrderStatus($rootScope.Transaction);
       }
@@ -1758,17 +1715,12 @@ Processed.controller('processedCtrl', function ($scope, $location, $rootScope, $
       // $scope.eraseCart();
     } else if ($routeParams.method == 'stripe') {
       obj = { payment_number: data.id };
-      console.log("stripe payment number:", obj);
     }
 
     $http.post('/order/' + orderID + '/put', obj).then(function (response) {
-      console.log("changeOrderStatus");
       $rootScope.Processed = { value: true, error: false, data: response.data };
-      console.log(response);
-      console.log("response.data.status.value.key");
       if (response.data.status.data.key != 'paid') {
         $rootScope.pageLoading = false;
-        console.log("not paid");
       } else if (response.data.status.data.key == 'paid') {
         $rootScope.getOrderItems();
       }
@@ -1780,29 +1732,23 @@ Processed.controller('processedCtrl', function ($scope, $location, $rootScope, $
   };
 
   $rootScope.getOrderItems = function () {
-    console.log("getOrderItems");
     var orderID = $routeParams.order;
     $http({
       url: '/order/' + orderID + '/items',
       method: 'GET'
     }).then(function (response) {
-      console.log(response);
       $rootScope.Processed.data.items = response.data;
       if ($routeParams.method == 'paypal-express') {
-        console.log('method:', $routeParams.method);
-
         if ($rootScope.Product) {
-          $scope.searchProduct(response.data.result);
+          $scope.updateStockLevel(response.data.result);
         } else {
           $rootScope.$on('productArrived', function () {
-            console.log("productArrived");
-            $scope.searchProduct(response.data.result);
+            $scope.updateStockLevel(response.data.result);
           });
         }
       } else {
-        $scope.searchProduct(response.data.result);
+        $scope.updateStockLevel(response.data.result);
       }
-
       $scope.eraseCart();
     }, function (error) {
       console.log(error);
@@ -1810,116 +1756,14 @@ Processed.controller('processedCtrl', function ($scope, $location, $rootScope, $
     });
   };
 
-  $scope.searchProduct = function (data) {
-    console.log("searchProduct");
-    var contents = data;
-
-    for (var i in contents) {
-
-      if (contents[i].product.data.modifiers.length != 0) {
-        console.log("has modifiers");
-        var key = Object.keys(contents[i].product.data.modifiers)[0];
-        var thisProduct = contents[i].product.data.modifiers[key].data.product;
-
-        for (var p in $rootScope.Product) {
-          if ($rootScope.Product[p].id == thisProduct) {
-            console.log("this product id");
-            console.log(thisProduct);
-            // var thisProduct = $rootScope.Product[p].id;
-            var quantity = contents[i].quantity;
-            console.log("quantity", quantity);
-            console.log($rootScope.Product[p].stock_level);
-            var stock = $rootScope.Product[p].stock_level - contents[i].quantity;
-            $scope.updateStockLevel(thisProduct, stock);
-          }
-        }
-
-        // if($routeParams.method=='paypal-express'){
-        //   $http({
-        //     url: '/product/'+thisProduct+'/variations/get',
-        //     method: 'GET',
-        //   }).then(function(response){
-        //     console.log("get variations");
-        //
-        //     for (var p in $rootScope.Product){
-        //       if($rootScope.Product[p].id==thisProduct){
-        //         console.log("this product id");
-        //         console.log(thisProduct);
-        //
-        //         $rootScope.Variations=response.data.result;
-        //         $scope.sizeLoading = false;
-        //
-        //         for (var m in $rootScope.Product[p].modifiers){
-        //           for (var v in $rootScope.Product[p].modifiers[m].variations){
-        //
-        //             for (var t in $rootScope.Variations){
-        //               var key = Object.keys($rootScope.Variations[t].modifiers)[0];
-        //               var title = $rootScope.Variations[t].modifiers[key].var_title;
-        //
-        //               if(title==$rootScope.Product[p].modifiers[m].variations[v].title){
-        //                 $rootScope.Product[p].modifiers[m].variations[v].stock_level = $rootScope.Variations[t].stock_level;
-        //                 console.log("$rootScope.Product[p].modifiers[m].variations[v].stock_level",$rootScope.Product[p].modifiers[m].variations[v].stock_level);
-        //
-        //                 if(contents[i].product.data.modifiers[key].var_title == $rootScope.Variations[t].modifiers[key].var_title){
-        //                   var v_thisProduct = contents[i].product.data.id;
-        //                   var v_quantity = contents[i].quantity;
-        //                   var v_stock = $rootScope.Product[p].modifiers[m].variations[v].stock_level - contents[i].quantity;
-        //                   console.log("v_thisProduct", v_thisProduct);
-        //                   console.log("v_quantity", v_quantity);
-        //                   console.log("v_stock", v_stock);
-        //                   $scope.updateStockLevel(v_thisProduct, v_stock);
-        //                 }
-        //               }
-        //             }
-        //           }
-        //         }
-        //       }
-        //     }
-        //
-        //   },function(error){
-        //     console.log(error);
-        //       $route.reload();
-        //
-        //   });
-        // }
-      }
-      // else if((contents[i].product.data.modifiers.length==0) && ($routeParams.method=='paypal-express')){
-      //   //temporary paypal fix for items with no variation
-      //   console.log("temporary paypal fix for items with no variation");
-      //     //if the item has no vaiation
-      //     var thisProduct = contents[i].product.data.id;
-      //     console.log("contents[i].product.data.id",contents[i].product.data.id);
-      //     // $scope.updateStockLevel(thisProduct, stock);
-      //
-      //     for (var p in $rootScope.Product){
-      //       if($rootScope.Product[p].id==thisProduct){
-      //         // var thisProduct = $rootScope.Product[p].id;
-      //         var quantity = contents[i].quantity;
-      //         var stock = $rootScope.Product[p].stock_level - contents[i].quantity;
-      //         console.log("quantity", quantity);
-      //         console.log("stock", stock);
-      //         $scope.updateStockLevel(thisProduct, stock);
-      //       }
-      //     }
-      //
-      // }
-    } //for loop
-  };
-
   // update global stock level of the product
-  $scope.updateStockLevel = function (thisProduct, stock) {
-    $http.post('/product/' + thisProduct + '/stock_level/' + stock).then(function (response) {
-      console.log(response);
-    }, function (error) {
-      console.log(error);
-    });
+  $scope.updateStockLevel = function (data) {
+    $http.post('/product/update_stock', data).then(function (response) {}, function (error) {});
   };
 
   // erase shopping cart
   $scope.eraseCart = function () {
-    $http.post('/cart/erase').then(function (response) {
-      console.log(response);
-    }, function (error) {
+    $http.post('/cart/erase').then(function (response) {}, function (error) {
       console.log(error);
     });
   };
@@ -1999,7 +1843,6 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
       // $rootScope.Cart = response;
       $rootScope.updateCart();
       $rootScope.pageLoading = false;
-      console.log(response);
     });
   }; //addToCart
 
@@ -2016,7 +1859,6 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
         }).then(function (response) {
           // $rootScope.Cart = response;
           $rootScope.updateCart();
-          console.log(response);
         });
       } else {
         $scope.variationErrorMessage = "select a size first";
@@ -2073,7 +1915,6 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
   };
 
   // $rootScope.showSelection = function(modifier_id){
-  //   console.log('modifier_id',modifier_id);
   //   for (var m in $rootScope.Detail.modifiers){
   //     if($rootScope.Detail.modifiers[m].id == modifier_id){
   //       $rootScope.Detail.modifiers[m].open = !$rootScope.Detail.modifiers[m].open;
@@ -2093,7 +1934,6 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
           variation_id: variation_id,
           variation_title: variation_title
         };
-        console.log($rootScope.selectedVariation[i]);
         if ($rootScope.howManyVAriationsSelected < $rootScope.Detail.total_variations) {
           $rootScope.howManyVAriationsSelected = $rootScope.howManyVAriationsSelected + 1;
         }
@@ -2102,20 +1942,14 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
   };
 
   $scope.$on('$routeChangeSuccess', function () {
-    console.log("$routeParams.detail:" + $routeParams.detail);
     $rootScope.isDetailOpen = true;
     $rootScope.detailUpdate($routeParams.detail);
     $rootScope.updateCart();
     setTimeout(function () {
       if (!$rootScope.Detail.id) {
         $rootScope.detailUpdate($routeParams.detail);
-
         $scope.$apply();
-        console.log("I loaded it again");
-        console.log($rootScope.Detail);
       } else {
-        console.log("detail loaded correctly");
-        console.log($rootScope.Detail);
         return false;
       }
     }, 3000);
@@ -2190,7 +2024,6 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
 
   $scope.drag_FN = function (slug) {
     $('#' + slug).mousedown(function (event) {
-      event.preventDefault();console.log("mousedown");
       dragging = true;
     }).mousemove(function (event) {
       if (dragging) {
@@ -2200,26 +2033,18 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
             right += 1;
 
             if (right > 10) {
-              console.log('boom boom');
               right = 0;
             }
-
-            console.log('right', right);
-          } else if (coord.pageX > event.pageX) {
-            console.log('left');
-          }
+          } else if (coord.pageX > event.pageX) {}
         }
 
         coord = {
           pageX: event.pageX,
           pageY: event.pageY
         };
-
-        // $( "#log" ).append( "<div>" + msg + "</div>" );
       }
     }).mouseup(function (event) {
       event.preventDefault();
-      console.log("mouseup");
       dragging = false;
     });
   };

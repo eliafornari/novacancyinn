@@ -24,13 +24,13 @@ let moltin = require('moltin')({
 
 app.engine('html', ejs.renderFile);
 app.set('view engine', 'html');
-app.use(function(req, res, next) {
-    if((!req.secure) && (req.get('X-Forwarded-Proto') !== 'https')) {
-        res.redirect('https://' + req.get('Host') + req.url);
-    }
-    else
-        next();
-});
+// app.use(function(req, res, next) {
+//     if((!req.secure) && (req.get('X-Forwarded-Proto') !== 'https')) {
+//         res.redirect('https://' + req.get('Host') + req.url);
+//     }
+//     else
+//         next();
+// });
 app.use( express.static(__dirname + "/../client/assets/images") );
 app.use(express.static('/../node_modules/jquery/dist/jquery.min.js'));
 app.set('views', __dirname + '/../client');
@@ -58,6 +58,8 @@ return crypto_token;
 
 app.use(function(req, res, next) {
 
+
+
     if(!req.mySession.cartID){
       // var token = generateCrypto();
       crypto.randomBytes(18, function(err, buffer) {
@@ -67,6 +69,7 @@ app.use(function(req, res, next) {
     }else{
       moltin.Cart.Identifier(true, req.mySession.cartID);
     }
+
 
 
     if (!req.mySession.access_token || !req.mySession.expires) {
@@ -125,52 +128,49 @@ function setToHappen(d){
 
 
 app.get('/profile', function(req, res){
+   var img = fs.readFileSync('./client/assets/images/profile.jpg');
+   res.writeHead(200, {'Content-Type': 'image/jpeg' });
+   res.end(img, 'binary');
+});
 
-     var img = fs.readFileSync('./client/assets/images/profile.jpg');
-     res.writeHead(200, {'Content-Type': 'image/jpeg' });
-     res.end(img, 'binary');
+app.post('/addProduct', function(req, res){
+  var id = req.body.id;
+  var token = req.body.access_token;
+  console.log();
+  res.setHeader("Authorization", "Bearer "+token);
+
+  moltin.Cart.Insert(id, 1, null, function(items){
+    res.json(items);
+  });
 
 });
 
-    app.post('/addProduct', function(req, res){
 
-      var id = req.body.id;
-      var token = req.body.access_token;
-      console.log();
-      res.setHeader("Authorization", "Bearer "+token);
-
-      moltin.Cart.Insert(id, 1, null, function(items){
-        res.json(items);
-      });
-
-    });
-
-
-    app.post('/addVariation', function(req, res){
-      // console.log('request =' + JSON.stringify(req.body))
-      var variationArray = req.body;
-      for (var i in variationArray){
-        var id = variationArray[i].id;
-        var modifier = variationArray[i].modifier_id;
-        var variation = variationArray[i].variation_id;
-        var obj={};
-        var objArray = [];
-        obj[modifier] = variation
-        objArray.push(obj);
-      }
+app.post('/addVariation', function(req, res){
+  // console.log('request =' + JSON.stringify(req.body))
+  var variationArray = req.body;
+  for (var i in variationArray){
+    var id = variationArray[i].id;
+    var modifier = variationArray[i].modifier_id;
+    var variation = variationArray[i].variation_id;
+    var obj={};
+    var objArray = [];
+    obj[modifier] = variation
+    objArray.push(obj);
+  }
 
 
-      moltin.Cart.Insert(id, 1, obj, function(cart) {
-        // console.log(cart);
-        res.json(cart);
-      }, function(error, response, c) {
-        console.log(error);
-        console.log(c);
-        res.json(error);
-          // Something went wrong...
-      });
+  moltin.Cart.Insert(id, 1, obj, function(cart) {
+    // console.log(cart);
+    res.json(cart);
+  }, function(error, response, c) {
+    console.log(error);
+    console.log(c);
+    res.json(error);
+      // Something went wrong...
+  });
 
-    });
+});
 
 
 
@@ -231,7 +231,9 @@ app.get('/profile', function(req, res){
       getVariationsLevel(req, res);
     });
 
-
+    app.post('/product/update_stock', function(req, res){
+      updateProductStock(req, res);
+    });
 
 
 
@@ -280,9 +282,9 @@ app.get('/profile', function(req, res){
       var offset = req.query.offset;
 
       if(page==1){
-        url = 'https://api.molt.in/v1/products/search?limit=5';
+        url = 'https://api.molt.in/v1/products/search?status=1&limit=5';
       }else{
-        url = 'https://api.molt.in/v1/products/search?limit=5&offset='+offset;
+        url = 'https://api.molt.in/v1/products/search?status=1&limit=5&offset='+offset;
       }
 
       var access_token = req.mySession.access_token;
@@ -295,11 +297,9 @@ app.get('/profile', function(req, res){
       }, function (error, response, body) {
         if (!error && response.statusCode == 200) {
           var info = JSON.parse(body);
-          console.log(info);
           res.status(response.statusCode).json(info);
         }else{
           var info = JSON.parse(body);
-          console.log(info);
           res.status(response.statusCode).json(info);
         }
       });
@@ -486,9 +486,6 @@ app.get('/profile', function(req, res){
 
 
 
-    app.post('/product/:id/stock_level/:quantity', function(req, res){
-      updateProductStock(req, res);
-    });
 
 
 
@@ -496,24 +493,62 @@ app.get('/profile', function(req, res){
 
 
 
+
+
+
+    //update stock when buy a variation
     function updateProductStock(req, res){
+      var contents = req.body;
+      var x = 0;
+      var loopArray = function(arr) {
+          httpCall(arr[x],function(){
+            // set x to next item
+            x++;
+            // any more items in array? continue loop
+            if(x < arr.length) {
+                loopArray(arr);
+            }else{
+              console.log("done updating products level");
+              req.mySession.updated_stock = true;
+              res.status(200).json(arr);
+            }
+          });
+      }
 
-      var id = req.params.id;
-      var quantity = req.params.quantity;
+      function httpCall(content,callback) {
+          // code to show your custom alert
+          if(content.product.data.modifiers.length!=0){
+            var key = Object.keys(content.product.data.modifiers)[0];
+            var thisProduct = content.product.data.modifiers[key].data.product;
+            var quantity = content.quantity;
+            updateStockMoltin(thisProduct, quantity, callback);
+          }else{
+            callback();
+          }
+      }
 
-        moltin.Product.Update(id, {
-            stock_level:  quantity
-        }, function(product) {
-            req.mySession.updated_stock = true;
-            res.status(200).json(product);
+
+      function updateStockMoltin(id, quantity, callback){
+        var new_stock_level;
+        moltin.Product.Get(id, function(product) {
+          new_stock_level = product.stock_level-quantity;
+          moltin.Product.Update(id, {
+              stock_level:  new_stock_level
+          }, function(product) {
+              callback();
+          }, function(error, response, c) {
+            console.log("stock level update failed!");
+            console.log("c: "+c);
+            console.log("error: "+error);
+            res.status(c).json(response);
+              // Something went wrong...
+          });
 
         }, function(error, response, c) {
-          console.log("stock level update failed!");
-          console.log("c: "+c);
-          console.log("error: "+error);
-          res.status(c).json(response);
-            // Something went wrong...
+          res.status(c).json(error);
         });
+      }
+      loopArray(contents);
 
     }
 
@@ -524,13 +559,15 @@ app.get('/profile', function(req, res){
 
   function eraseAllOrders(){
     moltin.Order.List(null, function(order) {
-        // console.log(order);
+        console.log(order);
         for (var i in order){
           var id = order[i].id;
           id = id.toString();
           moltin.Order.Delete(id, function(data) {
             console.log(data);
-          }, function(error) {
+          }, function(error, response, c) {
+            console.log(c);
+            console.log(error);
               // Something went wrong...
           });
         }
@@ -538,6 +575,15 @@ app.get('/profile', function(req, res){
         // Something went wrong...
     });
   }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -638,16 +684,15 @@ function getOrderItems(req, res){
 //get support data
     app.get('/data/countries', function(req, res){
       // Get content from file
-     var countries = fs.readFileSync("./server/data/countries.json");
-     var states = fs.readFileSync("./server/data/states.json");
-    countries = JSON.parse(countries);
-    states = JSON.parse(states);
-    var joined = {
-      countries, countries,
-      states: states
-    }
-     res.json(joined);
-
+      var countries = fs.readFileSync("./server/data/countries.json");
+      var states = fs.readFileSync("./server/data/states.json");
+      countries = JSON.parse(countries);
+      states = JSON.parse(states);
+      var joined = {
+        countries, countries,
+        states: states
+      }
+      res.json(joined);
     });
 
 

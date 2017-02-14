@@ -4,7 +4,6 @@ var Payment = angular.module('myApp');
 
 Payment.controller('paymentCtrl', function($scope, $location, $rootScope, $timeout,	$http, transformRequestAsFormPost, anchorSmoothScroll){
  $rootScope.payment;
- console.log("paymentCtrl");
  $rootScope.Transaction;
   $rootScope.Processed={value: false, error:false, data:''};
 
@@ -32,10 +31,7 @@ Payment.controller('paymentCtrl', function($scope, $location, $rootScope, $timeo
 
 
   $rootScope.checkPayment = ()=>{
-    console.log("checkPayment runs");
     if($rootScope.checkout.gateway == 'stripe'){
-      console.log("payment form");
-      console.log($scope.paymentForm);
       if($scope.paymentForm.$valid){
         $rootScope.changeOrderGateway();
       }else{
@@ -55,8 +51,6 @@ Payment.controller('paymentCtrl', function($scope, $location, $rootScope, $timeo
 
 
   $rootScope.changeOrderGateway =()=>{
-    console.log("changeOrderGateway runs");
-    console.log("gateway: "+$rootScope.checkout.gateway);
     var orderID = $rootScope.Order.id;
     if($rootScope.checkout.gateway == 'stripe'){
       $rootScope.paymentToProcess();
@@ -80,11 +74,8 @@ Payment.controller('paymentCtrl', function($scope, $location, $rootScope, $timeo
 
 
     $rootScope.paymentToProcess = ()=>{
-      console.log("paymentToProcess runs");
-
       $rootScope.payment.gateway = $rootScope.checkout.gateway;
       $rootScope.pageLoading = true;
-
           $http({
             url: '/order/payment',
             method: 'POST',

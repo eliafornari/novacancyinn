@@ -45,12 +45,8 @@ $rootScope.checkout = {
 //shipment
 
   $rootScope.shipmentToPayment = (event) =>{
-    console.log($scope.checkoutForm.$valid);
-    console.log($scope.checkoutForm);
     if($scope.checkoutForm.$valid){
-
       $http.post('/cartToOrder', $rootScope.checkout)
-
       .then(function(response) {
         $rootScope.Order=response.data;
         // $rootScope.payment.id = response.data.id;

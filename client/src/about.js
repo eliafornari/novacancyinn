@@ -458,14 +458,11 @@ $scope.onYouTubeIframeAPIReady=()=>{
 
 
     $scope.playPause=()=>{
-      console.log("clicked");
       // player.pauseVideo();
       if(state){
         player.pauseVideo();
-        console.log("pause");
       }else {
       player.playVideo();
-        console.log("play");
       }
     }
 };

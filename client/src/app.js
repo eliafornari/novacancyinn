@@ -202,11 +202,8 @@ $rootScope.Home;
 
     $rootScope.getProductsFN=function(offset){
       $http({method: 'GET', url: '/product/list?offset='+offset}).then(function(response){
-        console.log("product: ");
-        console.log(response);
         $rootScope.Product = $rootScope.Product.concat(response.data.result);
         $rootScope.Pagination = response.data.pagination;
-        console.log(response.data);
         $rootScope.pageLoading = false;
         $rootScope.$broadcast("productArrived");
         $rootScope.pageLoading = false;
@@ -260,7 +257,6 @@ setTimeout(function(){
       $rootScope.elia = true;
       setTimeout(function() {
         $rootScope.elia = false;
-        console.log($rootScope.elia);
         $rootScope.$apply();
       }, 3000);
     }
@@ -288,13 +284,8 @@ setTimeout(function(){
         method: 'GET',
         url: '/data/countries'
       }).then(function successCallback(response) {
-
         $rootScope.countries = response.data.countries;
         $rootScope.states = response.data.states;
-        console.log("states");
-        console.log(response.data);
-
-
       }, function errorCallback(response) {
 
         $scope.error = {value: true, text:'countries not available, this page will be reloaded'};
@@ -328,8 +319,6 @@ setTimeout(function(){
         }).then(function(response){
           $rootScope.Cart = response.data;
           $rootScope.pageLoading = false;
-          console.log(response);
-
           // if(!$rootScope.Cart.total_items==0){
           //   console.log("cart has some stuff");
           //   $rootScope.attachItemID($rootScope.Cart.contents);
@@ -481,10 +470,9 @@ var radioRan = false;
 
                       if (type =='event'){
                         $rootScope.Event = response.results;
-                        console.log("event");
-                        console.log(response.results);
+
                         if(eventRan == false){
-                          console.log("eventReady");
+
                           eventRan = true;
                           setTimeout(function(){
                             $rootScope.$broadcast('eventReady');
@@ -495,10 +483,7 @@ var radioRan = false;
 
                       }else if(type =='home'){
                         $rootScope.Home = response.results;
-                        console.log("home");
-                        console.log(response.results);
                         if(homeRan == false){
-                          console.log("homeReady");
                           homeRan = true;
                           $rootScope.$broadcast('homeReady');
 
@@ -506,9 +491,7 @@ var radioRan = false;
 
                       }else if(type =='radio'){
                         $rootScope.Radio = response.results;
-                        console.log(response.results);
                         if(radioRan == false){
-                          console.log("radioReady");
                           radioRan = true;
                           $rootScope.$broadcast('radioReady');
 

@@ -78,7 +78,6 @@ $rootScope.addToCart = function(id){
       // $rootScope.Cart = response;
       $rootScope.updateCart();
       $rootScope.pageLoading = false;
-      console.log(response);
     });
 }//addToCart
 
@@ -98,7 +97,6 @@ $rootScope.addVariation = function(){
       }).then(function(response){
         // $rootScope.Cart = response;
         $rootScope.updateCart();
-        console.log(response);
       });
     }else{
       $scope.variationErrorMessage = "select a size first"
@@ -162,7 +160,6 @@ $rootScope.addVariation = function(){
 
 
   // $rootScope.showSelection = function(modifier_id){
-  //   console.log('modifier_id',modifier_id);
   //   for (var m in $rootScope.Detail.modifiers){
   //     if($rootScope.Detail.modifiers[m].id == modifier_id){
   //       $rootScope.Detail.modifiers[m].open = !$rootScope.Detail.modifiers[m].open;
@@ -185,7 +182,6 @@ $rootScope.addVariation = function(){
             variation_id: variation_id,
             variation_title: variation_title
           }
-          console.log($rootScope.selectedVariation[i]);
           if($rootScope.howManyVAriationsSelected<$rootScope.Detail.total_variations){
             $rootScope.howManyVAriationsSelected = $rootScope.howManyVAriationsSelected+1;
           }
@@ -200,20 +196,14 @@ $rootScope.addVariation = function(){
 
 
   $scope.$on('$routeChangeSuccess', function(){
-    console.log("$routeParams.detail:"+$routeParams.detail);
     $rootScope.isDetailOpen = true;
     $rootScope.detailUpdate($routeParams.detail);
     $rootScope.updateCart();
     setTimeout(function(){
       if(!$rootScope.Detail.id){
         $rootScope.detailUpdate($routeParams.detail);
-
         $scope.$apply();
-        console.log("I loaded it again");
-        console.log($rootScope.Detail);
       }else{
-        console.log("detail loaded correctly");
-        console.log($rootScope.Detail);
         return false
       }
     },3000);
@@ -310,7 +300,6 @@ $scope.maxVariation=(obj)=>{
 
 $scope.drag_FN = (slug)=>{
   $('#'+slug).mousedown(function(event) {
-    event.preventDefault(); console.log("mousedown");
     dragging = true;
 
   }).mousemove(function( event ) {
@@ -321,13 +310,9 @@ $scope.drag_FN = (slug)=>{
           right+= 1;
 
           if(right>10){
-            console.log('boom boom');
             right=0;
           }
-
-          console.log('right',right);
         }else if(coord.pageX > (event.pageX)){
-          console.log('left');
         }
       }
 
@@ -336,12 +321,10 @@ $scope.drag_FN = (slug)=>{
         pageY: event.pageY
       }
 
-      // $( "#log" ).append( "<div>" + msg + "</div>" );
     }
 
   }).mouseup(function(event) {
     event.preventDefault();
-    console.log("mouseup");
     dragging = false;
 
   });
