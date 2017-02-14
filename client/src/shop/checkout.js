@@ -123,17 +123,26 @@ $scope.$watch('checkout', function(value){
       $rootScope.checkout.billing.phone = $rootScope.checkout.shipment.phone;
   }
 
-  if(NorthAmerica.indexOf( $rootScope.checkout.shipment.country ) != -1){
+  if($rootScope.checkout.shipment.country==('US')){
     $rootScope.checkout.shipment_method='1336838094099317449';
-  }else if ($rootScope.checkout.shipment.country=='IT'){
-    $rootScope.checkout.shipment_method='1336838640038314698'
-  }else if (Europe.indexOf( $rootScope.checkout.shipment.country ) != -1){
-    $rootScope.checkout.shipment_method='1336838640038314698'
-  }else if ($rootScope.checkout.shipment.country==('RU')){
-    $rootScope.checkout.shipment_method='1336838640038314698'
   }else{
     $rootScope.checkout.shipment_method='1336838640038314698';
   }
+
+
+  // if(NorthAmerica.indexOf( $rootScope.checkout.shipment.country ) != -1){
+  //   $rootScope.checkout.shipment_method='1336838094099317449';
+  // }else if ($rootScope.checkout.shipment.country=='IT'){
+  //   $rootScope.checkout.shipment_method='1336838640038314698'
+  // }else if (Europe.indexOf( $rootScope.checkout.shipment.country ) != -1){
+  //   $rootScope.checkout.shipment_method='1336838640038314698'
+  // }else if ($rootScope.checkout.shipment.country==('RU')){
+  //   $rootScope.checkout.shipment_method='1336838640038314698'
+  // }else{
+  //   $rootScope.checkout.shipment_method='1336838640038314698';
+  // }
+
+
 }, true)
 
 

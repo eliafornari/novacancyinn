@@ -300,6 +300,7 @@ angular.module('myApp').controller('aboutCtrl', function ($scope, $location, $ro
   // Monaco
   // monospace
 
+
   ];
 
   $scope.wheel_about;
@@ -314,6 +315,7 @@ angular.module('myApp').controller('aboutCtrl', function ($scope, $location, $ro
       //  console.log(event.deltaX, event.deltaY, event.deltaFactor);
       //  console.log(delta);
       //  this.scrollLeft += (event.deltaY * 0.3);
+
 
       $scope.scroll_about = $scope.scroll_about + -event.deltaY * 0.3;
 
@@ -330,6 +332,7 @@ angular.module('myApp').controller('aboutCtrl', function ($scope, $location, $ro
       //
       //  $scope.stretchX=$scope.aboutText[objectIndex].stretchX;
       //  $scope.stretchY=$scope.aboutText[objectIndex].stretchY;;
+
 
       event.preventDefault();
       $scope.wheel_about = true;
@@ -423,6 +426,7 @@ angular.module('myApp').controller('aboutCtrl', function ($scope, $location, $ro
   //
   //
   // } //load video function
+
 }); //controller
 
 },{}],2:[function(require,module,exports){
@@ -644,6 +648,7 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
     });
   }; //updateCart
 
+
   $rootScope.windowHeight = $window.innerHeight;
 
   (0, _jquery2.default)($window).resize(function () {
@@ -752,6 +757,7 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
         //   $scope.$apply();
         // }, 3000);
 
+
         if (type == 'event') {
           $rootScope.Event = response.results;
 
@@ -847,6 +853,7 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
   };
 }); //......end of the route controller
 
+
 var jquerymousewheel = require('./vendor/jquery.mousewheel.js')($);
 var infiniteScroll = require("./vendor/infiniteScroll.js");
 var jqueryUI = require('./vendor/jquery-ui.min.js');
@@ -895,6 +902,7 @@ angular.module('myApp')
   $rootScope.selectedEvent = {};
 
   //..........................................................GET
+
 
   $rootScope.getContentType('event', 'my.event.date desc');
 
@@ -991,6 +999,7 @@ Home.controller('homeCtrl', function ($scope, $location, $rootScope, $routeParam
   //     }
   //
   // });
+
 
   // $(document).addEventListener("keydown", function(event) {
   //   console.log(event.which);
@@ -1152,6 +1161,7 @@ angular.module('myApp').filter('turnIntoSoundcloud', function ($sce) {
 
   //..........................................................GET
 
+
   $rootScope.getContentType('radio', 'my.radio.index');
 
   $rootScope.$on('radioReady', function () {
@@ -1218,6 +1228,7 @@ Service.factory("transformRequestAsFormPost", function () {
 });
 
 //.................................................google SEO
+
 
 Service.service('PageTitle', function () {
     var _title = 'Angel Sanchez';
@@ -1343,6 +1354,7 @@ Cart.controller('cartCtrl', function ($scope, $location, $rootScope, $timeout, $
   //     });
   // }
 
+
   $rootScope.removeItem = function (id) {
 
     $http({
@@ -1400,6 +1412,7 @@ Cart.controller('cartCtrl', function ($scope, $location, $rootScope, $timeout, $
   //
   //
   //
+
 });
 
 },{}],9:[function(require,module,exports){
@@ -1477,6 +1490,7 @@ Checkout.controller('checkoutCtrl', function ($scope, $location, $rootScope, $ti
   //   }
   // }, true);
 
+
   $scope.phoneRegex = '^(\\+\\d{1,2}\s)?\\(?\\d{3}\\)?[\s.-]\\d{3}[\\s.-]\\d{4}$';
   $scope.postcodeRegex = '^\\d{5}-\\d{4}|\\d{5}|[A-Z]\\d[A-Z] \\d[A-Z]\\d$';
 
@@ -1509,17 +1523,24 @@ Checkout.controller('checkoutCtrl', function ($scope, $location, $rootScope, $ti
       $rootScope.checkout.billing.phone = $rootScope.checkout.shipment.phone;
     }
 
-    if (NorthAmerica.indexOf($rootScope.checkout.shipment.country) != -1) {
+    if ($rootScope.checkout.shipment.country == 'US') {
       $rootScope.checkout.shipment_method = '1336838094099317449';
-    } else if ($rootScope.checkout.shipment.country == 'IT') {
-      $rootScope.checkout.shipment_method = '1336838640038314698';
-    } else if (Europe.indexOf($rootScope.checkout.shipment.country) != -1) {
-      $rootScope.checkout.shipment_method = '1336838640038314698';
-    } else if ($rootScope.checkout.shipment.country == 'RU') {
-      $rootScope.checkout.shipment_method = '1336838640038314698';
     } else {
       $rootScope.checkout.shipment_method = '1336838640038314698';
     }
+
+    // if(NorthAmerica.indexOf( $rootScope.checkout.shipment.country ) != -1){
+    //   $rootScope.checkout.shipment_method='1336838094099317449';
+    // }else if ($rootScope.checkout.shipment.country=='IT'){
+    //   $rootScope.checkout.shipment_method='1336838640038314698'
+    // }else if (Europe.indexOf( $rootScope.checkout.shipment.country ) != -1){
+    //   $rootScope.checkout.shipment_method='1336838640038314698'
+    // }else if ($rootScope.checkout.shipment.country==('RU')){
+    //   $rootScope.checkout.shipment_method='1336838640038314698'
+    // }else{
+    //   $rootScope.checkout.shipment_method='1336838640038314698';
+    // }
+
   }, true);
 });
 
@@ -1551,6 +1572,7 @@ Payment.controller('paymentCtrl', function ($scope, $location, $rootScope, $time
   //     $rootScope.payment_forwardActive = false;
   //   }
   // }, false);
+
 
   $rootScope.checkPayment = function () {
     if ($rootScope.checkout.gateway == 'stripe') {
@@ -1642,6 +1664,7 @@ Payment.controller('paymentCtrl', function ($scope, $location, $rootScope, $time
       $rootScope.pageLoading = false;
     });
   }; //paymentToProcess
+
 
   $rootScope.backFromPayment = function () {
     $rootScope.paymentProcessed = false;
@@ -1824,6 +1847,7 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
   // }
   //
 
+
   $rootScope.addToCart = function (id) {
 
     $http({
@@ -1844,6 +1868,7 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
       $rootScope.pageLoading = false;
     });
   }; //addToCart
+
 
   //......VARIATIONS
 
@@ -1868,6 +1893,7 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
       }
     }
   }; //addToCart
+
 
   //variations
   $rootScope.thisImageIndex = 0;
@@ -1920,6 +1946,7 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
   //     }
   //   }
   // }
+
 
   $rootScope.thisVariation = function (id, modifier_id, modifier_title, variation_id, variation_title) {
     var i = 0;
@@ -2136,6 +2163,7 @@ mod.directive('infiniteScroll', ['$rootScope', '$window', '$timeout', function (
           shouldScroll = remaining <= 0;
           // $(window).height() * scrollDistance;
 
+
           if (shouldScroll && scrollEnabled) {
             if ($rootScope.$$phase) {
 
@@ -2170,7 +2198,7 @@ mod.directive('infiniteScroll', ['$rootScope', '$window', '$timeout', function (
 },{}],14:[function(require,module,exports){
 "use strict";
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 /*! jQuery UI - v1.12.0 - 2016-08-22
 * http://jqueryui.com
@@ -3302,7 +3330,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 },{}],15:[function(require,module,exports){
 'use strict';
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 /*!
  * jQuery Mousewheel 3.1.13
