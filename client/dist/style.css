@@ -696,10 +696,6 @@ html {
     }*/ }
   @media only screen and (min-width: 0px) and (max-device-width: 767px) {
     html {
-      overflow-x: hidden;
-      overflow-y: hidden;
-      position: fixed;
-      height: 100vh;
       width: 100vw; } }
 
 body {
@@ -716,10 +712,6 @@ body {
   /* Hide oversized content. This prevents the scroll bars. */ }
   @media only screen and (min-width: 0px) and (max-device-width: 767px) {
     body {
-      overflow-x: hidden;
-      overflow-y: hidden;
-      position: fixed;
-      height: 100vh;
       width: 100vw; } }
 
 body.backgound-black {
