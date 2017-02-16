@@ -1,11 +1,11 @@
 
-<div class="payment" ng-controller="paymentCtrl" ng-init="showBackText_payment=false">
+<div class="payment" ng-init="showBackText_payment=false">
 
 
 
 <!-- 3 -->
 
-  <form name="paymentForm" novalidate class="payment-form" ng-submit="checkPayment()">
+  <form name="paymentForm" novalidate class="payment-form">
 
     <h1 class="form-title">Payment</h1>
 
@@ -62,7 +62,9 @@
 <p>payment form valid: {{paymentForm.$valid}}</p>
 
 
-    <button type="submit" class="checkout-button hvr-sweep-to-right" ng-disabled="paymentForm.$invalid" >
+<!-- <div class="g-recaptcha" data-sitekey="6LfYxBUUAAAAAOUn27fy1q0_cJuve1mUgXtMmjU7"></div> -->
+
+    <button class="checkout-button hvr-sweep-to-right" ng-disabled="paymentForm.$invalid" ng-click="checkPayment()">
        <!--ng-mouseenter="showBackText_payment=true" ng-mouseleave="showBackText_payment=false" -->
       <h2>Complete order</h2>
        <!-- ng-show="!showBackText_payment" -->

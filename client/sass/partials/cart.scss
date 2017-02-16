@@ -22,7 +22,7 @@
   height:40px;
   z-index: $z-cartclose;
   @include respond-to(phone){
-    top:120px;
+    top:100px;
   }
   a{
     display: block;
@@ -186,6 +186,7 @@
   @include respond-to(phone){
     box-sizing: border-box;
     width:90vw;
+    bottom:100px;
   }
 }
 

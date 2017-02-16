@@ -109,11 +109,13 @@ $sceProvider.enabled(false);
         })
 
         .when('/shop/payment', {
-          templateUrl: 'views/shop/payment.html'
+          templateUrl: 'views/shop/payment.html',
+          controller: 'paymentCtrl'
         })
 
         .when('/shop/processed/:order/:method', {
-          templateUrl: 'views/shop/processed.html'
+          templateUrl: 'views/shop/processed.html',
+          controller: 'processedCtrl'
         })
 
         .when('/shop/processed/:order/:method/canceled', {

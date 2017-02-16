@@ -41,7 +41,7 @@ Payment.controller('paymentCtrl', function($scope, $location, $rootScope, $timeo
           $rootScope.$apply();
         }, 2000);
       }
-    }else{
+    }else if($rootScope.checkout.gateway == 'paypal-express'){
       $rootScope.changeOrderGateway();
     }
 

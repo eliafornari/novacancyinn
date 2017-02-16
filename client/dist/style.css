@@ -1624,7 +1624,7 @@ html, body {
     }*/ }
   @media only screen and (min-width: 0px) and (max-width: 767px) {
     .cart-close {
-      top: 120px; } }
+      top: 100px; } }
   .cart-close a {
     display: block;
     width: 100%;
@@ -1786,7 +1786,8 @@ html, body {
   @media only screen and (min-width: 0px) and (max-width: 767px) {
     .checkout-button {
       box-sizing: border-box;
-      width: 90vw; } }
+      width: 90vw;
+      bottom: 100px; } }
 
 .cart-back {
   position: absolute;

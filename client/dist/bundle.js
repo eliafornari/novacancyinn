@@ -513,9 +513,11 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
   }).when('/shop/choice', {
     templateUrl: 'views/shop/choice.html'
   }).when('/shop/payment', {
-    templateUrl: 'views/shop/payment.html'
+    templateUrl: 'views/shop/payment.html',
+    controller: 'paymentCtrl'
   }).when('/shop/processed/:order/:method', {
-    templateUrl: 'views/shop/processed.html'
+    templateUrl: 'views/shop/processed.html',
+    controller: 'processedCtrl'
   }).when('/shop/processed/:order/:method/canceled', {
     templateUrl: 'views/shop/processed-canceled.html'
   }).when('/radio', {
@@ -1590,7 +1592,7 @@ Payment.controller('paymentCtrl', function ($scope, $location, $rootScope, $time
           $rootScope.$apply();
         }, 2000);
       }
-    } else {
+    } else if ($rootScope.checkout.gateway == 'paypal-express') {
       $rootScope.changeOrderGateway();
     }
   };
