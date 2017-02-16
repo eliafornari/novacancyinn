@@ -1672,8 +1672,8 @@ html, body {
         }*/ }
       @media only screen and (min-width: 0px) and (max-width: 767px) {
         .cart-ul .cart-li .cart-name {
-          margin-left: 20px;
-          width: 200px; } }
+          margin-left: 0;
+          width: 220px; } }
     .cart-ul .cart-li .cart-price {
       float: right;
       margin-right: 100px;
@@ -1907,9 +1907,7 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
 
 .payment {
   width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0; }
+  height: 100%; }
 
 .payment-form {
   width: 100%;
@@ -1933,7 +1931,7 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
       @media only screen and (min-width: 0px) and (max-width: 767px) {
         .payment-form .payment-form-content .payment-form-div {
           width: 50%;
-          left: 20px; } }
+          left: 0; } }
 
 .payment-total {
   position: relative;
@@ -1948,7 +1946,8 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
     }*/ }
   @media only screen and (min-width: 0px) and (max-width: 767px) {
     .payment-total {
-      width: 50%; } }
+      width: 50%;
+      left: 0; } }
   .payment-total p {
     font-size: 12px;
     line-height: 25px;
@@ -2032,7 +2031,7 @@ input.ng-dirty.ng-invalid, select.ng-dirty.ng-invalid {
     .isBillingDifferent {
       top: 125px;
       left: 45%;
-      margin-left: 30px; } }
+      margin-left: 0px; } }
   .isBillingDifferent label {
     font-size: 12px;
     line-height: 25px;

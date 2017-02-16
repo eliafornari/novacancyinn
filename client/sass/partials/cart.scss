@@ -73,8 +73,8 @@
     .cart-name{
       margin-left: $margin-right-p;
       @include respond-to(phone){
-        margin-left: $margin-right-p-mobile;
-        width:200px;
+        margin-left: 0;
+        width: 220px;
       }
     }
     .cart-price{

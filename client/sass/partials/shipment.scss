@@ -85,7 +85,8 @@
   @include respond-to(phone){
     top: 125px;
     left:45%;
-    margin-left: 30px;
+    margin-left: 0px;
+
   }
   label{
     @include p();
