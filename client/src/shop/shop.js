@@ -244,8 +244,6 @@ $scope.sizeLoading = false;
       }
     },function(error){
       console.log(error);
-        $route.reload();
-
     });
   }
 

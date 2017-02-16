@@ -2018,7 +2018,6 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
       }
     }, function (error) {
       console.log(error);
-      $route.reload();
     });
   };
 
