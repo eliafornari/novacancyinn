@@ -58,8 +58,6 @@ return crypto_token;
 
 app.use(function(req, res, next) {
 
-
-
     if(!req.mySession.cartID){
       // var token = generateCrypto();
       crypto.randomBytes(18, function(err, buffer) {
@@ -69,8 +67,6 @@ app.use(function(req, res, next) {
     }else{
       moltin.Cart.Identifier(true, req.mySession.cartID);
     }
-
-
 
     if (!req.mySession.access_token || !req.mySession.expires) {
       res.setHeader('X-Seen-You', 'false');
@@ -175,65 +171,62 @@ app.post('/addVariation', function(req, res){
 
 
 
-    app.post('/removeProduct', function(req, res){
+  app.post('/removeProduct', function(req, res){
 
-      var id = req.body.id;
-      moltin.Cart.Remove(id, function(items) {
-          // Everything is awesome...
-          res.status(200);
-          res.json(items);
-      }, function(error, response, c) {
-          // Something went wrong...
-          console.log(response.body);
-          console.log(error);
-      });
-    })
-
-    app.get('/product/list', function(req, res){
-      getProduct(req, res);
+    var id = req.body.id;
+    moltin.Cart.Remove(id, function(items) {
+        // Everything is awesome...
+        res.status(200);
+        res.json(items);
+    }, function(error, response, c) {
+        // Something went wrong...
+        console.log(response.body);
+        console.log(error);
     });
+  })
 
-    app.get('/getCart', function(req, res){
-      getCart(req, res);
-    });
+app.get('/product/list', function(req, res){
+  getProduct(req, res);
+});
 
-    app.post('/cartToOrder', function(req, res){
-      var data = req.body;
-      cartToOrder(req, res, data);
-    });
+app.get('/getCart', function(req, res){
+  getCart(req, res);
+});
 
-    app.get('/order/:order/items', function(req, res){
-       getOrderItems(req, res);
-     });
+app.post('/cartToOrder', function(req, res){
+  var data = req.body;
+  cartToOrder(req, res, data);
+});
 
-   app.get('/order/:order/get', function(req, res){
-     getOrderByID(req, res);
-   });
+app.get('/order/:order/items', function(req, res){
+   getOrderItems(req, res);
+ });
 
-
-   app.post('/order/:order/put', function(req, res){
-     putOrder(req, res);
-   });
-
-
-    app.post('/order/payment', function(req, res){
-      var order = req.body;
-      orderToPayment(req, res, order);
-    });
-
-    app.post('/cart/erase', function(req, res){
-      emptyCart(req, res);
-    });
+app.get('/order/:order/get', function(req, res){
+ getOrderByID(req, res);
+});
 
 
+app.post('/order/:order/put', function(req, res){
+ putOrder(req, res);
+});
 
-    app.get('/product/:id/variations/get', function(req, res){
-      getVariationsLevel(req, res);
-    });
+app.post('/order/payment', function(req, res){
+  var order = req.body;
+  orderToPayment(req, res, order);
+});
 
-    app.post('/product/update_stock', function(req, res){
-      updateProductStock(req, res);
-    });
+app.post('/cart/erase', function(req, res){
+  emptyCart(req, res);
+});
+
+app.get('/product/:id/variations/get', function(req, res){
+  getVariationsLevel(req, res);
+});
+
+app.post('/product/update_stock', function(req, res){
+  updateProductStock(req, res);
+});
 
 
 
@@ -241,37 +234,31 @@ app.post('/addVariation', function(req, res){
 //functions
 
 
-    function emptyCart(req, res){
+function emptyCart(req, res){
+  moltin.Cart.Delete(function(data) {
+    // Everything is awesome...
+    res.status(200).json(data);
+    console.log();
+  }, function(error, response, c) {
+    console.log("payment failed!");
+    console.log("response: "+response);
+    console.log("c: "+c);
+    console.log("error: "+error);
+    res.status(c).json(response);
+    // Something went wrong...
+  });
 
-      moltin.Cart.Delete(function(data) {
-        // Everything is awesome...
-        res.status(200).json(data);
-        console.log();
-      }, function(error, response, c) {
-        console.log("payment failed!");
-        console.log("response: "+response);
-        console.log("c: "+c);
-        console.log("error: "+error);
-
-        res.status(c).json(response);
-        // Something went wrong...
-      });
-
-    }
+}
 
 
 
-    function getCart(req, res){
-        moltin.Cart.Contents(function(items) {
-          // res.writeHead(200, {'Content-Type': 'application/json'});
-          res.json(items);
-          // res.end(items);
-            // Update the cart display
-        }, function(error){
-              console.log(error);
-        });
-
-    }
+function getCart(req, res){
+  moltin.Cart.Contents(function(items) {
+    res.json(items);
+  }, function(error){
+        console.log(error);
+  });
+}
 
 
     var Product=[];

@@ -129,6 +129,10 @@ $scope.$watch('checkout', function(value){
     $rootScope.checkout.shipment_method='1336838640038314698';
   }
 
+  // 1450446744415371484	DHL International	Live	DHL International	$30.00
+  // 1336838640038314698	USPS International	Live	USPS International	$40.00
+  // 1336838094099317449	USPS Domestic
+
 
   // if(NorthAmerica.indexOf( $rootScope.checkout.shipment.country ) != -1){
   //   $rootScope.checkout.shipment_method='1336838094099317449';
