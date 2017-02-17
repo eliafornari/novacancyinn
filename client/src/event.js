@@ -21,7 +21,7 @@ angular.module('myApp')
 //
 // })
 
-.controller('eventCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, $sce, $document, anchorSmoothScroll, $window){
+.controller('eventCtrl', ['$scope', '$location', '$rootScope', '$routeParams', '$timeout',	'$http', '$sce', '$document', 'anchorSmoothScroll', '$window', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, $sce, $document, anchorSmoothScroll, $window){
 
 $rootScope.windowHeight = $window.innerHeight;
 $rootScope.pageClass = "page-event";
@@ -62,4 +62,4 @@ $rootScope.selectedEvent = {};
     $rootScope.selectedEvent = e;
   }
 
-});//controller
+}]);//controller

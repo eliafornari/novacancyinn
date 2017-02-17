@@ -2,7 +2,7 @@
 
 var Processed = angular.module('myApp');
 
-Processed.controller('processedCtrl', function($scope, $location, $rootScope, $timeout,	$http, transformRequestAsFormPost, anchorSmoothScroll, $routeParams){
+Processed.controller('processedCtrl',['$scope', '$location', '$rootScope', '$timeout',	'$http', 'transformRequestAsFormPost', 'anchorSmoothScroll', '$routeParams', function($scope, $location, $rootScope, $timeout,	$http, transformRequestAsFormPost, anchorSmoothScroll, $routeParams){
 
 
 
@@ -13,11 +13,14 @@ Processed.controller('processedCtrl', function($scope, $location, $rootScope, $t
       url: '/order/'+orderID+'/get',
       method: 'GET'
     }).then( function(response){
-      if(response.data.status.data.key =='unpaid'){
-        $rootScope.completePayment_Paypal();
-      }else{
-        $rootScope.Processed = {value: true, error:false, data:response.data};
+      if($routeParams.method == 'paypal-express'){
+        if(response.data.status.data.key =='unpaid'){
+          $rootScope.completePayment_Paypal();
+        }else{
+          $rootScope.Processed = {value: true, error:false, data:response.data};
+        }
       }
+
     }, function(error){
       console.log(error);
       $rootScope.Processed = {value: false, error:true, data:error.data};
@@ -30,8 +33,6 @@ Processed.controller('processedCtrl', function($scope, $location, $rootScope, $t
 setTimeout(function(){
   if($routeParams.method == 'paypal-express'){
     $rootScope.retrieveOrder();
-    // $rootScope.Processed = {value: false, error:false, data:response.data};
-    // $rootScope.changeOrderStatus(response.data);
 
   }else if($routeParams.method == 'stripe'){
     $rootScope.changeOrderStatus($rootScope.Transaction);
@@ -56,14 +57,11 @@ $rootScope.completePayment_Paypal = ()=>{
       $rootScope.Transaction={"empty":""};
       $rootScope.changeOrderStatus($rootScope.Transaction);
     }
-
-
   }, function(error){
     console.log(error);
     $rootScope.pageLoading = false;
     $rootScope.Processed = {value: true, error:true, data:error.data};
   })
-
 }
 
 
@@ -140,8 +138,10 @@ $rootScope.getOrderItems = ()=>{
 $scope.updateStockLevel =(data)=>{
   $http.post('/product/update_stock', data)
   .then(function(response){
+    console.log("ok");
   }, function(error){
-  })
+    console.log(error);
+  });
 }
 
 
@@ -166,4 +166,4 @@ $scope.eraseCart =()=>{
 
 
 
-});
+}]);

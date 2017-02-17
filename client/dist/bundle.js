@@ -507,7 +507,8 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
   }).when('/shop/cart', {
     templateUrl: 'views/shop/cart.html'
   }).when('/shop/shipment', {
-    templateUrl: 'views/shop/shipment.html'
+    templateUrl: 'views/shop/shipment.html',
+    controller: 'checkoutCtrl'
   }).when('/shop/shipment/terms', {
     templateUrl: 'views/shop/shipment.html'
   }).when('/shop/choice', {
@@ -859,6 +860,7 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
 var jquerymousewheel = require('./vendor/jquery.mousewheel.js')($);
 var infiniteScroll = require("./vendor/infiniteScroll.js");
 var jqueryUI = require('./vendor/jquery-ui.min.js');
+var capcha = require('./vendor/angular-recapcha.min.js');
 var mailchimp = require('./vendor/mailchimp.js');
 var home = require("./home.js");
 var about = require("./about.js");
@@ -872,7 +874,7 @@ var shop = require("./shop/checkout.js");
 var shop = require("./shop/payment.js");
 var shop = require("./shop/processed.js");
 
-},{"./about.js":1,"./event.js":3,"./home.js":4,"./nav.js":5,"./radio.js":6,"./services.js":7,"./shop/cart.js":8,"./shop/checkout.js":9,"./shop/payment.js":10,"./shop/processed.js":11,"./shop/shop.js":12,"./vendor/infiniteScroll.js":13,"./vendor/jquery-ui.min.js":14,"./vendor/jquery.mousewheel.js":15,"./vendor/mailchimp.js":16,"angular":24,"angular-animate":18,"angular-resource":20,"angular-route":22,"jquery":37,"prismic.io":45}],3:[function(require,module,exports){
+},{"./about.js":1,"./event.js":3,"./home.js":4,"./nav.js":5,"./radio.js":6,"./services.js":7,"./shop/cart.js":8,"./shop/checkout.js":9,"./shop/payment.js":10,"./shop/processed.js":11,"./shop/shop.js":12,"./vendor/angular-recapcha.min.js":13,"./vendor/infiniteScroll.js":14,"./vendor/jquery-ui.min.js":15,"./vendor/jquery.mousewheel.js":16,"./vendor/mailchimp.js":17,"angular":25,"angular-animate":19,"angular-resource":21,"angular-route":23,"jquery":38,"prismic.io":46}],3:[function(require,module,exports){
 'use strict';
 
 angular.module('myApp')
@@ -1458,29 +1460,36 @@ Checkout.controller('checkoutCtrl', function ($scope, $location, $rootScope, $ti
 
   //shipment
 
-  $rootScope.shipmentToPayment = function (event) {
-    if ($scope.checkoutForm.$valid) {
-      $http.post('/cartToOrder', $rootScope.checkout).then(function (response) {
-        $rootScope.Order = response.data;
-        // $rootScope.payment.id = response.data.id;
-        $location.path('/shop/payment', true);
-        // mailchimp.register($rootScope.checkout);
-      }, function (response) {
-        $rootScope.error = { value: true, text: response.data };
-        // event.preventDefault();
+  $scope.shipmentLoading = false;
+
+  $rootScope.shipmentToPayment = function () {
+
+    if (!$scope.shipmentLoading) {
+      if ($scope.checkoutForm.$valid) {
+        $scope.shipmentLoading = true;
+        $http.post('/cartToOrder', $rootScope.checkout).then(function (response) {
+          $rootScope.Order = response.data;
+          $scope.shipmentLoading = false;
+          // $rootScope.payment.id = response.data.id;
+          $location.path('/shop/payment', true);
+          // mailchimp.register($rootScope.checkout);
+        }, function (response) {
+          $rootScope.error = { value: true, text: response.data };
+
+          setTimeout(function () {
+            $rootScope.error = { value: false, text: '' };
+            $rootScope.$apply();
+            $location.path('/shop', true);
+          }, 2000);
+          console.error("error in posting");
+        });
+      } else {
+        $rootScope.error = { value: true, text: 'fill in the form correctly' };
         setTimeout(function () {
           $rootScope.error = { value: false, text: '' };
           $rootScope.$apply();
         }, 2000);
-        console.error("error in posting");
-      });
-    } else {
-      $rootScope.error = { value: true, text: 'fill in the form correctly' };
-      // event.preventDefault();
-      setTimeout(function () {
-        $rootScope.error = { value: false, text: '' };
-        $rootScope.$apply();
-      }, 2000);
+      }
     }
   };
 
@@ -1549,6 +1558,67 @@ Checkout.controller('checkoutCtrl', function ($scope, $location, $rootScope, $ti
     // }
 
   }, true);
+
+  $scope.clearCounty = function (country) {
+    if (country == 'US') {
+      $rootScope.checkout.shipment.county = '';
+    }
+  };
+
+  $scope.clearCounty_billing = function (country) {
+    if (country == 'US') {
+      $rootScope.checkout.shipment.county = '';
+    }
+  };
+
+  $scope.capchaRan = false;
+  setTimeout(function () {
+    console.log('setTimeout');
+    if ($scope.capchaRan) {
+      console.log('setTimeout capcha ran');
+      grecaptcha.reset();
+      $scope.capchaRan = false;
+    }
+  }, 900);
+
+  // $scope.$on('$routeChangeSuccess', function(){
+  //   console.log('routeChangeSuccess');
+  //   setTimeout(function(){
+  //     grecaptcha.reset();
+  //   }, 900);
+  //   // if($scope.capchaRan){
+  //   //   grecaptcha.reset();
+  //   // }
+  // });
+
+
+  $scope.checkCapcha = function () {
+    $scope.capchaRan = true;
+    var key = grecaptcha.getResponse();
+    console.log(key);
+    var url = '/capcha?key=' + key;
+
+    $http.post(url).then(function (response) {
+      console.log(response);
+      if (response.data.success == true) {
+        $rootScope.shipmentToPayment();
+      } else {
+        grecaptcha.reset();
+        $rootScope.error = { value: true, text: 'please veryfy that you are a human' };
+        $scope.removeError();
+      }
+    }, function (response) {
+      $rootScope.error = { value: true, text: response.data };
+      $scope.removeError();
+    });
+  };
+
+  $scope.removeError = function () {
+    setTimeout(function () {
+      $rootScope.error = { value: false, text: '' };
+      $rootScope.$apply();
+    }, 2000);
+  };
 });
 
 },{}],10:[function(require,module,exports){
@@ -1628,6 +1698,8 @@ Payment.controller('paymentCtrl', function ($scope, $location, $rootScope, $time
         $rootScope.cartLoading = false;
         $rootScope.Processed = { value: true, error: false, data: response.data.order };
         $rootScope.Transaction = response.data.data;
+        console.log("Transaction");
+        console.log($rootScope.Transaction);
         $rootScope.pageLoading = false;
         $location.path('/shop/processed/' + response.data.order.id + '/' + $rootScope.checkout.gateway, true);
       }
@@ -1695,10 +1767,12 @@ Processed.controller('processedCtrl', function ($scope, $location, $rootScope, $
       url: '/order/' + orderID + '/get',
       method: 'GET'
     }).then(function (response) {
-      if (response.data.status.data.key == 'unpaid') {
-        $rootScope.completePayment_Paypal();
-      } else {
-        $rootScope.Processed = { value: true, error: false, data: response.data };
+      if ($routeParams.method == 'paypal-express') {
+        if (response.data.status.data.key == 'unpaid') {
+          $rootScope.completePayment_Paypal();
+        } else {
+          $rootScope.Processed = { value: true, error: false, data: response.data };
+        }
       }
     }, function (error) {
       console.log(error);
@@ -1710,8 +1784,6 @@ Processed.controller('processedCtrl', function ($scope, $location, $rootScope, $
   setTimeout(function () {
     if ($routeParams.method == 'paypal-express') {
       $rootScope.retrieveOrder();
-      // $rootScope.Processed = {value: false, error:false, data:response.data};
-      // $rootScope.changeOrderStatus(response.data);
     } else if ($routeParams.method == 'stripe') {
       $rootScope.changeOrderStatus($rootScope.Transaction);
     }
@@ -1788,7 +1860,11 @@ Processed.controller('processedCtrl', function ($scope, $location, $rootScope, $
 
   // update global stock level of the product
   $scope.updateStockLevel = function (data) {
-    $http.post('/product/update_stock', data).then(function (response) {}, function (error) {});
+    $http.post('/product/update_stock', data).then(function (response) {
+      console.log("ok");
+    }, function (error) {
+      console.log(error);
+    });
   };
 
   // erase shopping cart
@@ -1829,9 +1905,6 @@ Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParam
   };
 
   $rootScope.showCart = false;
-  $rootScope.template = {};
-  $rootScope.templates = [{ name: 'cart', url: 'views/cart.html' }, { name: 'shipment', url: 'views/shipment.html' }, { name: 'payment', url: 'views/payment.html' }, { name: 'processed', url: 'views/processed.html' }];
-  $rootScope.template = $rootScope.templates[0];
 
   //
   // $scope.wheel;
@@ -2128,6 +2201,104 @@ Shop.directive('fullscreenDirective', function ($rootScope, $location, $window, 
 });
 
 },{}],13:[function(require,module,exports){
+"use strict";
+
+/**
+ * @license angular-recaptcha build:2017-02-02
+ * https://github.com/vividcortex/angular-recaptcha
+ * Copyright (c) 2017 VividCortex
+**/
+
+!function (a) {
+  "use strict";
+  a.module("vcRecaptcha", []);
+}(angular), function (a) {
+  "use strict";
+  function b() {
+    throw new Error('You need to set the "key" attribute to your public reCaptcha key. If you don\'t have a key, please get one from https://www.google.com/recaptcha/admin/create');
+  }var c = a.module("vcRecaptcha");c.provider("vcRecaptchaService", function () {
+    var c = this,
+        d = {};c.onLoadFunctionName = "vcRecaptchaApiLoaded", c.setDefaults = function (b) {
+      a.copy(b, d);
+    }, c.setSiteKey = function (a) {
+      d.key = a;
+    }, c.setTheme = function (a) {
+      d.theme = a;
+    }, c.setStoken = function (a) {
+      d.stoken = a;
+    }, c.setSize = function (a) {
+      d.size = a;
+    }, c.setType = function (a) {
+      d.type = a;
+    }, c.setLang = function (a) {
+      d.lang = a;
+    }, c.setOnLoadFunctionName = function (a) {
+      c.onLoadFunctionName = a;
+    }, c.$get = ["$rootScope", "$window", "$q", "$document", function (e, f, g, h) {
+      function i() {
+        return k ? g.when(k) : m;
+      }function j() {
+        if (!k) throw new Error("reCaptcha has not been loaded yet.");
+      }var k,
+          l = g.defer(),
+          m = l.promise,
+          n = {};f.vcRecaptchaApiLoadedCallback = f.vcRecaptchaApiLoadedCallback || [];var o = function o() {
+        k = f.grecaptcha, l.resolve(k);
+      };if (f.vcRecaptchaApiLoadedCallback.push(o), f[c.onLoadFunctionName] = function () {
+        f.vcRecaptchaApiLoadedCallback.forEach(function (a) {
+          a();
+        });
+      }, a.isDefined(f.grecaptcha)) o();else {
+        var p = f.document.createElement("script");p.async = !0, p.defer = !0, p.src = "https://www.google.com/recaptcha/api.js?onload=" + c.onLoadFunctionName + "&render=explicit", h.find("body").append(p);
+      }return { create: function create(a, c) {
+          return c.sitekey = c.key || d.key, c.theme = c.theme || d.theme, c.stoken = c.stoken || d.stoken, c.size = c.size || d.size, c.type = c.type || d.type, c.hl = c.lang || d.lang, c.sitekey && 40 === c.sitekey.length || b(), i().then(function (b) {
+            var d = b.render(a, c);return n[d] = a, d;
+          });
+        }, reload: function reload(a) {
+          j(), k.reset(a), e.$broadcast("reCaptchaReset", a);
+        }, useLang: function useLang(a, b) {
+          var c = n[a];if (!c) throw new Error("reCaptcha Widget ID not exists", a);var d = c.querySelector("iframe");if (!b) return d && d.src && /[?&]hl=\w+/.test(d.src) ? d.src.replace(/.+[?&]hl=(\w+)([^\w].+)?/, "$1") : null;if (d && d.src) {
+            var e = d.src;/[?&]hl=/.test(e) ? e = e.replace(/([?&]hl=)\w+/, "$1" + b) : e += (e.indexOf("?") === -1 ? "?" : "&") + "hl=" + b, d.src = e;
+          }
+        }, getResponse: function getResponse(a) {
+          return j(), k.getResponse(a);
+        }, getInstance: function getInstance(a) {
+          return n[a];
+        }, destroy: function destroy(a) {
+          delete n[a];
+        } };
+    }];
+  });
+}(angular), function (a) {
+  "use strict";
+  var b = a.module("vcRecaptcha");b.directive("vcRecaptcha", ["$document", "$timeout", "vcRecaptchaService", function (b, c, d) {
+    return { restrict: "A", require: "?^^form", scope: { response: "=?ngModel", key: "=?", stoken: "=?", theme: "=?", size: "=?", type: "=?", lang: "=?", tabindex: "=?", required: "=?", onCreate: "&", onSuccess: "&", onExpire: "&" }, link: function link(e, f, g, h) {
+        function i() {
+          h && h.$setValidity("recaptcha", null), l();
+        }function j() {
+          c(function () {
+            e.response = "", k(), e.onExpire({ widgetId: e.widgetId });
+          });
+        }function k() {
+          h && h.$setValidity("recaptcha", e.required === !1 ? null : Boolean(e.response));
+        }function l() {
+          d.destroy(e.widgetId), a.element(b[0].querySelectorAll(".pls-container")).parent().remove();
+        }e.widgetId = null, h && a.isDefined(g.required) && e.$watch("required", k);var m = e.$watch("key", function (b) {
+          var h = function h(a) {
+            c(function () {
+              e.response = a, k(), e.onSuccess({ response: a, widgetId: e.widgetId });
+            });
+          };d.create(f[0], { callback: h, key: b, stoken: e.stoken || g.stoken || null, theme: e.theme || g.theme || null, type: e.type || g.type || null, lang: e.lang || g.lang || null, tabindex: e.tabindex || g.tabindex || null, size: e.size || g.size || null, "expired-callback": j }).then(function (b) {
+            k(), e.widgetId = b, e.onCreate({ widgetId: b }), e.$on("$destroy", i), e.$on("reCaptchaReset", function (c, d) {
+              (a.isUndefined(d) || b === d) && (e.response = "", k());
+            });
+          }), m();
+        });
+      } };
+  }]);
+}(angular);
+
+},{}],14:[function(require,module,exports){
 'use strict';
 
 /* ng-infinite-scroll - v1.0.0 - 2013-02-23 */
@@ -2201,7 +2372,7 @@ mod.directive('infiniteScroll', ['$rootScope', '$window', '$timeout', function (
   };
 }]);
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -3333,7 +3504,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }));
 });
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -3572,7 +3743,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 });
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 /**
  * angular-mailchimp
  * http://github.com/keithio/angular-mailchimp
@@ -3690,7 +3861,7 @@ angular.module('mailchimp', ['ng', 'ngResource', 'ngSanitize'])
   };
 }]);
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /**
  * @license AngularJS v1.6.2
  * (c) 2010-2017 Google, Inc. http://angularjs.org
@@ -7842,11 +8013,11 @@ angular.module('ngAnimate', [], function initAngularHelpers() {
 
 })(window, window.angular);
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 require('./angular-animate');
 module.exports = 'ngAnimate';
 
-},{"./angular-animate":17}],19:[function(require,module,exports){
+},{"./angular-animate":18}],20:[function(require,module,exports){
 /**
  * @license AngularJS v1.6.2
  * (c) 2010-2017 Google, Inc. http://angularjs.org
@@ -8697,11 +8868,11 @@ angular.module('ngResource', ['ng']).
 
 })(window, window.angular);
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 require('./angular-resource');
 module.exports = 'ngResource';
 
-},{"./angular-resource":19}],21:[function(require,module,exports){
+},{"./angular-resource":20}],22:[function(require,module,exports){
 /**
  * @license AngularJS v1.6.2
  * (c) 2010-2017 Google, Inc. http://angularjs.org
@@ -9931,11 +10102,11 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 })(window, window.angular);
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 require('./angular-route');
 module.exports = 'ngRoute';
 
-},{"./angular-route":21}],23:[function(require,module,exports){
+},{"./angular-route":22}],24:[function(require,module,exports){
 /**
  * @license AngularJS v1.6.2
  * (c) 2010-2017 Google, Inc. http://angularjs.org
@@ -43070,11 +43241,11 @@ $provide.value("$locale", {
 })(window);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":23}],25:[function(require,module,exports){
+},{"./angular":24}],26:[function(require,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -43200,9 +43371,9 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	exports.fromByteArray = uint8ToBase64
 }(typeof exports === 'undefined' ? (this.base64js = {}) : exports))
 
-},{}],26:[function(require,module,exports){
-
 },{}],27:[function(require,module,exports){
+
+},{}],28:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -43314,7 +43485,7 @@ exports.allocUnsafeSlow = function allocUnsafeSlow(size) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"buffer":28}],28:[function(require,module,exports){
+},{"buffer":29}],29:[function(require,module,exports){
 (function (global){
 /*!
  * The buffer module from node.js, for the browser.
@@ -44866,14 +45037,14 @@ function blitBuffer (src, dst, offset, length) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"base64-js":25,"ieee754":34,"isarray":29}],29:[function(require,module,exports){
+},{"base64-js":26,"ieee754":35,"isarray":30}],30:[function(require,module,exports){
 var toString = {}.toString;
 
 module.exports = Array.isArray || function (arr) {
   return toString.call(arr) == '[object Array]';
 };
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 module.exports = {
   "100": "Continue",
   "101": "Switching Protocols",
@@ -44939,7 +45110,7 @@ module.exports = {
   "511": "Network Authentication Required"
 }
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 (function (Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -45050,7 +45221,7 @@ function objectToString(o) {
 }
 
 }).call(this,{"isBuffer":require("../../is-buffer/index.js")})
-},{"../../is-buffer/index.js":36}],32:[function(require,module,exports){
+},{"../../is-buffer/index.js":37}],33:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -45354,7 +45525,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 var http = require('http');
 
 var https = module.exports;
@@ -45370,7 +45541,7 @@ https.request = function (params, cb) {
     return http.request.call(this, params, cb);
 }
 
-},{"http":62}],34:[function(require,module,exports){
+},{"http":63}],35:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = nBytes * 8 - mLen - 1
@@ -45456,7 +45627,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -45481,7 +45652,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 /*!
  * Determine if an object is a Buffer
  *
@@ -45504,7 +45675,7 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.1.1
  * https://jquery.com/
@@ -55726,7 +55897,7 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -56514,7 +56685,7 @@ module.exports = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./cache":39,"./documents":40,"./experiments":41,"./predicates":44,"./requests":46}],39:[function(require,module,exports){
+},{"./cache":40,"./documents":41,"./experiments":42,"./predicates":45,"./requests":47}],40:[function(require,module,exports){
 
 "use strict";
 
@@ -56569,7 +56740,7 @@ ApiCache.prototype = {
 
 module.exports = ApiCache;
 
-},{"./lru":43}],40:[function(require,module,exports){
+},{"./lru":44}],41:[function(require,module,exports){
 "use strict";
 
 /**
@@ -57160,7 +57331,7 @@ module.exports = {
   GroupDoc: GroupDoc
 };
 
-},{"./fragments":42}],41:[function(require,module,exports){
+},{"./fragments":43}],42:[function(require,module,exports){
 
 "use strict";
 
@@ -57245,7 +57416,7 @@ module.exports = {
   Variation: Variation
 };
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 "use strict";
 
 var documents = require('./documents');
@@ -58511,7 +58682,7 @@ module.exports = {
   insertSpans: insertSpans
 };
 
-},{"./documents":40}],43:[function(require,module,exports){
+},{"./documents":41}],44:[function(require,module,exports){
 
 /**
  * A doubly linked list-based Least Recently Used (LRU) cache. Will keep most
@@ -58765,7 +58936,7 @@ LRUCache.prototype.toString = function() {
 
 module.exports = LRUCache;
 
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 
 "use strict";
 
@@ -59078,7 +59249,7 @@ module.exports = {
 
 };
 
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 "use strict";
 
 var experiments = require('./experiments'),
@@ -59156,7 +59327,7 @@ module.exports = {
 
 module.exports.Prismic = module.exports; // Backward compatibility
 
-},{"./api":38,"./documents":40,"./experiments":41,"./fragments":42,"./predicates":44}],46:[function(require,module,exports){
+},{"./api":39,"./documents":41,"./experiments":42,"./fragments":43,"./predicates":45}],47:[function(require,module,exports){
 (function (process){
 
 "use strict";
@@ -59401,7 +59572,7 @@ module.exports = {
 };
 
 }).call(this,require('_process'))
-},{"../package.json":47,"_process":49,"http":62,"https":33,"url":68}],47:[function(require,module,exports){
+},{"../package.json":48,"_process":50,"http":63,"https":34,"url":69}],48:[function(require,module,exports){
 module.exports={
   "_args": [
     [
@@ -59526,7 +59697,7 @@ module.exports={
   "version": "2.1.6"
 }
 
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -59573,7 +59744,7 @@ function nextTick(fn, arg1, arg2, arg3) {
 }
 
 }).call(this,require('_process'))
-},{"_process":49}],49:[function(require,module,exports){
+},{"_process":50}],50:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -59755,7 +59926,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],50:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 (function (global){
 /*! https://mths.be/punycode v1.4.1 by @mathias */
 ;(function(root) {
@@ -60292,7 +60463,7 @@ process.umask = function() { return 0; };
 }(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -60378,7 +60549,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],52:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -60465,13 +60636,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],53:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":51,"./encode":52}],54:[function(require,module,exports){
+},{"./decode":52,"./encode":53}],55:[function(require,module,exports){
 // a duplex stream is just a stream that is both readable and writable.
 // Since JS doesn't have multiple prototypal inheritance, this class
 // prototypally inherits from Readable, and then parasitically from
@@ -60547,7 +60718,7 @@ function forEach(xs, f) {
     f(xs[i], i);
   }
 }
-},{"./_stream_readable":56,"./_stream_writable":58,"core-util-is":31,"inherits":35,"process-nextick-args":48}],55:[function(require,module,exports){
+},{"./_stream_readable":57,"./_stream_writable":59,"core-util-is":32,"inherits":36,"process-nextick-args":49}],56:[function(require,module,exports){
 // a passthrough stream.
 // basically just the most minimal sort of Transform stream.
 // Every written chunk gets output as-is.
@@ -60574,7 +60745,7 @@ function PassThrough(options) {
 PassThrough.prototype._transform = function (chunk, encoding, cb) {
   cb(null, chunk);
 };
-},{"./_stream_transform":57,"core-util-is":31,"inherits":35}],56:[function(require,module,exports){
+},{"./_stream_transform":58,"core-util-is":32,"inherits":36}],57:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -61518,7 +61689,7 @@ function indexOf(xs, x) {
   return -1;
 }
 }).call(this,require('_process'))
-},{"./_stream_duplex":54,"./internal/streams/BufferList":59,"_process":49,"buffer":28,"buffer-shims":27,"core-util-is":31,"events":32,"inherits":35,"isarray":60,"process-nextick-args":48,"string_decoder/":66,"util":26}],57:[function(require,module,exports){
+},{"./_stream_duplex":55,"./internal/streams/BufferList":60,"_process":50,"buffer":29,"buffer-shims":28,"core-util-is":32,"events":33,"inherits":36,"isarray":61,"process-nextick-args":49,"string_decoder/":67,"util":27}],58:[function(require,module,exports){
 // a transform stream is a readable/writable stream where you do
 // something with the data.  Sometimes it's called a "filter",
 // but that's not a great name for it, since that implies a thing where
@@ -61701,7 +61872,7 @@ function done(stream, er, data) {
 
   return stream.push(null);
 }
-},{"./_stream_duplex":54,"core-util-is":31,"inherits":35}],58:[function(require,module,exports){
+},{"./_stream_duplex":55,"core-util-is":32,"inherits":36}],59:[function(require,module,exports){
 (function (process){
 // A bit simpler than readable streams.
 // Implement an async ._write(chunk, encoding, cb), and it'll handle all
@@ -62258,7 +62429,7 @@ function CorkedRequest(state) {
   };
 }
 }).call(this,require('_process'))
-},{"./_stream_duplex":54,"_process":49,"buffer":28,"buffer-shims":27,"core-util-is":31,"events":32,"inherits":35,"process-nextick-args":48,"util-deprecate":70}],59:[function(require,module,exports){
+},{"./_stream_duplex":55,"_process":50,"buffer":29,"buffer-shims":28,"core-util-is":32,"events":33,"inherits":36,"process-nextick-args":49,"util-deprecate":71}],60:[function(require,module,exports){
 'use strict';
 
 var Buffer = require('buffer').Buffer;
@@ -62323,9 +62494,9 @@ BufferList.prototype.concat = function (n) {
   }
   return ret;
 };
-},{"buffer":28,"buffer-shims":27}],60:[function(require,module,exports){
-arguments[4][29][0].apply(exports,arguments)
-},{"dup":29}],61:[function(require,module,exports){
+},{"buffer":29,"buffer-shims":28}],61:[function(require,module,exports){
+arguments[4][30][0].apply(exports,arguments)
+},{"dup":30}],62:[function(require,module,exports){
 (function (process){
 var Stream = (function (){
   try {
@@ -62345,7 +62516,7 @@ if (!process.browser && process.env.READABLE_STREAM === 'disable' && Stream) {
 }
 
 }).call(this,require('_process'))
-},{"./lib/_stream_duplex.js":54,"./lib/_stream_passthrough.js":55,"./lib/_stream_readable.js":56,"./lib/_stream_transform.js":57,"./lib/_stream_writable.js":58,"_process":49}],62:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":55,"./lib/_stream_passthrough.js":56,"./lib/_stream_readable.js":57,"./lib/_stream_transform.js":58,"./lib/_stream_writable.js":59,"_process":50}],63:[function(require,module,exports){
 (function (global){
 var ClientRequest = require('./lib/request')
 var extend = require('xtend')
@@ -62427,7 +62598,7 @@ http.METHODS = [
 	'UNSUBSCRIBE'
 ]
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./lib/request":64,"builtin-status-codes":30,"url":68,"xtend":71}],63:[function(require,module,exports){
+},{"./lib/request":65,"builtin-status-codes":31,"url":69,"xtend":72}],64:[function(require,module,exports){
 (function (global){
 exports.fetch = isFunction(global.fetch) && isFunction(global.ReadableStream)
 
@@ -62500,7 +62671,7 @@ function isFunction (value) {
 xhr = null // Help gc
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],64:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 (function (process,global,Buffer){
 var capability = require('./capability')
 var inherits = require('inherits')
@@ -62798,7 +62969,7 @@ var unsafeHeaders = [
 ]
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
-},{"./capability":63,"./response":65,"_process":49,"buffer":28,"inherits":35,"readable-stream":61,"to-arraybuffer":67}],65:[function(require,module,exports){
+},{"./capability":64,"./response":66,"_process":50,"buffer":29,"inherits":36,"readable-stream":62,"to-arraybuffer":68}],66:[function(require,module,exports){
 (function (process,global,Buffer){
 var capability = require('./capability')
 var inherits = require('inherits')
@@ -62984,7 +63155,7 @@ IncomingMessage.prototype._onXHRProgress = function () {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
-},{"./capability":63,"_process":49,"buffer":28,"inherits":35,"readable-stream":61}],66:[function(require,module,exports){
+},{"./capability":64,"_process":50,"buffer":29,"inherits":36,"readable-stream":62}],67:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -63207,7 +63378,7 @@ function base64DetectIncompleteChar(buffer) {
   this.charLength = this.charReceived ? 3 : 0;
 }
 
-},{"buffer":28}],67:[function(require,module,exports){
+},{"buffer":29}],68:[function(require,module,exports){
 var Buffer = require('buffer').Buffer
 
 module.exports = function (buf) {
@@ -63236,7 +63407,7 @@ module.exports = function (buf) {
 	}
 }
 
-},{"buffer":28}],68:[function(require,module,exports){
+},{"buffer":29}],69:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -63970,7 +64141,7 @@ Url.prototype.parseHost = function() {
   if (host) this.hostname = host;
 };
 
-},{"./util":69,"punycode":50,"querystring":53}],69:[function(require,module,exports){
+},{"./util":70,"punycode":51,"querystring":54}],70:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -63988,7 +64159,7 @@ module.exports = {
   }
 };
 
-},{}],70:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 (function (global){
 
 /**
@@ -64059,7 +64230,7 @@ function config (name) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],71:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 module.exports = extend
 
 var hasOwnProperty = Object.prototype.hasOwnProperty;

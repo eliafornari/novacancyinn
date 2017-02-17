@@ -2,7 +2,7 @@
 
 var Payment = angular.module('myApp');
 
-Payment.controller('paymentCtrl', function($scope, $location, $rootScope, $timeout,	$http, transformRequestAsFormPost, anchorSmoothScroll){
+Payment.controller('paymentCtrl', ['$scope', '$location', '$rootScope', '$timeout',	'$http', 'transformRequestAsFormPost', 'anchorSmoothScroll', function($scope, $location, $rootScope, $timeout,	$http, transformRequestAsFormPost, anchorSmoothScroll){
  $rootScope.payment;
  $rootScope.Transaction;
   $rootScope.Processed={value: false, error:false, data:''};
@@ -89,6 +89,8 @@ Payment.controller('paymentCtrl', function($scope, $location, $rootScope, $timeo
                 $rootScope.cartLoading = false;
                 $rootScope.Processed={value: true, error:false, data:response.data.order};
                 $rootScope.Transaction = response.data.data;
+                console.log("Transaction");
+                console.log($rootScope.Transaction);
                 $rootScope.pageLoading = false;
                 $location.path('/shop/processed/'+response.data.order.id+'/'+$rootScope.checkout.gateway, true);
               }
@@ -156,4 +158,4 @@ Payment.controller('paymentCtrl', function($scope, $location, $rootScope, $timeo
 
 
 
-});
+}]);

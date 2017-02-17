@@ -37,6 +37,7 @@
 <meta property="og:site_name" content="novacancyinn">
 
 <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono" rel="stylesheet">
+<!-- <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script> -->
 
   <meta name=“author” title=“Elia Fornari | Qual Agency”>
 
@@ -76,30 +77,11 @@
 <!-- .................................. Body ...............................-->
 
 <body ng-class="{'backgound-black': isLocation('/')}">
-   <!-- style="font-family: {{font}}" -->
-
-
-
 
 
     <nav-directive ng-if="!isMobile"></nav-directive>
 
     <navmobile-directive ng-if="isMobile"></navmobile-directive>
-
-  <!-- <div ng-show="pageLoading" class="page-loader-div">
-    <div class="loading-logo">
-    </div>
-  </div> -->
-
-
-  <!-- <div class="clickOut" ng-click="closeCart()" ng-show="showCart" ng-cloak>
-  </div> -->
-
-
-
-
-
-
 
 
   <main ng-view class="main page {{pageClass}}"></main>
@@ -115,7 +97,6 @@
 
   <link rel="stylesheet" type="text/css" href="/dist/style.css">
   <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-  <script type="text/javascript" src="/dist/bundle.js"></script>
-  <!-- <script src='https://www.google.com/recaptcha/api.js'></script> -->
+  <script type="text/javascript" src="/dist/bundle.min.js"></script>
 
 </html>

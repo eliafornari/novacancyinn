@@ -1,6 +1,6 @@
 angular.module('myApp')
 
-.controller('aboutCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, $sce, $document, anchorSmoothScroll, $window){
+.controller('aboutCtrl', ['$scope', '$location', '$rootScope', '$routeParams', '$timeout',	'$http', '$sce', '$document', 'anchorSmoothScroll', '$window', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, $sce, $document, anchorSmoothScroll, $window){
 
 $rootScope.pageLoading = false;
 
@@ -502,4 +502,4 @@ $scope.onYouTubeIframeAPIReady=()=>{
 
 
 
-});//controller
+}]);//controller

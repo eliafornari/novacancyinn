@@ -132,9 +132,7 @@ app.get('/profile', function(req, res){
 app.post('/addProduct', function(req, res){
   var id = req.body.id;
   var token = req.body.access_token;
-  console.log();
   res.setHeader("Authorization", "Bearer "+token);
-
   moltin.Cart.Insert(id, 1, null, function(items){
     res.json(items);
   });
@@ -228,6 +226,29 @@ app.post('/product/update_stock', function(req, res){
   updateProductStock(req, res);
 });
 
+app.post('/capcha', function(req, res){
+  checkCapcha(req, res);
+});
+
+
+function checkCapcha(req, res){
+
+  var key = req.query.key;
+  var url = 'https://www.google.com/recaptcha/api/siteverify?secret=6LfYxBUUAAAAAIVyiXkuW0oDXqqwg9ZPQ1lhop0P&response='+key;
+
+  request({
+    url: url
+  }, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      var info = JSON.parse(body);
+      res.status(response.statusCode).json(info);
+    }else{
+      var info = JSON.parse(body);
+      res.status(response.statusCode).json(info);
+    }
+  });
+
+}
 
 
 
@@ -238,7 +259,6 @@ function emptyCart(req, res){
   moltin.Cart.Delete(function(data) {
     // Everything is awesome...
     res.status(200).json(data);
-    console.log();
   }, function(error, response, c) {
     console.log("payment failed!");
     console.log("response: "+response);
@@ -252,46 +272,66 @@ function emptyCart(req, res){
 
 
 
+
+
+
+
+
+
 function getCart(req, res){
   moltin.Cart.Contents(function(items) {
     res.json(items);
   }, function(error){
-        console.log(error);
+    console.log(error);
   });
 }
 
 
-    var Product=[];
-    function getProduct(req, res){
 
-      var url;
-      var page = req.params.page;
-      var offset = req.query.offset;
 
-      if(page==1){
-        url = 'https://api.molt.in/v1/products/search?status=1&limit=5';
-      }else{
-        url = 'https://api.molt.in/v1/products/search?status=1&limit=5&offset='+offset;
-      }
 
-      var access_token = req.mySession.access_token;
 
-      request({
-        url: url,
-        headers: {
-          'Authorization': 'Bearer '+access_token
-        }
-      }, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-          var info = JSON.parse(body);
-          res.status(response.statusCode).json(info);
-        }else{
-          var info = JSON.parse(body);
-          res.status(response.statusCode).json(info);
-        }
-      });
 
+
+
+
+
+
+
+
+
+var Product=[];
+
+function getProduct(req, res){
+  var url;
+  var page = req.params.page;
+  var offset = req.query.offset;
+
+  if(page==1){
+    url = 'https://api.molt.in/v1/products/search?status=1&limit=5';
+  }else{
+    url = 'https://api.molt.in/v1/products/search?status=1&limit=5&offset='+offset;
+  }
+
+  var access_token = req.mySession.access_token;
+
+  request({
+    url: url,
+    headers: {
+      'Authorization': 'Bearer '+access_token
     }
+  }, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      var info = JSON.parse(body);
+      res.status(response.statusCode).json(info);
+    }else{
+      var info = JSON.parse(body);
+            console.log(body);
+      res.status(response.statusCode).json(info);
+    }
+  });
+
+}
 
 
 

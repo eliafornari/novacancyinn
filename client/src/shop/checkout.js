@@ -2,7 +2,7 @@
 
 var Checkout = angular.module('myApp');
 
-Checkout.controller('checkoutCtrl', function($scope, $location, $rootScope, $timeout,	$http, transformRequestAsFormPost){
+Checkout.controller('checkoutCtrl', ['$scope', '$location', '$rootScope', '$timeout',	'$http', 'transformRequestAsFormPost', function($scope, $location, $rootScope, $timeout,	$http, transformRequestAsFormPost){
 
 
 $rootScope.Order;
@@ -44,33 +44,42 @@ $rootScope.checkout = {
 
 //shipment
 
-  $rootScope.shipmentToPayment = (event) =>{
-    if($scope.checkoutForm.$valid){
-      $http.post('/cartToOrder', $rootScope.checkout)
-      .then(function(response) {
-        $rootScope.Order=response.data;
-        // $rootScope.payment.id = response.data.id;
-        $location.path('/shop/payment', true);
-        // mailchimp.register($rootScope.checkout);
-      }, function(response) {
-        $rootScope.error = {value: true, text:response.data};
-        // event.preventDefault();
+$scope.shipmentLoading=false;
+
+  $rootScope.shipmentToPayment = () =>{
+
+    if(!$scope.shipmentLoading){
+      if($scope.checkoutForm.$valid){
+        $scope.shipmentLoading=true;
+        $http.post('/cartToOrder', $rootScope.checkout)
+        .then(function(response) {
+          $rootScope.Order=response.data;
+          $scope.shipmentLoading=false;
+          // $rootScope.payment.id = response.data.id;
+          $location.path('/shop/payment', true);
+          // mailchimp.register($rootScope.checkout);
+        }, function(response) {
+          $rootScope.error = {value: true, text:response.data};
+
+          setTimeout(function(){
+            $rootScope.error = {value: false, text:''};
+            $rootScope.$apply();
+            $location.path('/shop', true);
+          }, 2000);
+            console.error("error in posting");
+        });
+
+
+      }else{
+        $rootScope.error = {value: true, text:'fill in the form correctly'};
         setTimeout(function(){
           $rootScope.error = {value: false, text:''};
           $rootScope.$apply();
         }, 2000);
-          console.error("error in posting");
-      });
-
-
-    }else{
-      $rootScope.error = {value: true, text:'fill in the form correctly'};
-      // event.preventDefault();
-      setTimeout(function(){
-        $rootScope.error = {value: false, text:''};
-        $rootScope.$apply();
-      }, 2000);
+      }
     }
+
+
   }
 
 
@@ -151,4 +160,78 @@ $scope.$watch('checkout', function(value){
 
 
 
-});
+$scope.clearCounty=(country)=>{
+  if(country=='US'){
+    $rootScope.checkout.shipment.county='';
+  }
+}
+
+$scope.clearCounty_billing=(country)=>{
+  if(country=='US'){
+    $rootScope.checkout.shipment.county='';
+  }
+}
+
+
+
+$scope.capchaRan=false;
+setTimeout(function(){
+  console.log('setTimeout');
+  if($scope.capchaRan){
+    console.log('setTimeout capcha ran');
+    grecaptcha.reset();
+    $scope.capchaRan=false;
+  }
+}, 900);
+
+
+// $scope.$on('$routeChangeSuccess', function(){
+//   console.log('routeChangeSuccess');
+//   setTimeout(function(){
+//     grecaptcha.reset();
+//   }, 900);
+//   // if($scope.capchaRan){
+//   //   grecaptcha.reset();
+//   // }
+// });
+
+
+$scope.checkCapcha=()=>{
+  $scope.capchaRan=true;
+  var key = grecaptcha.getResponse();
+  console.log(key);
+  var url = '/capcha?key='+key
+
+  $http.post(url)
+  .then(function(response) {
+    console.log(response);
+    if(response.data.success==true){
+      $rootScope.shipmentToPayment();
+
+    }else{
+      grecaptcha.reset();
+      $rootScope.error = {value: true, text:'please veryfy that you are a human'};
+      $scope.removeError();
+
+    }
+  }, function(response) {
+    $rootScope.error = {value: true, text:response.data};
+    $scope.removeError();
+
+  });
+
+}
+
+
+
+
+$scope.removeError = ()=>{
+  setTimeout(function(){
+    $rootScope.error = {value: false, text:''};
+    $rootScope.$apply();
+  }, 2000);
+}
+
+
+
+}]);

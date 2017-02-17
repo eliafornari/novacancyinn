@@ -1,7 +1,7 @@
 angular.module('myApp')
 
 
-.controller('navCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http){
+.controller('navCtrl', ['$scope', '$location', '$rootScope', '$routeParams', '$timeout', '$http', function($scope, $location, $rootScope, $routeParams, $timeout, $http){
 
   $rootScope.isNavOpen = false;
 
@@ -89,10 +89,10 @@ angular.module('myApp')
   }
 
 
-})
+}])
 
 
-.directive('logoDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+.directive('logoDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/icon/logo.html',
@@ -103,7 +103,7 @@ angular.module('myApp')
   };
 })
 
-.directive('logoBlackDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+.directive('logoBlackDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/icon/logo-black.html',
@@ -114,7 +114,7 @@ angular.module('myApp')
   };
 })
 
-.directive('exDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+.directive('exDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/icon/ex.html',
@@ -127,7 +127,7 @@ angular.module('myApp')
 
 
 
-.directive('mailDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+.directive('mailDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/icon/mail-icon.html',
@@ -141,7 +141,7 @@ angular.module('myApp')
 
 
 
-.directive('menuIconDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+.directive('menuIconDirective',[ '$rootScope', '$location', '$window', '$routeParams', '$timeout',  function($rootScope, $location, $window, $routeParams, $timeout) {
   return {
     restrict: 'E',
     templateUrl: 'views/icon/menu-icon.html',
@@ -150,9 +150,9 @@ angular.module('myApp')
 
     }
   };
-})
+}])
 
-.directive('navmobileDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+.directive('navmobileDirective',[ '$rootScope', '$location', '$window', '$routeParams', '$timeout', function($rootScope, $location, $window, $routeParams, $timeout) {
   return {
     restrict: 'E',
     templateUrl: 'views/nav-mobile.html',
@@ -161,10 +161,10 @@ angular.module('myApp')
 
     }
   };
-})
+}])
 
 
-.directive('navDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+.directive('navDirective',[ '$rootScope', '$location', '$window', '$routeParams', '$timeout',  function($rootScope, $location, $window, $routeParams, $timeout) {
   return {
     restrict: 'E',
     templateUrl: 'views/nav.html',
@@ -173,4 +173,4 @@ angular.module('myApp')
 
     }
   };
-});
+}]);

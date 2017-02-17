@@ -98,6 +98,7 @@ $sceProvider.enabled(false);
 
         .when('/shop/shipment', {
           templateUrl: 'views/shop/shipment.html',
+          controller: 'checkoutCtrl'
         })
 
         .when('/shop/shipment/terms', {
@@ -188,7 +189,7 @@ $sceProvider.enabled(false);
 
 }])
 
-.controller('appCtrl', function($scope, $location, $rootScope, $routeParams, $timeout, $interval, $window, $http, transformRequestAsFormPost){
+.controller('appCtrl',[ '$scope', '$location', '$rootScope', '$routeParams', '$timeout', '$interval', '$window', '$http', 'transformRequestAsFormPost',  function($scope, $location, $rootScope, $routeParams, $timeout, $interval, $window, $http, transformRequestAsFormPost){
 
 $rootScope.location = $location.path();
 $rootScope.firstLoading = true;
@@ -203,15 +204,23 @@ $rootScope.Home;
   $rootScope.Product=[];
 
     $rootScope.getProductsFN=function(offset){
-      $http({method: 'GET', url: '/product/list?offset='+offset}).then(function(response){
+      $http({method: 'GET', url: '/product/list?offset='+offset})
+      .then(function(response){
         $rootScope.Product = $rootScope.Product.concat(response.data.result);
         $rootScope.Pagination = response.data.pagination;
         $rootScope.pageLoading = false;
         $rootScope.$broadcast("productArrived");
-        $rootScope.pageLoading = false;
-      }).then(function(){
-        console.log("an error occurred");
-      })
+      }, function(response) {
+        $scope.error = {value: true, text:'products not available, this page will be reloaded'};
+        setTimeout({
+          // $route.reload();
+        }, 2000);
+      });
+
+      // ).then(function(error){
+      //   console.log("an error occurred", error);
+      //   console.log();
+      // })
     }
     $rootScope.getProductsFN(0);
 
@@ -579,7 +588,7 @@ $rootScope.enableScroll =()=>{
 
 
 
-});//......end of the route controller
+}]);//......end of the route controller
 
 
 
@@ -587,6 +596,7 @@ $rootScope.enableScroll =()=>{
 var jquerymousewheel = require('./vendor/jquery.mousewheel.js')($);
 var infiniteScroll = require("./vendor/infiniteScroll.js");
 var jqueryUI = require('./vendor/jquery-ui.min.js');
+var capcha = require('./vendor/angular-recapcha.min.js');
 var mailchimp = require('./vendor/mailchimp.js');
 var home = require("./home.js");
 var about = require("./about.js");

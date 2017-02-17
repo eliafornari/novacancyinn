@@ -146,7 +146,7 @@
 
 .form-title{
   @include h1();
-  position: absolute;
+  position: fixed;
   top:$margin-sides;
   left:$margin-sides;
 }
@@ -158,7 +158,7 @@
 
 
 .checkout-button{
-  position: absolute;
+  position: fixed;
   bottom: $margin-sides;
   right:$margin-sides;
   text-align: right;
@@ -174,24 +174,25 @@
   border-bottom: 1px solid $black;
   outline: 0;
   padding: 0;
-  transition: width 2s ease;
-  -webkit-transition: width 2s ease;
-  -moz-transition: width 2s ease;
-  -o-transition: width 2s ease;
-  -moz-transition: width 2s ease;
+  // transition: width 2s ease;
+  // -webkit-transition: width 2s ease;
+  // -moz-transition: width 2s ease;
+  // -o-transition: width 2s ease;
+  // -moz-transition: width 2s ease;
   &:hover{
     width:85vw;
   }
 
   @include respond-to(phone){
     box-sizing: border-box;
-    width:90vw;
-    bottom:100px;
+    width:70vw;
+    // bottom:100px;
+    position: fixed;
   }
 }
 
 .cart-back{
-  position: absolute;
+  position: fixed;
   left:$margin-sides;
   bottom: $margin-sides;
   width: auto;
@@ -314,7 +315,7 @@ select{
 // .ng-valid .ng-pending .ng-pristine .ng-submitted
 
 input.ng-dirty.ng-invalid , select.ng-dirty.ng-invalid{
-  border-bottom: 1px solid #FFFF00;
+  border-bottom: 1px solid $red;
 }
 
 

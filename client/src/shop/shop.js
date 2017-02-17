@@ -1,6 +1,6 @@
 var Shop = angular.module('myApp');
 
-Shop.controller('shopCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, $sce, $document, anchorSmoothScroll, $window, transformRequestAsFormPost){
+Shop.controller('shopCtrl',['$scope', '$location', '$rootScope', '$routeParams', '$timeout',	'$http', '$sce', '$document', 'anchorSmoothScroll', '$window', 'transformRequestAsFormPost', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, $sce, $document, anchorSmoothScroll, $window, transformRequestAsFormPost){
 
 $rootScope.pageClass = "page-shop";
 $rootScope.isDetailOpen = false;
@@ -27,14 +27,6 @@ $rootScope.openDetailFN = (slug)=>{
 
 
 $rootScope.showCart = false;
-$rootScope.template={};
-$rootScope.templates = [
-                          { name: 'cart', url: 'views/cart.html'},
-                          { name: 'shipment', url: 'views/shipment.html'},
-                          { name: 'payment', url: 'views/payment.html'},
-                          { name: 'processed', url: 'views/processed.html'}
-                        ];
-$rootScope.template = $rootScope.templates[0];
 
 
 //
@@ -363,11 +355,9 @@ $scope.fullscreen=()=>{
 
 
 
-});//controller
+}]);//controller
 
-Shop.controller('detailCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, $sce, $document, anchorSmoothScroll, $window, transformRequestAsFormPost){
-
-
+Shop.controller('detailCtrl',['$scope', '$location', '$rootScope', '$routeParams', '$timeout',	'$http', '$sce', '$document', 'anchorSmoothScroll', '$window', 'transformRequestAsFormPost', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, $sce, $document, anchorSmoothScroll, $window, transformRequestAsFormPost){
 
 
 
@@ -387,13 +377,15 @@ Shop.controller('detailCtrl', function($scope, $location, $rootScope, $routePara
 
 
 
-});
+
+
+}]);
 
 
 
 
 
-Shop.directive('detailDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+Shop.directive('detailDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/shop/detail.html',
@@ -405,7 +397,7 @@ Shop.directive('detailDirective', function($rootScope, $location, $window, $rout
 });
 
 
-Shop.directive('fullscreenDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+Shop.directive('fullscreenDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/icon/fullscreen.html',

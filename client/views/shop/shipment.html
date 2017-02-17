@@ -1,13 +1,14 @@
-<div class="shipment" ng-controller="checkoutCtrl" ng-init="showBackText_shipment=false">
+<div class="shipment" ng-init="showBackText_shipment=false">
 
 <!-- 2 -->
+<script src='https://www.google.com/recaptcha/api.js'></script>
 
 
     <div class="shipment-content">
 
 
     <!-- 2 -->
-    <form name="checkoutForm" novalidate class="shipment-form" method="post" ng-submit="shipmentToPayment()">
+    <form name="checkoutForm" novalidate class="shipment-form">
 
         <h1 class="h1 form-title">Shipment</h1>
 
@@ -32,6 +33,11 @@
                 <span class="form-error" ng-show="checkoutForm.email_customer.$error.email && checkoutForm.email_customer.$touched">invalid email</span>
               </input>
             </div>
+
+            <div class="g-recaptcha form-entry" data-sitekey="6LfYxBUUAAAAAOUn27fy1q0_cJuve1mUgXtMmjU7" data-size="normal" data-theme="light" ng-if="!isMobile"></div>
+            <div class="g-recaptcha form-entry" data-sitekey="6LfYxBUUAAAAAOUn27fy1q0_cJuve1mUgXtMmjU7" data-size="compact" data-theme="light" ng-if="isMobile"></div>
+
+            <!-- {isMobile? 'compact':'normal'} -->
           </div>
 
           <div class="address">
@@ -73,15 +79,15 @@
                   </input>
 
                   <select name="county_shipment" ng-model="checkout.shipment.county" required ng-if="checkout.shipment.country=='US'">
-                    <option value="state" disabled selected>state</option>
+                    <option value="" disabled selected>state</option>
                     <option ng-repeat="state in states" value="{{state.code}}">{{state.name}}</option>
                     <span class="form-error" ng-show="checkoutForm.county_shipment.$error.required && checkoutForm.county_shipment.$touched">required</span>
                   </select>
                 </div>
 
                 <div class="form-entry">
-                  <select name="country_shipment" ng-model="checkout.shipment.country" required>
-                    <option value="" disabled selected>country</option>
+                  <select name="country_shipment" ng-model="checkout.shipment.country" ng-change="clearCounty(checkout.shipment.country)" required>
+                    <option value="" disabled >country</option>
                     <option ng-repeat="country in countries" value="{{country.code}}">{{country.name}}</option>
                     <span class="form-error" ng-show="checkoutForm.country_shipment.$error.required && checkoutForm.country_shipment.$touched">required</span>
                   </select>
@@ -115,7 +121,6 @@
               <label for="isBillingDifferent-label">different billing</label>
               <input class="isBillingDifferent-input" type="checkbox" name="isBillingDifferent" value="false" ng-model="isBillingDifferent">
             </div>
-
 
 
 
@@ -161,8 +166,8 @@
 
                 <div class="form-entry">
 
-                    <select name="country_billing" ng-model="checkout.billing.country" required>
-                      <option value="" disabled selected>country</option>
+                    <select name="country_billing" ng-model="checkout.billing.country" required ng-change="clearCounty_billing(checkout.billing.country)">
+                      <option value="" disabled>country</option>
                       <option ng-repeat="country in countries" value="{{country.code}}">{{country.name}}</option>
                       <span class="form-error" ng-show="checkoutForm.country_billing.$error.required && checkoutForm.country_billing.$touched">required</span>
                     </select>
@@ -199,8 +204,14 @@
 
 
 
-    <button class="checkout-button hvr-sweep-to-right" type="submit" ng-class="{'invalid': shipmentForm.$invalid}" ng-disabled="shipmentForm.$invalid" ng-mouseenter="showBackText_shipment=true" ng-mouseleave="showBackText_shipment=false">
+    <button class="checkout-button hvr-sweep-to-right" ng-show="shipmentLoading">
 
+      <h2>Loading</h2>
+      <!-- <h2 ng-show="showBackText_shipment">Return the keys and pay for the bill</h2> -->
+    </button>
+
+
+    <button class="checkout-button hvr-sweep-to-right" ng-click="checkCapcha()" ng-class="{'invalid': shipmentForm.$invalid}" ng-disabled="shipmentForm.$invalid" ng-mouseenter="showBackText_shipment=true" ng-mouseleave="showBackText_shipment=false" ng-hide="shipmentLoading">
       <h2>Payment</h2>
       <!-- <h2 ng-show="showBackText_shipment">Return the keys and pay for the bill</h2> -->
     </button>
@@ -212,5 +223,7 @@
   <div class="cart-back">
     <a href="/shop/cart">back</a>
   </div>
+
+
 
 </div>
