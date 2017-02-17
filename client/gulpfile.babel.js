@@ -9,6 +9,7 @@ import minify from 'gulp-minify';
 import uglify from 'gulp-uglify';
 import gulpif from 'gulp-if';
 import concat from 'gulp-concat';
+import cleanCSS from 'gulp-clean-css';
 
 gulp.task('connect', function () {
 	connect.server({
@@ -52,6 +53,8 @@ gulp.task("transpile", () => {
 
 gulp.task("sass", function() {
 	return sass('sass/*.scss')
+	.pipe(cleanCSS({compatibility: 'ie8'}))
+	.pipe(concat('style.min.css')) // this is what was missing
   .pipe(gulp.dest('dist'))
 
 })
