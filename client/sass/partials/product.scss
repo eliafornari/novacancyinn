@@ -1,0 +1,19 @@
+.product{
+  width:100%;
+}
+
+.product-ul{
+  width:100vw;
+  .product-li{
+    width:200px;
+    height:200px;
+    display: block;
+    float:left;
+    img{
+      width:80%;
+      height:auto;
+      display: block;
+      margin: auto;
+    }
+  }
+}

@@ -1,0 +1,55 @@
+<div class="order">
+
+
+
+  <div class="order-filter">
+    <select class="" name="" ng-model="Order.filter.status" ng-change="setStatus(Order.filter.status)" ng-init="Order.filter.status='paid'">
+      <option value="dispatched">dispatched</option>
+      <option value="refunded">refunded</option>
+      <option value="failed">failed</option>
+      <option value="paid" selected>paid</option>
+      <option value="unpaid">unpaid</option>
+    </select>
+
+
+    <p>loaded: {{Order.pagination.to}}</p>
+
+    <!-- <ul class="order-pages" name="" ng-model="Order.filter.page" ng-change="setPage(Order.filter.page)">
+      <li class="order-pages-li" ng-repeat="p in Order.pagination.pages" ng-click="searchOrderPage(p.number);">
+        <p class="order-pages-number">{{p.number}}</p>
+      </li>
+    </ul> -->
+
+    <button type="button" name="button" ng-click="saveFilter()">save</button>
+
+  </div>
+
+
+
+  <div class="order-data">
+    <ul class="order-data-ul">
+      <li class="order-data-li" ng-repeat="o in Order.result">
+        <p>
+          <span>{{o.created_at}}</span>
+          <span>{{o.id}}</span>
+          <span>{{o.customer.data.email}}</span>
+          <span>{{o.total}}</span>
+        </p>
+
+      </li>
+    </ul>
+  </div>
+
+
+
+  <button class="download-csv" type="button" name="button" id="csv-button" ng-click="convertJson()" ng-disabled="!downloadReady">CSV</button>
+
+
+
+
+
+
+
+
+
+</div>

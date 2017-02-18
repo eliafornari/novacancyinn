@@ -17,7 +17,7 @@ gulp.task("default", ["transpile"]);
 gulp.task("transpile", () => {
 
   return browserify("src/app.js")
-    .transform("babelify")
+    .transform("babelify", {compact: false, presets: ["es2015"]})
     .bundle()
     .on("error", function(error){
       console.error( "\nError: ", error.message, "\n");

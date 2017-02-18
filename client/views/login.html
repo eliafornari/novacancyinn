@@ -1,0 +1,13 @@
+<div class="login"ng-controller="dashboardCtrl">
+
+  <form name="loginForm" novalidate class="login-form" ng-hide="loginProcessed" ng-submit="login()">
+
+    <input type="text" name="loginName" ng-model="client.username">
+    <input type="text" name="loginPassword" ng-model="client.password">
+
+    {{client}}
+
+    <button type="submit" class="login-button" ng-disabled="loginForm.$invalid">login</button>
+  </form>
+
+</div>

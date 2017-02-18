@@ -1,102 +1,90 @@
-
 .detail{
-  width:100vw;
-  position: relative;
-  margin-top: 30vh;
-  z-index: $z-detail;
+  width:100%;
+
 }
 
-.detail-images{
-  .detail-img{
-    max-width: 20vw;
-    margin: auto;
-    display: block;
-    margin-top: 25vh;
-    &:nth-child(1){
-      margin-top: 10vh;
-    }
-
-    @include respond-to(phone){
-      max-width: 70vw;
+.detail-images-ul{
+  width: 100vw;
+  height:200px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  .detail-images-li{
+    display: inline-block;
+    width:200px;
+    height:200px;
+    img{
+      width:100%;
+      height:auto;
+      display: block;
+      margin: auto;
     }
   }
 }
 
 
 
-.detail-functions{
-  position: fixed;
-  left: $margin-sides;
-  top: 50%;
-  width: auto;
-  margin-top: -10px;
-  height: 20px;
-  z-index: $z-detail-functions;
-  @include respond-to(phone-device){
-
-  }
+input{
+  margin-bottom: 15px;
+  height: auto;
+  background-color:transparent;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 2px solid black;
+  -webkit-appearance: none;
+  outline: 0;
+  color: black;
 }
 
-.detail-add{
-  position: relative;
-  top: 0;
-  left:0;
+
+.fileContainer-selectedimage{
+  width:50%;
   height:auto;
-  width:auto;
+  margin: auto;
   display: block;
-  float:left;
-  margin-left: $margin-left-paragraph;
-  p{
+}
+
+.fileContainer [type=file] {
+    cursor: inherit;
     display: block;
-    width:100%;
-    text-align: left;
-    vertical-align: middle;
-    margin:0;
-    @include paragraph();
-    @include hover-effect-glow($red);
-
-  }
+    font-size: 999px;
+    filter: alpha(opacity=0);
+    min-height: 100%;
+    min-width: 100%;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 0;
 }
 
+/* Example stylistic flourishes */
 
-.detail-price{
-  position: fixed;
-  bottom: $margin-sides;
-  left: $margin-sides;
-  width: 80px;
-  text-align: left;
-  z-index: $z-price;
-  color: $red;
-  @include paragraph();
-}
-
-
-.detail-modifiers{
+.fileContainer {
+  overflow: hidden;
   position: relative;
-  // top: $margin-top-paragraph;
-  display: block;
-  float:left;
-  .detail-modifiers-ul{
-    display: block;
-    width:auto;
-    .detail-modifiers-ul-placeholder{
-      width:auto;
-      display: block;
-      float:left;
-      @include paragraph();
-    }
-    .detail-modifiers-variations{
-      width:auto;
-      display: block;
-      float:left;
-      margin-left: $margin-left-paragraph;
-      .detail-modifiers-variations-li{
-        display: block;
-        clear: both;
-        a{
-          @include paragraph();
-        }
-      }
-    }
-  }
+  height: 200px;
+  width:200px;
+    background: black;
+    border: 2px solid white;
+    float: left;
+    margin-bottom: 15px;
+    padding: .5em;
+    color: white;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-align: center;
+    line-height: 26px;
+}
+
+.fileContainer [type=file] {
+    cursor: pointer;
+}
+
+
+input[type="file"]{
+  border-bottom: none;
+  -webkit-appearance: none;
+  // display: none;
 }

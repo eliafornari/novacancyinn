@@ -6,6 +6,8 @@ import 'angular-animate'
 import 'angular-resource'
 import Prismic from 'prismic.io'
 import jQuery from "jquery"
+// import * as d3 from "d3";
+// import jsdom from "jsdom"
 
 angular.module('myApp', [
   'ngRoute',
@@ -71,55 +73,34 @@ $sceProvider.enabled(false);
 
   // $locationChangeStart
 
-    .when('/shop/:detail', {
-      templateUrl: 'views/shop.html',
-      controller: 'detailCtrl',
-      reloadOnSearch: false
-    })
-
-    .when('/shop', {
-      templateUrl: 'views/shop.html',
-      controller: 'shopCtrl',
-      reloadOnSearch: false
-    })
-
-    .when('/about', {
-      templateUrl: 'views/about.html',
-    })
-
-    .when('/contact', {
-      templateUrl: 'views/contact.html'
-    })
-
-    .when('/event', {
-      templateUrl: 'views/event.html',
-      controller: 'eventCtrl'
-    })
-
-
 
     .when('/privacy', {
       templateUrl: 'privacy/privacy.html',
       controller: 'privacyCtrl'
     })
 
+    .when('/product/:detail', {
+      templateUrl: 'views/detail.html',
+      controller: 'detailCtrl',
+    })
 
-    .when('/client/assets/images/profile.jpg', {
-
-    }
-
-)
+    .when('/product', {
+      templateUrl: 'views/product.html',
+      controller: 'productCtrl',
+    })
+    .when('/order', {
+      templateUrl: 'views/order.html',
+      controller: 'orderCtrl',
+      reloadOnSearch: false
+    })
 
     /*............................. Take-all routing ........................*/
 
 
+
     .when('/', {
-      templateUrl: 'views/home.html',
-      controller: 'appCtrl',
-      resolve: {
-
-        }
-
+      templateUrl: 'views/dashboard.html',
+      controller: 'dashboardCtrl',
     })
 
 
@@ -150,58 +131,8 @@ $rootScope.Home;
 
 
 
-  $rootScope.Auth;
-    $rootScope.authentication = function(){
-
-          // Simple GET request example:
-          $http({
-            method: 'GET',
-            url: '/authenticate'
-          }).then(function successCallback(response) {
-
-            if(response.data.access_token){
-                console.log("auth");
-                console.log(response);
-                // this callback will be called asynchronously
-                // when the response is available
-                $rootScope.Auth = response.data;
-                var expires = response.data.expires;
-                var identifier = response.data.identifier;
-                var expires_in = response.data.expires_in;
-                var access_token = response.data.access_token;
-                var type = response.data.token_type;
 
 
-
-
-            }
-            $rootScope.getProductsFN();
-
-            }, function errorCallback(response) {
-              // called asynchronously if an error occurs
-              // or server returns response with an error status.
-            });
-
-    }//addToCart
-
-    $rootScope.getProductsFN=function(){
-      $http({method: 'GET', url: '/getProducts'}).then(function(response){
-        console.log("product: ");
-        console.log(response);
-        $rootScope.Product = response.data;
-        console.log(response.data);
-        $rootScope.pageLoading = false;
-      }).then(function(){
-        console.log("an error occurred");
-      })
-    }
-
-
-
-
-  setTimeout(function(){
-    $rootScope.authentication();
-  }, 600);
 
 
 
@@ -314,94 +245,18 @@ $rootScope.Home;
 
 
 
-
-
-
-
-
-
-var eventRan = false;
-var homeRan = false;
-
-    $rootScope.getContentType = function(type, orderField){
-
-          Prismic.Api('https://novacancyinn.cdn.prismic.io/api', function (err, Api) {
-              Api.form('everything')
-                  .ref(Api.master())
-
-                  .query(Prismic.Predicates.at("document.type", type))
-                  .orderings('['+orderField+']')
-                  .pageSize(100)
-                  .submit(function (err, response) {
-
-                      var Data = response;
-
-                      // setTimeout(function(){
-                      //   $rootScope.firstLoading = false;
-                      //   $scope.$apply();
-                      // }, 3000);
-
-
-                      if (type =='event'){
-                        $rootScope.Event = response.results;
-                        console.log("event");
-                        console.log(response.results);
-                        if(eventRan == false){
-                          console.log("eventReady");
-                          eventRan = true;
-                          $rootScope.$broadcast('eventReady');
-
-                        }else{ return false; }
-
-                      }else if(type =='home'){
-                        $rootScope.Home = response.results;
-                        console.log("home");
-                        console.log(response.results);
-                        if(homeRan == false){
-                          console.log("homeReady");
-                          homeRan = true;
-                          $rootScope.$broadcast('homeReady');
-
-                        }else{ return false; }
-                      }
-
-                      // The documents object contains a Response object with all documents of type "product".
-                      var page = response.page; // The current page number, the first one being 1
-                      var results = response.results; // An array containing the results of the current page;
-                      // you may need to retrieve more pages to get all results
-                      var prev_page = response.prev_page; // the URL of the previous page (may be null)
-                      var next_page = response.next_page; // the URL of the next page (may be null)
-                      var results_per_page = response.results_per_page; // max number of results per page
-                      var results_size = response.results_size; // the size of the current page
-                      var total_pages = response.total_pages; // the number of pages
-                      var total_results_size = response.total_results_size; // the total size of results across all pages
-                        return results;
-                  });
-            });
-
-
-    };
-
-
-
-
-
-
-
-
-
 });//......end of the route controller
 
 
 
 
 var jquerymousewheel = require('./vendor/jquery.mousewheel.js')($);
+var json2 = require("./vendor/json2.js");
 var infiniteScroll = require("./vendor/infiniteScroll.js");
 var jqueryUI = require('./vendor/jquery-ui.min.js');
-var home = require("./home.js");
-var event = require("./event.js");
+var dashboard = require("./dashboard.js");
+var product = require("./product.js");
+var detail = require("./detail.js");
+var order = require("./order.js");
 var nav = require("./nav.js");
 var service = require("./services.js");
-var cart = require("./shop/cart.js");
-var shop = require("./shop/shop.js");
-var shop = require("./shop/checkout.js");

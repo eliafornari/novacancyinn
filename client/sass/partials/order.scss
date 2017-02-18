@@ -1,0 +1,51 @@
+
+
+.order-data{
+  position: relative;
+  left: 30vw;
+  width: 70vw;
+  .order-data-ul{
+    padding-top: 150px;
+    padding-bottom: 150px;
+    .order-data-li{
+      margin-top: 30px;
+      height:50px;
+      width: 100%;
+      background-color: $light-light-grey;
+      p{
+        width: 100%;
+      }
+    }
+  }
+}
+
+
+.order-filter{
+  position: fixed;
+  left:$margin-sides;
+  top:300px;
+}
+
+.order-pages{
+  position: relative;
+  display: block;
+  width:auto;
+  .order-pages-li{
+    position: relative;
+    display: inline-block;
+    width:auto;
+    margin-left: 7px;
+
+    .order-pages-number{
+
+    }
+  }
+}
+
+
+
+.download-csv{
+  position: fixed;
+  top:$margin-sides;
+  right:$margin-sides;
+}

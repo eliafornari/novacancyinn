@@ -20,13 +20,6 @@ angular.module('myApp')
     }else{return false;}
   }
 
-  $rootScope.isShopDetail = ()=>{
-    if($location.path()=='/shop/'+$routeParams.detail){
-      return true;
-    }else{return false;}
-
-  }
-
 
 })
 
@@ -63,20 +56,6 @@ angular.module('myApp')
     }
   };
 })
-
-
-
-.directive('mailDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
-  return {
-    restrict: 'E',
-    templateUrl: 'views/icon/mail-icon.html',
-    replace: true,
-    link: function(scope, elem, attrs) {
-
-    }
-  };
-})
-
 
 
 

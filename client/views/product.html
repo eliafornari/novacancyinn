@@ -1,0 +1,20 @@
+<div class="product" summary="product">
+
+
+    <ul class="product-ul">
+      <li class="product-li" ng-repeat="p in Product">
+        <a href="/product/{{p.slug}}">
+          <table>
+            <tr>
+              <td>
+                <img class="product-li-img" src="{{p.images[0].url.http}}" alt="" />
+              </td>
+            </tr>
+          </table>
+        </a>
+      </li>
+    </ul>
+
+
+
+</div>

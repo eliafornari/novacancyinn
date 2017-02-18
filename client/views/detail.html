@@ -1,33 +1,66 @@
-<div class="detail">
+<div class="detail" ng-controller="detailCtrl">
 
-  <div class="detail-images">
-    <img class="detail-img" ng-repeat="i in Detail.images" src="{{i.url.http}}" alt="{{p.description}}" />
+<div class="detail-info">
+  <label for="title">title:</label>
+  <input type="text" name="detailForm.title" id="title" ng-model="Detail.title"><br>
+
+
+  <label for="slug">slug:</label>
+  <input type="text" name="detailForm.slug" id="slug" ng-model="Detail.slug"><br>
+
+  <label for="stock_level">stock level:</label>
+  <input type="text" name="detailForm.stock_level" id="stock_level" ng-model="Detail.stock_level"><br>
+
+
+<button type="button" name="button" ng-click="updateProduct()">update info</button>
+
+
+</div>
+
+
+
+
+<div class="detail-modifier">
+  <div class="detail-modifier-list" ng-repeat="m in Detail.modifiers">
+    {{m.title}}
+    <div class="detail-variation" ng-repeat="v in m.variations">
+      <label for="variation_title">variation name:</label>
+      <input type="text" name="variationForm.title" id="variation_title" ng-model="v.title"><br>
+    </div>
   </div>
 
+  <button type="button" name="variation_button" ng-click="updateVariations()">update variations</button>
+
+</div>
 
 
 
-  <p class="detail-price" ng-cloak>{{Detail.price.data.formatted.without_tax}}</p>
 
 
 
-  <div class="detail-functions">
+<div class="detail-images">
 
-      <div class="detail-modifiers">
-        <ul class="detail-modifiers-ul" ng-repeat="m in Detail.modifiers">
-          <p class="detail-modifiers-ul-placeholder" ng-click="showSelection(m.id)">{{m.title}} </p>
+  <ul class="detail-images-ul">
+      <li class="detail-images-li" ng-repeat="i in Detail.images">
+        <img class="detail-images-img" src="{{i.url.https}}"/>
+    </li>
+  </ul>
 
-          <div class="detail-modifiers-variations" ng-click="showSelection(m.id)">
-            <li class="detail-modifiers-variations-li" ng-repeat="v in m.variations" ng-click="thisVariation(Detail.id , m.id, m.title, v.id, v.title);" ng-show="selectedVariation[m.id].variation_title==v.title || m.open==true">
-              <a>{{v.title}}</a>
-            </li>
-          </div>
-        </ul>
-      </div>
-      <div class="detail-add">
-        <p class="detail-add-plus-variation" ng-hide="Detail.has_variation" ng-click="addToCart(Detail.id)">ADD</p>
-        <p class="detail-add-plus-variation" ng-show="Detail.has_variation" ng-click="addVariation()" ng-class="{'activeAdd': howManyVAriationsSelected>=Detail.total_variations}">ADD</p>
-      </div>
-  </div>
+
+
+  <label class="fileContainer">
+    <span ng-hide="imageSelected.value">DROP IMAGE</span>
+    <span ng-show="imageSelected.value">
+      {{imageSelected.text}} <img class="fileContainer-selectedimage" src="{{fileread}}" alt="" />
+    </span>
+    <input id="file-upload" type="file" name="upload" file-model="myFile" required/>
+  </label>
+
+
+  <button type="button" name="image_button" ng-click="uploadFile()">upload image</button>
+
+</div>
+
+
 
 </div>

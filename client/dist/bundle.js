@@ -19,6 +19,9 @@ var _jquery2 = _interopRequireDefault(_jquery);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// import * as d3 from "d3";
+// import jsdom from "jsdom"
+
 angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll']).run(['$anchorScroll', '$route', '$rootScope', '$location', '$routeParams', '$templateCache', function ($anchorScroll, $route, $rootScope, $location, $routeParams, $templateCache) {
 
   $rootScope.pageLoading = true;
@@ -64,33 +67,26 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
 
   // $locationChangeStart
 
-  .when('/shop/:detail', {
-    templateUrl: 'views/shop.html',
-    controller: 'detailCtrl',
-    reloadOnSearch: false
-  }).when('/shop', {
-    templateUrl: 'views/shop.html',
-    controller: 'shopCtrl',
-    reloadOnSearch: false
-  }).when('/about', {
-    templateUrl: 'views/about.html'
-  }).when('/contact', {
-    templateUrl: 'views/contact.html'
-  }).when('/event', {
-    templateUrl: 'views/event.html',
-    controller: 'eventCtrl'
-  }).when('/privacy', {
+  .when('/privacy', {
     templateUrl: 'privacy/privacy.html',
     controller: 'privacyCtrl'
-  }).when('/client/assets/images/profile.jpg', {})
+  }).when('/product/:detail', {
+    templateUrl: 'views/detail.html',
+    controller: 'detailCtrl'
+  }).when('/product', {
+    templateUrl: 'views/product.html',
+    controller: 'productCtrl'
+  }).when('/order', {
+    templateUrl: 'views/order.html',
+    controller: 'orderCtrl',
+    reloadOnSearch: false
+  })
 
   /*............................. Take-all routing ........................*/
 
   .when('/', {
-    templateUrl: 'views/home.html',
-    controller: 'appCtrl',
-    resolve: {}
-
+    templateUrl: 'views/dashboard.html',
+    controller: 'dashboardCtrl'
   })
 
   // put your least specific route at the bottom
@@ -101,50 +97,6 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
   $rootScope.firstLoading = true;
   $rootScope.pageClass = "page-home";
   $rootScope.Home;
-
-  $rootScope.Auth;
-  $rootScope.authentication = function () {
-
-    // Simple GET request example:
-    $http({
-      method: 'GET',
-      url: '/authenticate'
-    }).then(function successCallback(response) {
-
-      if (response.data.access_token) {
-        console.log("auth");
-        console.log(response);
-        // this callback will be called asynchronously
-        // when the response is available
-        $rootScope.Auth = response.data;
-        var expires = response.data.expires;
-        var identifier = response.data.identifier;
-        var expires_in = response.data.expires_in;
-        var access_token = response.data.access_token;
-        var type = response.data.token_type;
-      }
-      $rootScope.getProductsFN();
-    }, function errorCallback(response) {
-      // called asynchronously if an error occurs
-      // or server returns response with an error status.
-    });
-  }; //addToCart
-
-  $rootScope.getProductsFN = function () {
-    $http({ method: 'GET', url: '/getProducts' }).then(function (response) {
-      console.log("product: ");
-      console.log(response);
-      $rootScope.Product = response.data;
-      console.log(response.data);
-      $rootScope.pageLoading = false;
-    }).then(function () {
-      console.log("an error occurred");
-    });
-  };
-
-  setTimeout(function () {
-    $rootScope.authentication();
-  }, 600);
 
   $rootScope.windowHeight = $window.innerHeight;
 
@@ -237,208 +189,378 @@ angular.module('myApp', ['ngRoute', 'ngResource', 'ngAnimate', 'infinite-scroll'
   };
 
   $scope.landscapeFunction();
-
-  var eventRan = false;
-  var homeRan = false;
-
-  $rootScope.getContentType = function (type, orderField) {
-
-    _prismic2.default.Api('https://novacancyinn.cdn.prismic.io/api', function (err, Api) {
-      Api.form('everything').ref(Api.master()).query(_prismic2.default.Predicates.at("document.type", type)).orderings('[' + orderField + ']').pageSize(100).submit(function (err, response) {
-
-        var Data = response;
-
-        // setTimeout(function(){
-        //   $rootScope.firstLoading = false;
-        //   $scope.$apply();
-        // }, 3000);
-
-        if (type == 'event') {
-          $rootScope.Event = response.results;
-          console.log("event");
-          console.log(response.results);
-          if (eventRan == false) {
-            console.log("eventReady");
-            eventRan = true;
-            $rootScope.$broadcast('eventReady');
-          } else {
-            return false;
-          }
-        } else if (type == 'home') {
-          $rootScope.Home = response.results;
-          console.log("home");
-          console.log(response.results);
-          if (homeRan == false) {
-            console.log("homeReady");
-            homeRan = true;
-            $rootScope.$broadcast('homeReady');
-          } else {
-            return false;
-          }
-        }
-
-        // The documents object contains a Response object with all documents of type "product".
-        var page = response.page; // The current page number, the first one being 1
-        var results = response.results; // An array containing the results of the current page;
-        // you may need to retrieve more pages to get all results
-        var prev_page = response.prev_page; // the URL of the previous page (may be null)
-        var next_page = response.next_page; // the URL of the next page (may be null)
-        var results_per_page = response.results_per_page; // max number of results per page
-        var results_size = response.results_size; // the size of the current page
-        var total_pages = response.total_pages; // the number of pages
-        var total_results_size = response.total_results_size; // the total size of results across all pages
-        return results;
-      });
-    });
-  };
 }); //......end of the route controller
 
 var jquerymousewheel = require('./vendor/jquery.mousewheel.js')($);
+var json2 = require("./vendor/json2.js");
 var infiniteScroll = require("./vendor/infiniteScroll.js");
 var jqueryUI = require('./vendor/jquery-ui.min.js');
-var home = require("./home.js");
-var event = require("./event.js");
+var dashboard = require("./dashboard.js");
+var product = require("./product.js");
+var detail = require("./detail.js");
+var order = require("./order.js");
 var nav = require("./nav.js");
 var service = require("./services.js");
-var cart = require("./shop/cart.js");
-var shop = require("./shop/shop.js");
-var shop = require("./shop/checkout.js");
 
-},{"./event.js":2,"./home.js":3,"./nav.js":4,"./services.js":5,"./shop/cart.js":6,"./shop/checkout.js":7,"./shop/shop.js":8,"./vendor/infiniteScroll.js":9,"./vendor/jquery-ui.min.js":10,"./vendor/jquery.mousewheel.js":11,"angular":19,"angular-animate":13,"angular-resource":15,"angular-route":17,"jquery":32,"prismic.io":40}],2:[function(require,module,exports){
+},{"./dashboard.js":2,"./detail.js":3,"./nav.js":4,"./order.js":5,"./product.js":6,"./services.js":7,"./vendor/infiniteScroll.js":8,"./vendor/jquery-ui.min.js":9,"./vendor/jquery.mousewheel.js":10,"./vendor/json2.js":11,"angular":19,"angular-animate":13,"angular-resource":15,"angular-route":17,"jquery":32,"prismic.io":40}],2:[function(require,module,exports){
 'use strict';
 
-angular.module('myApp')
+var Dashboard = angular.module('myApp');
+// var d3 = require("./vendor/d3.js");
 
-// .filter('replaceDash', function($location, $rootScope, $routeParams, $sce){
-// return function(item){
-//   item = item.replace(/-/g, '.');
-//   var year = item.substring(0, 4);
-//   var month = item.substring(5, 7);
-//   var day = item.substring(8, 9);
-//
-//   console.log('year: '+year);
-//   console.log('month: '+month);
-//   console.log('day: '+day);
-//
-//   // item = '<span>'+month+'</span>'+'.'+'<span>'+day+'</span>'+'.'+'<span>'+year+'</span>'
-//   item = {'year':year, 'month':month, 'day':day};
-//   console.log(item);
-//   return item
-// }
-//
-//
-// })
-
-.controller('eventCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http, $sce, $document, anchorSmoothScroll, $window) {
+Dashboard.controller('dashboardCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http, $sce, $document, anchorSmoothScroll, $window) {
 
   $rootScope.windowHeight = $window.innerHeight;
-  $rootScope.pageClass = "page-events";
-  $rootScope.Event = [];
-  $rootScope.selectedEvent = {};
-
-  //..........................................................GET
-
-  $rootScope.getContentType('event', 'my.event.index');
-
-  $rootScope.$on('eventReady', function () {
-
-    for (var i in $rootScope.Event) {
-      var item = $rootScope.Event[i].data['event.date'].value;
-      console.log(item);
-      // item = item.replace(/-/g, '.');
-      var year = item.substring(0, 4);
-      var month = item.substring(5, 7);
-      var day = item.substring(8, 9);
-
-      console.log('year: ' + year);
-      console.log('month: ' + month);
-      console.log('day: ' + day);
-      item = { 'year': year, 'month': month, 'day': day };
-
-      console.log(item);
-      $rootScope.Event[i].data['event.date'].value = item;
-    }
-    $scope.$apply();
-  });
-
-  $scope.thisEvent = function (e) {
-    $rootScope.selectedEvent = e;
+  $rootScope.pageClass = "page-dashboard";
+  $scope.client;
+  $rootScope.Dashboard = {};
+  $rootScope.Auth;
+  $rootScope.filter = {
+    start_date: "",
+    end_date: "",
+    status: ""
   };
+
+  // curl -X POST https://api.molt.in/v1/files \
+  // 	-H "Authorization: Bearer XXXX" \
+  // 	-H "Content-Type: multipart/form-data" \
+  // 	-F "file=@C:\Users\Admin\Pictures\moltin_logo.png" \
+  // 	-d "assign_to=1019656230785778497"
+
+  $scope.login = function () {
+    $rootScope.authentication();
+  };
+
+  $rootScope.filterDashboard = function (filter) {
+    $rootScope.listOrders_dashboard(filter);
+  };
+
+  //list orders
+
+  $rootScope.listOrders_dashboard = function (filter) {
+    $http({ method: 'GET', url: '/order/list?start_date=' + filter.start_date + '&end_date=' + filter.end_date }).then(function (response) {
+      console.log("orders: ");
+      console.log(response);
+      $rootScope.Dashboard.orders = response.data.result;
+      $rootScope.pageLoading = false;
+      $rootScope.filterOrders(filter);
+    }, function () {
+      console.log("an error occurred");
+    });
+  };
+
+  $rootScope.filterOrders = function (filter) {
+    var orders = [];
+    var parsed = {};
+
+    parsed.start_date = Date.parse(filter.start_date);
+    parsed.end_date = Date.parse(filter.end_date);
+
+    for (var i in $rootScope.Dashboard.orders) {
+
+      var created_at = Date.parse($rootScope.Dashboard.orders[i].created_at);
+      // console.log("created_at: "+created_at);
+
+      if (created_at >= parsed.start_date && created_at <= parsed.end_date) {
+        orders.push($rootScope.Dashboard.orders[i]);
+      }
+    }
+    console.log(orders);
+
+    $rootScope.calcRevenue(orders);
+    // $scope.runChart(orders);
+  };
+
+  $rootScope.Total;
+
+  $rootScope.calcRevenue = function (orders) {
+    $rootScope.Total = {
+      subtotal: 0,
+      shipping: 0,
+      tax: 0
+    };
+
+    for (var i in orders) {
+      $rootScope.Total.subtotal = $rootScope.Total.subtotal + orders[i].totals.raw.subtotal;
+      $rootScope.Total.shipping = $rootScope.Total.shipping + orders[i].totals.raw.shipping_price;
+      $rootScope.Total.tax = $rootScope.Total.tax + orders[i].totals.raw.tax;
+      $rootScope.calcCountries(orders[i]);
+    }
+  };
+
+  function arrayObjectIndexOf(myArray, searchTerm, property) {
+    for (var i = 0, len = myArray.length; i < len; i++) {
+      if (myArray[i][property] === searchTerm) return i;
+    }
+    return -1;
+  }
+
+  $rootScope.Dashboard.countries = [{
+    code: "GB",
+    name: "United Kingdom",
+    orders: 0
+  }];
+
+  $rootScope.calcCountries = function (order) {
+
+    var countryIndex = arrayObjectIndexOf($rootScope.Dashboard.countries, order.ship_to.data.country.data.code, "code");
+
+    if (countryIndex != -1) {
+      $rootScope.Dashboard.countries[countryIndex].orders = $rootScope.Dashboard.countries[countryIndex].orders + 1;
+    } else {
+      //there is no country let's create it
+      var newcountry = {
+        code: order.ship_to.data.country.data.code,
+        name: order.ship_to.data.country.data.name,
+        orders: 1
+      };
+      $rootScope.Dashboard.countries.push(newcountry);
+    }
+  };
+
+  //chart
+  //
+  // $scope.runChart=(orders)=>{
+  //
+  //
+  //   var margin = {top: 20, right: 30, bottom: 30, left: 40},
+  //       width = 960 - margin.left - margin.right,
+  //       height = 500 - margin.top - margin.bottom;
+  //
+  //
+  // var barWidth = width / orders.length;
+  // //
+  // // var y = d3.scaleLinear()
+  // //   .range([height, 0])
+  // //   .domain([0, d3.max(orders, function(d) { return d.totals.raw.subtotal; })]);
+  //
+  //
+  //
+  //
+  //
+  //
+  //   var chart = d3.select(".chart")
+  //       .attr("width", width + margin.left + margin.right)
+  //       .attr("height", height + margin.top + margin.bottom)
+  //     .append("g")
+  //       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  //
+  //
+  //       var x = d3.scaleOrdinal()
+  //           .range([0, width]);
+  //
+  //       var y = d3.scaleLinear()
+  //           .range([height, 0]);
+  //
+  //
+  //
+  //       x.domain(orders.map(function(d) { return d.created_at; }));
+  //     y.domain([0, d3.max(orders, function(d) { return d.totals.raw.subtotal; })]);
+  //
+  //
+  //
+  //       var xAxis = d3.axisBottom()
+  //           .scale(x);
+  //
+  //       var yAxis = d3.axisLeft()
+  //           .scale(y);
+  //
+  //
+  //   // var bar = chart.selectAll("g")
+  //   //     .data(orders)
+  //   //   .enter().append("g")
+  //   //     .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; });
+  //
+  //
+  //
+  //     chart.append("g")
+  //         .attr("class", "x axis")
+  //         .attr("transform", "translate(0," + height + ")")
+  //         .call(xAxis);
+  //
+  //     chart.append("g")
+  //         .attr("class", "y axis")
+  //         .call(yAxis);
+  //
+  //     chart.selectAll(".bar")
+  //         .data(orders)
+  //       .enter().append("rect")
+  //         .attr("class", "bar")
+  //         .attr("x", function(d) { return x(d.created_at); })
+  //         .attr("y", function(d) { return y(d.totals.raw.subtotal); })
+  //         .attr("height", function(d) { return height - y(d.totals.raw.subtotal); })
+  //         .attr("width", x.range());
+  //
+  //
+  //
+  //
+  // }
+  //
+  //
+  //
+  //
+  // function type(d) {
+  //   d.totals.raw.subtotal = +d.totals.raw.subtotal; // coerce to number
+  //   return d;
+  // }
 }); //controller
 
 },{}],3:[function(require,module,exports){
 'use strict';
 
-var Home = angular.module('myApp');
+var Detail = angular.module('myApp');
+Detail.service('fileUpload', ['$http', function ($http) {
+  this.uploadFileToUrl = function (file, title, uploadUrl) {
+    var fd = new FormData();
+    file.name = title;
+    console.log(file.name);
 
-Home.filter('youtubeEmbed', function ($sce) {
-  return function (url) {
-    if (url) {
-      var riskyVideo = "https://www.youtube.com/embed/" + url + "?rel=0&amp;&autoplay=1&controls=1&loop=1&showinfo=0&modestbranding=1&theme=dark&color=white&wmode=opaque";
-      return $sce.trustAsResourceUrl(riskyVideo);
-      $scope.$apply();
-    }
+    fd.append('file', file, title);
+    $http.post(uploadUrl, fd, {
+      transformRequest: angular.identity,
+      headers: { 'Content-Type': undefined }
+    }).success(function () {}).error(function () {});
   };
-});
+}]);
 
-Home.controller('homeCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http, $sce, $document, anchorSmoothScroll, $window) {
+Detail.controller('detailCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http, $sce, $document, anchorSmoothScroll, $window, transformRequestAsFormPost, fileUpload) {
 
-  $rootScope.windowHeight = $window.innerHeight;
-  $rootScope.pageClass = "page-home";
+  $scope.myFile;
 
-  $scope.homeImages = [];
-  $scope.currentImage;
+  $scope.$on('$routeChangeSuccess', function () {
 
-  $rootScope.getContentType('home', 'my.home.index');
+    // $rootScope.openDetailFN();
+    $rootScope.isDetailOpen = true;
+    $rootScope.detailUpdate($routeParams.detail);
 
-  $rootScope.$on('homeReady', function () {
-
-    $scope.homeImages = $rootScope.Home[0].data['home.image'].value;
-    // $scope.assignimage(0);
-    $scope.$apply();
+    setTimeout(function () {
+      if (!$rootScope.Detail.id) {
+        $rootScope.detailUpdate($routeParams.detail);
+        $scope.$apply();
+        console.log("I loaded it again");
+        console.log($rootScope.Detail);
+      } else {
+        console.log("detail loaded correctly");
+        console.log($rootScope.Detail);
+        return false;
+      }
+    }, 2000);
   });
 
-  $scope.assignimage = function (i) {
-    $scope.currentImage = $scope.homeImages[i];
-    console.log($scope.currentImage);
-  };
-
-  // Returns a random integer between min (included) and max (included)
-  // Using Math.round() will give you a non-uniform distribution!
-  function getRandomIntInclusive(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
-  var prev = {
-    x: 1,
-    y: 1
-  };
-
-  $(document).mousemove(function (event) {
-    // console.log('y',event.pageX);
-    // console.log('x',event.pageY);
-    var mloc = {
-      x: event.pageX,
-      y: event.pageY
-    };
-
-    var diffX = Math.abs(prev.x - mloc.x);
-    var diffY = Math.abs(prev.y - mloc.y);
-
-    console.log(diffX, diffY);
-
-    prev = mloc;
-
-    if (diffX > 1 || diffY > 1) {
-      var number = getRandomIntInclusive(0, 42);
-      console.log(number);
-      $scope.assignimage(number);
-      $scope.$apply();
+  $rootScope.detailUpdate = function (slug) {
+    for (var i in $rootScope.Product) {
+      if ($rootScope.Product[i].slug == slug) {
+        $rootScope.Detail = $rootScope.Product[i];
+        $scope.getVariations($rootScope.Detail.id);
+      }
     }
-  });
+  };
+
+  $rootScope.Variations = [];
+
+  $scope.getVariations = function (id) {
+
+    $http({
+      url: '/getVariations',
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      transformRequest: transformRequestAsFormPost,
+      data: { 'id': id }
+    }).then(function (response) {
+      if (response.status == 200) {
+        $rootScope.Variations = response.data.result;
+        console.log($rootScope.Variations);
+      }
+    });
+    // console.log("variation");
+    //   for (var m in $rootScope.Detail.modifiers){
+    //     for (var v in $rootScope.Detail.modifiers[m].variations){
+    //       var variation = $rootScope.Detail.modifiers[m].variations[v]
+    //       console.log(variation);
+    //     }
+    //   }
+  };
+
+  $rootScope.updateProduct = function () {
+
+    $http({
+      url: '/updateProduct',
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      transformRequest: transformRequestAsFormPost,
+      data: $rootScope.Detail
+    }).then(function (response) {
+      $rootScope.pageLoading = false;
+      console.log(response);
+    });
+  }; //updateProduct
+
+  $scope.checkImage = function (file) {
+    if (file.type.match('image.*') && (file.type.match('image/jpeg') || fileInput.type.match('image/png'))) {
+      console.log("is an image");
+      console.log('good');
+      var type = file.type.substring(6);
+      if (type == 'jpeg') {
+        type = 'jpg';
+      }
+      return type;
+    } else {
+      return false;
+    }
+  };
+
+  $rootScope.imageSelected = { 'value': false, 'text': '' };
+
+  $scope.uploadFile = function () {
+    var file = $scope.myFile;
+    var uploadUrl = '/upload';
+    var extension;
+    var title = $scope.myFile.name;
+
+    if ($scope.checkImage(file) == false) {
+      return false;
+    } else {
+      title = title;
+    }
+    Object.defineProperties(file, {
+      name: { value: title, writable: true }
+    });
+    fileUpload.uploadFileToUrl(file, title, uploadUrl);
+  };
 }); //controller
+
+Detail.directive('fileModel', ['$parse', '$rootScope', function ($parse, $rootScope) {
+  return {
+    restrict: 'A',
+    link: function link(scope, element, attrs) {
+      var model = $parse(attrs.fileModel);
+      var modelSetter = model.assign;
+
+      element.bind('change', function (changeEvent) {
+        scope.$apply(function () {
+          modelSetter(scope, element[0].files[0]);
+          console.log(element[0]);
+          console.log(element[0].files[0]);
+          console.log(scope.myFile);
+          if (element[0].files[0]) {
+            $rootScope.imageSelected = { 'value': true, 'text': element[0].files[0].name };
+          } else {
+            $rootScope.imageSelected = { 'value': false, 'text': '' };
+          }
+        });
+
+        //reading the file locally to display it
+        var reader = new FileReader();
+        reader.onload = function (loadEvent) {
+          scope.$apply(function () {
+            scope.fileread = loadEvent.target.result;
+          });
+        };
+        reader.readAsDataURL(changeEvent.target.files[0]);
+      });
+    }
+  };
+}]);
 
 },{}],4:[function(require,module,exports){
 'use strict';
@@ -457,14 +579,6 @@ angular.module('myApp').controller('navCtrl', function ($scope, $location, $root
 
   $rootScope.isLocation = function (location) {
     if ($location.path() == location) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  $rootScope.isShopDetail = function () {
-    if ($location.path() == '/shop/' + $routeParams.detail) {
       return true;
     } else {
       return false;
@@ -491,13 +605,6 @@ angular.module('myApp').controller('navCtrl', function ($scope, $location, $root
     replace: true,
     link: function link(scope, elem, attrs) {}
   };
-}).directive('mailDirective', function ($rootScope, $location, $window, $routeParams, $timeout) {
-  return {
-    restrict: 'E',
-    templateUrl: 'views/icon/mail-icon.html',
-    replace: true,
-    link: function link(scope, elem, attrs) {}
-  };
 }).directive('menuIconDirective', function ($rootScope, $location, $window, $routeParams, $timeout) {
   return {
     restrict: 'E',
@@ -515,7 +622,279 @@ angular.module('myApp').controller('navCtrl', function ($scope, $location, $root
 });
 
 },{}],5:[function(require,module,exports){
+'use strict';
+
+angular.module('myApp').controller('orderCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http, exportData, $window) {
+
+  $scope.orderLoading = false;
+  $rootScope.Order = { result: [] };
+  $scope.downloadReady = false;
+
+  $scope.setStatus = function (status) {
+    $location.search('status', status);
+  };
+
+  // $scope.searchOrderPage=(page)=>{
+  //   $location.search('page', page);
+  // }
+
+  $scope.setPage = function (number) {
+    $location.search('offset', number);
+  };
+
+  $scope.saveFilter = function () {
+    $rootScope.Order.result = [];
+    $rootScope.Order.pagination = [];
+    $scope.setPage(0);
+    $rootScope.listOrders(0);
+  };
+
+  $scope.setStatus('paid');
+  $scope.setPage(0);
+
+  $rootScope.listOrders = function (offset) {
+    console.log("offset: " + offset);
+    $scope.downloadReady = false;
+    $scope.orderLoading = true;
+    if (!$routeParams.status) {
+      $routeParams.status = 'paid';
+    };
+    $http({ method: 'GET', url: '/order/list?status=' + $routeParams.status + '&offset=' + offset }).then(function (response) {
+
+      console.log("list orders");
+      console.log(response);
+      $rootScope.Order.result = $rootScope.Order.result.concat(response.data.result);
+      $rootScope.Order.pagination = response.data.pagination;
+      $rootScope.Order.pagination.total_pages = $rootScope.Order.pagination.offsets.last / 10;
+      $scope.orderLoading = false;
+      // $scope.createPages($rootScope.Order.pagination.total_pages);
+      $rootScope.pageLoading = false;
+      $scope.attachOrderItems($rootScope.Order.result);
+    }, function () {
+      console.log("an error occurred");
+    });
+  };
+
+  $rootScope.listOrders(0);
+
+  setTimeout(function () {
+    angular.element($window).bind("scroll", function () {
+      var windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
+      var body = document.body,
+          html = document.documentElement;
+      var docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+      var windowBottom = windowHeight + window.pageYOffset;
+
+      if (windowBottom >= docHeight) {
+        // alert('bottom reached');
+        if ($rootScope.Order.pagination.offsets.next && !$scope.orderLoading) {
+          $rootScope.listOrders($rootScope.Order.pagination.offsets.next);
+        }
+      }
+    });
+  }, 600);
+
+  $scope.loaded;
+
+  $scope.attachOrderItems = function (data) {
+    console.log(data);
+    var x = 0;
+    var loopArray = function loopArray(arr) {
+      $scope.httpCall(arr[x], x, function () {
+        // set x to next item
+        x++;
+        // any more items in array? continue loop
+        if (x < arr.length) {
+          loopArray(arr);
+        } else {
+          console.log("done");
+          $scope.downloadReady = true;
+        }
+      });
+    };
+
+    $scope.httpCall = function (content, number, callback) {
+      var orderID = content.id;
+      $http({
+        url: '/order/' + orderID + '/items',
+        method: 'GET'
+      }).then(function (response) {
+
+        $rootScope.Order.result[number].items = response.data.result;
+        callback();
+      }, function (error) {
+        console.log(error);
+        $rootScope.error = { value: true, text: true };
+      });
+    };
+
+    loopArray(data);
+  };
+
+  $rootScope.getOrderItems = function (id, callback) {
+
+    var orderID = id;
+    $http({
+      url: '/order/' + orderID + '/items',
+      method: 'GET'
+    }).then(function (response) {
+      $scope.loaded++;
+      if ($scope.loaded >= 10) {
+        $scope.downloadReady = true;
+      }
+      callback(response.data);
+    }, function (error) {
+      console.log(error);
+      $rootScope.error = { value: true, text: true };
+    });
+  };
+
+  // $scope.createPages=(number)=>{
+  //   $rootScope.Order.pagination.pages = new Array();//create an empty array with length 45
+  //
+  //   for(var i=0; i< $rootScope.Order.pagination.total_pages; i++){
+  //     var obj = {
+  //       number: i
+  //     }
+  //     $rootScope.Order.pagination.pages.push(obj);
+  //     // $rootScope.Order.pagination.pages[i]['number'] = i;
+  //   }
+  // }
+
+  $scope.removeTime = function (d) {
+    d = d.split(' ')[0];
+    return d;
+  };
+
+  $scope.processData = function (data) {
+
+    var obj;
+    var arr = [];
+    var order;
+
+    for (var i in data) {
+      order = {};
+      order = data[i];
+      var item = void 0;
+      for (var o in order.items) {
+        obj = {};
+        // $rootScope.getOrderItems();
+
+        obj = {
+          order_no: order.id,
+          order_shipcost: order.totals.raw.shipping_price,
+          order_tax: order.totals.raw.tax,
+          customerid: order.customer.data.id,
+          order_date: $scope.removeTime(order.created_at),
+          order_transactionid: order.payment_number,
+          ship_class: order.shipping.data.title,
+          ship_carrier: order.shipping.data.company,
+          order_subtotal: order.totals.raw.subtotal,
+          order_total: order.totals.raw.total,
+          order_declaredvalue: order.totals.raw.subtotal,
+          ship_first: order.ship_to.data.first_name,
+          ship_last: order.ship_to.data.last_name,
+          ship_address1: order.ship_to.data.address_1,
+          ship_address2: $scope.blankAddress(order.ship_to.data.address_2),
+          ship_city: order.ship_to.data.city,
+          ship_state: order.ship_to.data.county,
+          ship_zip: order.ship_to.data.postcode,
+          ship_phone: order.ship_to.data.phone,
+          ship_country_code: order.ship_to.data.country.data.code,
+          ship_country_name: order.ship_to.data.country.data.name,
+          ship_email: order.ship_to.data.customer.data.email,
+          bill_first: order.bill_to.data.first_name,
+          bill_last: order.bill_to.data.last_name,
+          bill_address1: order.bill_to.data.address_1,
+          bill_address2: order.bill_to.data.address_2,
+          bill_city: order.bill_to.data.city,
+          bill_state: order.bill_to.data.county,
+          bill_zip: order.bill_to.data.postcode,
+          bill_country_code: order.bill_to.data.country.data.code,
+          bill_country_name: order.bill_to.data.country.data.name,
+          order_content: '100% Cotton t-shirt(s)',
+          item_childsku: '',
+          item_quantity: '',
+          item_weight: '',
+          item_unitprice: '',
+          item_title: ''
+        };
+
+        // arr = arr.concat(obj);
+        var x = 0;
+
+        // console.log(x);
+        // var key = "item"+x+"_childsku";
+        obj.item_childsku = order.items[o].sku;
+        obj.item_quantity = order.items[o].quantity;
+        obj.item_weight = $scope.poundsToOunces(order.items[o].product.data.weight);
+        obj.item_unitprice = order.items[o].price.data.raw.without_tax;
+        obj.item_title = order.items[o].title;
+        // console.log(obj);
+        arr = arr.concat(obj);
+      }
+    }
+
+    console.log(arr);
+
+    return arr;
+  };
+
+  $scope.poundsToOunces = function (pounds) {
+    var ounces = pounds * 16;
+    return ounces;
+  };
+
+  $scope.blankAddress = function (string) {
+    if (string == 'undefined') {
+      return '';
+    } else {
+      return string;
+    }
+  };
+
+  $scope.convertJson = function (data) {
+
+    var data = $rootScope.Order.result;
+    // $(document).ready(function(){
+    // $('#csv-button').click(function(){
+    // var data = $('#txt').val();
+    if (data == '') return;
+
+    var processed = $scope.processData(data);
+
+    exportData.csv(processed, "", true);
+    // });
+    // });
+  };
+});
+
+},{}],6:[function(require,module,exports){
+'use strict';
+
+var Product = angular.module('myApp');
+
+Product.controller('productCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http, $sce, $document, anchorSmoothScroll, $window) {
+
+  $rootScope.getProductsFN = function () {
+    $http({ method: 'GET', url: '/getProducts' }).then(function (response) {
+      console.log("product: ");
+      console.log(response);
+      $rootScope.Product = response.data;
+      console.log(response.data);
+      $rootScope.pageLoading = false;
+    }, function () {
+      console.log("an error occurred");
+    });
+  };
+
+  $rootScope.getProductsFN();
+}); //controller
+
+},{}],7:[function(require,module,exports){
 "use strict";
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 /* Services */
 var Service = angular.module('myApp');
@@ -602,6 +981,86 @@ Service.service('MetaInformation', function () {
     };
 });
 
+Service.service('exportData', function () {
+
+    return {
+
+        csv: function csv(JSONData, ReportTitle, ShowLabel) {
+            //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
+            var arrData = (typeof JSONData === "undefined" ? "undefined" : _typeof(JSONData)) != 'object' ? JSON.parse(JSONData) : JSONData;
+
+            var CSV = '';
+            //Set Report title in first row or line
+
+            // CSV += ReportTitle + '\r\n\n';
+
+            //This condition will generate the Label/Header
+            if (ShowLabel) {
+                var row = "";
+
+                //This loop will extract the label from 1st index of on array
+                for (var index in arrData[0]) {
+
+                    //Now convert each value to string and comma-seprated
+                    row += index + ',';
+                }
+
+                row = row.slice(0, -1);
+
+                //append Label row with line break
+                CSV += row + '\r\n';
+            }
+
+            //1st loop is to extract each row
+            for (var i = 0; i < arrData.length; i++) {
+                var row = "";
+
+                //2nd loop will extract each column and convert it in string comma-seprated
+                for (var index in arrData[i]) {
+                    row += '"' + arrData[i][index] + '",';
+                }
+
+                row.slice(0, row.length - 1);
+
+                //add a line break after each row
+                CSV += row + '\r\n';
+            }
+
+            if (CSV == '') {
+                alert("Invalid data");
+                return;
+            }
+
+            //Generate a file name
+            var fileName = "MyReport_";
+            //this will remove the blank-spaces from the title and replace it with an underscore
+            fileName += ReportTitle.replace(/ /g, "_");
+
+            //Initialize file format you want csv or xls
+            var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+
+            // Now the little tricky part.
+            // you can use either>> window.open(uri);
+            // but this will not work in some browsers
+            // or you will not get the correct file extension
+
+            //this trick will generate a temp <a /> tag
+            var link = document.createElement("a");
+            link.href = uri;
+
+            //set the visibility hidden so it will not effect on your web-layout
+            link.style = "visibility:hidden";
+            link.download = fileName + ".csv";
+
+            //this part will append the anchor tag and remove it after automatic click
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+    };
+});
+
 Service.service('anchorSmoothScroll', function () {
 
     this.scrollTo = function (eID) {
@@ -653,523 +1112,7 @@ Service.service('anchorSmoothScroll', function () {
     };
 });
 
-},{}],6:[function(require,module,exports){
-'use strict';
-
-var Cart = angular.module('myApp');
-
-Cart.controller('cartCtrl', function ($scope, $location, $rootScope, $timeout, $http, transformRequestAsFormPost) {
-
-  $rootScope.Cart;
-  $rootScope.showCart = false;
-  console.log("ran again");
-
-  $rootScope.openCart = function () {
-    $rootScope.showCart = !$rootScope.showCart;
-    $rootScope.updateCart();
-    console.log("opencart");
-  };
-
-  $rootScope.closeCart = function () {
-    $rootScope.showCart = false;
-  };
-
-  $rootScope.$watch('Cart', function (newValue) {
-    console.log(newValue);
-    $rootScope.Cart = newValue;
-  });
-
-  $rootScope.countries = [];
-
-  $rootScope.getCountries = function () {
-    $http({
-      method: 'GET',
-      url: 'assets/countries.json'
-    }).then(function successCallback(response) {
-
-      $rootScope.countries = response.data;
-      console.log(response.data);
-    }, function errorCallback(response) {
-
-      $scope.error = { value: true, text: 'countries not available, this page will be reloaded' };
-      setTimeout({
-        // $route.reload();
-      }, 2000);
-    });
-  };
-  $rootScope.getCountries();
-
-  $scope.phoneRegex = '^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$';
-  $scope.postcodeRegex = '^\\d{5}-\\d{4}|\\d{5}|[A-Z]\\d[A-Z] \\d[A-Z]\\d$';
-
-  $rootScope.updateCart = function () {
-    $http({
-      url: '/getCart',
-      method: 'GET',
-      headers: {
-        // 'Content-Type': 'application/json'
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      transformRequest: transformRequestAsFormPost
-    }).then(function (response) {
-      $rootScope.Cart = response.data;
-      $rootScope.pageLoading = false;
-      console.log(response);
-
-      if (!$rootScope.Cart.total_items == 0) {
-        console.log("cart has some stuff");
-        $rootScope.attachItemID($rootScope.Cart.contents);
-      }
-    });
-  }; //updateCart
-
-  //attaching item function
-  $rootScope.attachItemID = function (obj) {
-    Object.getOwnPropertyNames(obj).forEach(function (val, idx, array) {
-      $rootScope.Cart.contents[val].item = val;
-      // console.log(val + ' -> ' + obj[val]);
-    });
-  };
-
-  $rootScope.removeItem = function (id) {
-
-    $http({
-      url: '/removeProduct',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      transformRequest: transformRequestAsFormPost,
-      data: {
-        id: id
-      }
-    }).then(function (response) {
-      console.log("object removed");
-      $rootScope.Cart = response;
-      $rootScope.updateCart();
-      console.log(response);
-    });
-  };
-
-  $scope.cartToShipment = function () {
-    if ($rootScope.Cart.total_items > 0) {
-      $rootScope.template = $rootScope.templates[1];
-    } else {
-      $rootScope.noProductsError = true;
-      setTimeout(function () {
-        $rootScope.showCart = false;
-        $rootScope.noProductsError = false;
-        $rootScope.$apply();
-      }, 2000);
-    }
-  };
-
-  $rootScope.backFromShipment = function () {
-    $rootScope.template = $rootScope.templates[0];
-  };
-
-  $rootScope.backFromPayment = function () {
-
-    $rootScope.template = $rootScope.templates[1];
-
-    $rootScope.paymentProcessed = false;
-    $rootScope.errorMessage = false;
-    $rootScope.thankYou = false;
-    $rootScope.cartLoading = false;
-  };
-
-  $rootScope.backFromProcessed = function () {
-    $rootScope.template = $rootScope.templates[2];
-    $rootScope.paymentProcessed = false;
-    $rootScope.errorMessage = false;
-    $rootScope.thankYou = false;
-    $rootScope.cartLoading = false;
-  };
-});
-
-},{}],7:[function(require,module,exports){
-'use strict';
-
-var Checkout = angular.module('myApp');
-
-Checkout.controller('checkoutCtrl', function ($scope, $location, $rootScope, $timeout, $http, transformRequestAsFormPost) {
-  $rootScope.thankYou, $rootScope.payment;
-  $rootScope.isGradient = true;
-
-  $rootScope.customer, $rootScope.shipment, $rootScope.billing, $rootScope.Totals;
-
-  $rootScope.payment = {
-    id: '',
-    number: '5555555555554444',
-    expiry_month: '02',
-    expiry_year: '2018',
-    cvv: '756'
-  };
-
-  $rootScope.checkout = {
-    customer: { first_name: '',
-      last_name: '',
-      email: ''
-    },
-    shipment_method: '1301792307242074821',
-    shipment: { first_name: '',
-      last_name: '',
-      address_1: '',
-      city: '',
-      county: '',
-      country: '',
-      postcode: '',
-      phone: ''
-    },
-    billing: {
-      first_name: '',
-      last_name: '',
-      address_1: '',
-      city: '',
-      county: '',
-      country: '',
-      postcode: '',
-      phone: ''
-    }
-  };
-
-  $rootScope.shipmentToPayment = function () {
-    console.log($rootScope.checkout);
-    $rootScope.template = $rootScope.templates[2];
-
-    $http.post('/cartToOrder', $rootScope.checkout).then(function (data) {
-
-      $rootScope.Totals = data.data;
-      $rootScope.payment.id = $rootScope.Totals.id;
-      console.log('id: ' + $rootScope.payment.id);
-      console.log($rootScope.Totals);
-      console.log("posted successfully");
-    }, function (data) {
-      console.error("error in posting");
-    });
-  }; //cartToOrder
-
-  $rootScope.paymentToProcess = function () {
-    $rootScope.cartLoading = true;
-    $rootScope.Processed = false;
-    $rootScope.template = $rootScope.templates[3];
-    console.log("payment started");
-
-    $http({
-      url: '/orderToPayment',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      transformRequest: transformRequestAsFormPost,
-      data: $rootScope.payment
-    }).then(function (response) {
-
-      console.log("payment succeeded");
-      console.log(response.data);
-
-      if (response.data.data.paid) {
-        $rootScope.cartLoading = false;
-        $rootScope.Processed = response;
-        console.log(response.data);
-        $scope.emptyCart();
-      } else {
-        console.log('paid false');
-        $rootScope.Processed = response;
-      }
-
-      // $scope.findOrder($rootScope.Processed);
-    }, function (response) {
-      console.log("payment failed!");
-      console.log(response);
-      $rootScope.Processed = response;
-      $rootScope.cartLoading = false;
-    });
-  }; //cartToOrder
-
-  //tentative function to update teh overall stock
-  $scope.findOrder = function (contents) {
-    console.log("angular http");
-    var data = contents.data;
-    data['auth'] = $rootScope.Auth;
-    console.log(data);
-  };
-
-  $scope.emptyCart = function () {
-    var req = {
-      method: 'GET',
-      url: 'https://api.molt.in/' + 'v1/orders/' + data.order.id + '/items',
-      headers: {
-        'Authorization': "Bearer " + data.auth.access_token
-      }
-    };
-    $http(req).then(function (response) {
-      console.log(response);
-      $scope.updatestock(response);
-      $scope.emptyCart();
-    }, function (response) {
-      console.log(response);
-    });
-  };
-
-  $scope.updatestock = function (data) {
-    $http.post('/updatestock', data).success(function (data, status, headers, config) {
-      console.log("updatestock");
-      console.log(data);
-    }).error(function (data, status, header, config) {
-      console.log(data);
-    });
-  };
-
-  $scope.$watch('isBillingDifferent', function (value) {
-    console.log($scope.isBillingDifferent);
-    if (!$scope.isBillingDifferent) {
-      console.log($rootScope.checkout);
-      $rootScope.checkout.billing.first_name = $rootScope.checkout.shipment.first_name;
-      $rootScope.checkout.billing.last_name = $rootScope.checkout.shipment.last_name;
-      $rootScope.checkout.billing.address_1 = $rootScope.checkout.shipment.address_1;
-      $rootScope.checkout.billing.city = $rootScope.checkout.shipment.city;
-      $rootScope.checkout.billing.county = $rootScope.checkout.shipment.county;
-      $rootScope.checkout.billing.country = $rootScope.checkout.shipment.country;
-      $rootScope.checkout.billing.postcode = $rootScope.checkout.shipment.postcode;
-      $rootScope.checkout.billing.phone = $rootScope.checkout.shipment.phone;
-    }
-  });
-
-  $scope.$watch('checkout', function (value) {
-    console.log(value);
-    // $rootScope.checkout.customer.first_name = $rootScope.checkout.shipment.first_name;
-    // $rootScope.checkout.customer.last_name = $rootScope.checkout.shipment.last_name;
-    if (!$scope.isBillingDifferent) {
-      console.log($rootScope.checkout);
-      $rootScope.checkout.billing.first_name = $rootScope.checkout.shipment.first_name;
-      $rootScope.checkout.billing.last_name = $rootScope.checkout.shipment.last_name;
-      $rootScope.checkout.billing.address_1 = $rootScope.checkout.shipment.address_1;
-      $rootScope.checkout.billing.city = $rootScope.checkout.shipment.city;
-      $rootScope.checkout.billing.county = $rootScope.checkout.shipment.county;
-      $rootScope.checkout.billing.country = $rootScope.checkout.shipment.country;
-      $rootScope.checkout.billing.postcode = $rootScope.checkout.shipment.postcode;
-      $rootScope.checkout.billing.phone = $rootScope.checkout.shipment.phone;
-    }
-
-    console.log('country: ' + $rootScope.checkout.shipment.country);
-    if ($rootScope.checkout.shipment.country == 'US') {
-      $rootScope.checkout.shipment_method = '1301792307242074821';
-      console.log('US');
-    } else {
-      $rootScope.checkout.shipment_method = '1314165476770709929';
-      console.log('INT');
-    }
-  }, true);
-
-  $scope.emptyCart = function () {
-    $http.post('/emptyCart').success(function (data, status, headers, config) {
-      console.log("updatestock");
-      console.log(data);
-      $rootScope.Cart = {};
-    }).error(function (data, status, header, config) {
-      console.log(data);
-      $rootScope.Cart = {};
-    });
-  };
-});
-
 },{}],8:[function(require,module,exports){
-'use strict';
-
-var Shop = angular.module('myApp');
-
-Shop.controller('shopCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http, $sce, $document, anchorSmoothScroll, $window, transformRequestAsFormPost) {
-
-  $rootScope.pageClass = "page-shop";
-  $rootScope.isDetailOpen = false;
-  $rootScope.windowHeight = $window.innerHeight;
-  $rootScope.Detail = {};
-  $rootScope.openDetailFN = function (slug) {
-    if ($rootScope.isDetailOpen == true) {
-      $location.path('/shop/' + slug, true);
-    } else {
-      $rootScope.isDetailOpen = true;
-      setTimeout(function () {
-        $location.path('/shop/' + slug, true);
-        $rootScope.$apply();
-      }, 200);
-    }
-  };
-
-  $rootScope.showCart = false;
-  $rootScope.template = {};
-  $rootScope.templates = [{ name: 'cart', url: 'views/cart.html' }, { name: 'shipment', url: 'views/shipment.html' }, { name: 'payment', url: 'views/payment.html' }, { name: 'processed', url: 'views/processed.html' }];
-  $rootScope.template = $rootScope.templates[0];
-
-  $scope.wheel;
-
-  $scope.startWheel_shop = function () {
-    $(".shop-content").bind('mousewheel', function (event, delta) {
-      // console.log(event.deltaX, event.deltaY, event.deltaFactor);
-      this.scrollLeft -= delta * 0.4;
-      event.preventDefault();
-      $scope.wheel = true;
-    });
-  };
-
-  $scope.startWheel_shop();
-
-  $scope.stopWheel_shop = function () {
-    $(".shop-content").unbind('mousewheel');
-    $scope.wheel = false;
-  };
-}); //controller
-
-Shop.controller('detailCtrl', function ($scope, $location, $rootScope, $routeParams, $timeout, $http, $sce, $document, anchorSmoothScroll, $window, transformRequestAsFormPost) {
-
-  $scope.$on('$routeChangeSuccess', function () {
-
-    // $rootScope.openDetailFN();
-    $rootScope.isDetailOpen = true;
-    $rootScope.detailUpdate($routeParams.detail);
-    $rootScope.updateCart();
-
-    setTimeout(function () {
-      if (!$rootScope.Detail.id) {
-        $rootScope.detailUpdate($routeParams.detail);
-        $scope.$apply();
-        console.log("I loaded it again");
-        console.log($rootScope.Detail);
-      } else {
-        console.log("detail loaded correctly");
-        console.log($rootScope.Detail);
-        return false;
-      }
-    }, 3000);
-  });
-
-  $rootScope.addToCart = function (id) {
-
-    $http({
-      url: '/addProduct',
-      method: 'POST',
-      headers: {
-        // 'Content-Type': 'application/json'
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      transformRequest: transformRequestAsFormPost,
-      data: {
-        id: id,
-        access_token: "helloooo"
-      }
-    }).then(function (response) {
-      // $rootScope.Cart = response;
-      $rootScope.updateCart();
-      $rootScope.pageLoading = false;
-      console.log(response);
-    });
-  }; //addToCart
-
-  //......VARIATIONS
-
-  $rootScope.addVariation = function () {
-
-    if ($rootScope.selectedVariation) {
-      $http({
-        url: '/addVariation',
-        method: 'POST',
-        headers: {
-          // 'Content-Type': 'application/json'
-          // 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-          // 'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        // transformRequest: transformRequestAsFormPost,
-        data: $rootScope.selectedVariation
-      }).then(function (response) {
-        // $rootScope.Cart = response;
-        $rootScope.updateCart();
-        console.log(response);
-      });
-    } else {
-      $scope.variationErrorMessage = "select a size first";
-      setTimeout(function () {
-        $scope.variationErrorMessage = false;
-        $rootScope.$apply();
-      });
-    }
-  }; //addToCart
-
-  //variations
-
-  $rootScope.selectedVariation = {};
-  $rootScope.howManyVAriationsSelected = 0;
-  $rootScope.detailUpdate = function (slug) {
-
-    $rootScope.selectedVariation = {};
-    $rootScope.howManyVAriationsSelected = 0;
-    $rootScope.Detail.total_variations = 0;
-
-    for (var i in $rootScope.Product) {
-      if ($rootScope.Product[i].slug == slug) {
-        $rootScope.Detail = $rootScope.Product[i];
-        $rootScope.Detail.total_variations = 0;
-        $rootScope.Detail.has_variation = $rootScope.has_variation;
-
-        var go = true;
-        //has variation
-        for (i in $rootScope.Detail.modifiers) {
-          $rootScope.Detail.modifiers[i].open = false;
-          $rootScope.Detail.total_variations = $rootScope.Detail.total_variations + 1;
-          // if($rootScope.Detail.modifiers[i].id){$rootScope.has_variation=true;}else{$rootScope.has_variation=false;}
-          $rootScope.Detail.has_variation = true;
-          $rootScope.showSelection($rootScope.Detail.modifiers[i].id);
-          go = false;
-        }
-
-        if (go == true) {
-          //does not have variation
-          $rootScope.Detail.has_variation = false;
-          for (i in $rootScope.Detail.modifiers) {}
-        }
-      }
-    }
-  };
-
-  $rootScope.showSelection = function (modifier_id) {
-    console.log('modifier_id', modifier_id);
-    for (var m in $rootScope.Detail.modifiers) {
-      if ($rootScope.Detail.modifiers[m].id == modifier_id) {
-        $rootScope.Detail.modifiers[m].open = !$rootScope.Detail.modifiers[m].open;
-      }
-    }
-  };
-
-  $rootScope.thisVariation = function (id, modifier_id, modifier_title, variation_id, variation_title) {
-    var i = 0;
-    for (i in $rootScope.Detail.modifiers) {
-
-      if ($rootScope.Detail.modifiers[i].id == modifier_id) {
-        $rootScope.selectedVariation[i] = {
-          id: id,
-          modifier_id: modifier_id,
-          modifier_title: modifier_title,
-          variation_id: variation_id,
-          variation_title: variation_title
-        };
-        if ($rootScope.howManyVAriationsSelected < $rootScope.Detail.total_variations) {
-          $rootScope.howManyVAriationsSelected = $rootScope.howManyVAriationsSelected + 1;
-        }
-      }
-    }
-  };
-});
-
-Shop.directive('detailDirective', function ($rootScope, $location, $window, $routeParams, $timeout) {
-  return {
-    restrict: 'E',
-    templateUrl: 'views/detail.html',
-    replace: true,
-    link: function link(scope, elem, attrs) {}
-  };
-});
-
-},{}],9:[function(require,module,exports){
 'use strict';
 
 /* ng-infinite-scroll - v1.0.0 - 2013-02-23 */
@@ -1242,7 +1185,7 @@ mod.directive('infiniteScroll', ['$rootScope', '$window', '$timeout', function (
   };
 }]);
 
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -2374,7 +2317,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }));
 });
 
-},{}],11:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -2612,6 +2555,468 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         return special.settings.adjustOldDeltas && orgEvent.type === 'mousewheel' && absDelta % 120 === 0;
     }
 });
+
+},{}],11:[function(require,module,exports){
+"use strict";
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+//  json2.js
+//  2016-10-28
+//  Public Domain.
+//  NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
+//  See http://www.JSON.org/js.html
+//  This code should be minified before deployment.
+//  See http://javascript.crockford.com/jsmin.html
+
+//  USE YOUR OWN COPY. IT IS EXTREMELY UNWISE TO LOAD CODE FROM SERVERS YOU DO
+//  NOT CONTROL.
+
+//  This file creates a global JSON object containing two methods: stringify
+//  and parse. This file provides the ES5 JSON capability to ES3 systems.
+//  If a project might run on IE8 or earlier, then this file should be included.
+//  This file does nothing on ES5 systems.
+
+//      JSON.stringify(value, replacer, space)
+//          value       any JavaScript value, usually an object or array.
+//          replacer    an optional parameter that determines how object
+//                      values are stringified for objects. It can be a
+//                      function or an array of strings.
+//          space       an optional parameter that specifies the indentation
+//                      of nested structures. If it is omitted, the text will
+//                      be packed without extra whitespace. If it is a number,
+//                      it will specify the number of spaces to indent at each
+//                      level. If it is a string (such as "\t" or "&nbsp;"),
+//                      it contains the characters used to indent at each level.
+//          This method produces a JSON text from a JavaScript value.
+//          When an object value is found, if the object contains a toJSON
+//          method, its toJSON method will be called and the result will be
+//          stringified. A toJSON method does not serialize: it returns the
+//          value represented by the name/value pair that should be serialized,
+//          or undefined if nothing should be serialized. The toJSON method
+//          will be passed the key associated with the value, and this will be
+//          bound to the value.
+
+//          For example, this would serialize Dates as ISO strings.
+
+//              Date.prototype.toJSON = function (key) {
+//                  function f(n) {
+//                      // Format integers to have at least two digits.
+//                      return (n < 10)
+//                          ? "0" + n
+//                          : n;
+//                  }
+//                  return this.getUTCFullYear()   + "-" +
+//                       f(this.getUTCMonth() + 1) + "-" +
+//                       f(this.getUTCDate())      + "T" +
+//                       f(this.getUTCHours())     + ":" +
+//                       f(this.getUTCMinutes())   + ":" +
+//                       f(this.getUTCSeconds())   + "Z";
+//              };
+
+//          You can provide an optional replacer method. It will be passed the
+//          key and value of each member, with this bound to the containing
+//          object. The value that is returned from your method will be
+//          serialized. If your method returns undefined, then the member will
+//          be excluded from the serialization.
+
+//          If the replacer parameter is an array of strings, then it will be
+//          used to select the members to be serialized. It filters the results
+//          such that only members with keys listed in the replacer array are
+//          stringified.
+
+//          Values that do not have JSON representations, such as undefined or
+//          functions, will not be serialized. Such values in objects will be
+//          dropped; in arrays they will be replaced with null. You can use
+//          a replacer function to replace those with JSON values.
+
+//          JSON.stringify(undefined) returns undefined.
+
+//          The optional space parameter produces a stringification of the
+//          value that is filled with line breaks and indentation to make it
+//          easier to read.
+
+//          If the space parameter is a non-empty string, then that string will
+//          be used for indentation. If the space parameter is a number, then
+//          the indentation will be that many spaces.
+
+//          Example:
+
+//          text = JSON.stringify(["e", {pluribus: "unum"}]);
+//          // text is '["e",{"pluribus":"unum"}]'
+
+//          text = JSON.stringify(["e", {pluribus: "unum"}], null, "\t");
+//          // text is '[\n\t"e",\n\t{\n\t\t"pluribus": "unum"\n\t}\n]'
+
+//          text = JSON.stringify([new Date()], function (key, value) {
+//              return this[key] instanceof Date
+//                  ? "Date(" + this[key] + ")"
+//                  : value;
+//          });
+//          // text is '["Date(---current time---)"]'
+
+//      JSON.parse(text, reviver)
+//          This method parses a JSON text to produce an object or array.
+//          It can throw a SyntaxError exception.
+
+//          The optional reviver parameter is a function that can filter and
+//          transform the results. It receives each of the keys and values,
+//          and its return value is used instead of the original value.
+//          If it returns what it received, then the structure is not modified.
+//          If it returns undefined then the member is deleted.
+
+//          Example:
+
+//          // Parse the text. Values that look like ISO date strings will
+//          // be converted to Date objects.
+
+//          myData = JSON.parse(text, function (key, value) {
+//              var a;
+//              if (typeof value === "string") {
+//                  a =
+//   /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/.exec(value);
+//                  if (a) {
+//                      return new Date(Date.UTC(+a[1], +a[2] - 1, +a[3], +a[4],
+//                          +a[5], +a[6]));
+//                  }
+//              }
+//              return value;
+//          });
+
+//          myData = JSON.parse('["Date(09/09/2001)"]', function (key, value) {
+//              var d;
+//              if (typeof value === "string" &&
+//                      value.slice(0, 5) === "Date(" &&
+//                      value.slice(-1) === ")") {
+//                  d = new Date(value.slice(5, -1));
+//                  if (d) {
+//                      return d;
+//                  }
+//              }
+//              return value;
+//          });
+
+//  This is a reference implementation. You are free to copy, modify, or
+//  redistribute.
+
+/*jslint
+    eval, for, this
+*/
+
+/*property
+    JSON, apply, call, charCodeAt, getUTCDate, getUTCFullYear, getUTCHours,
+    getUTCMinutes, getUTCMonth, getUTCSeconds, hasOwnProperty, join,
+    lastIndex, length, parse, prototype, push, replace, slice, stringify,
+    test, toJSON, toString, valueOf
+*/
+
+// Create a JSON object only if one does not already exist. We create the
+// methods in a closure to avoid creating global variables.
+
+if ((typeof JSON === "undefined" ? "undefined" : _typeof(JSON)) !== "object") {
+    JSON = {};
+}
+
+(function () {
+    "use strict";
+
+    var rx_one = /^[\],:{}\s]*$/;
+    var rx_two = /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g;
+    var rx_three = /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g;
+    var rx_four = /(?:^|:|,)(?:\s*\[)+/g;
+    var rx_escapable = /[\\"\u0000-\u001f\u007f-\u009f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g;
+    var rx_dangerous = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g;
+
+    function f(n) {
+        // Format integers to have at least two digits.
+        return n < 10 ? "0" + n : n;
+    }
+
+    function this_value() {
+        return this.valueOf();
+    }
+
+    if (typeof Date.prototype.toJSON !== "function") {
+
+        Date.prototype.toJSON = function () {
+
+            return isFinite(this.valueOf()) ? this.getUTCFullYear() + "-" + f(this.getUTCMonth() + 1) + "-" + f(this.getUTCDate()) + "T" + f(this.getUTCHours()) + ":" + f(this.getUTCMinutes()) + ":" + f(this.getUTCSeconds()) + "Z" : null;
+        };
+
+        Boolean.prototype.toJSON = this_value;
+        Number.prototype.toJSON = this_value;
+        String.prototype.toJSON = this_value;
+    }
+
+    var gap;
+    var indent;
+    var meta;
+    var rep;
+
+    function quote(string) {
+
+        // If the string contains no control characters, no quote characters, and no
+        // backslash characters, then we can safely slap some quotes around it.
+        // Otherwise we must also replace the offending characters with safe escape
+        // sequences.
+
+        rx_escapable.lastIndex = 0;
+        return rx_escapable.test(string) ? "\"" + string.replace(rx_escapable, function (a) {
+            var c = meta[a];
+            return typeof c === "string" ? c : "\\u" + ("0000" + a.charCodeAt(0).toString(16)).slice(-4);
+        }) + "\"" : "\"" + string + "\"";
+    }
+
+    function str(key, holder) {
+
+        // Produce a string from holder[key].
+
+        var i; // The loop counter.
+        var k; // The member key.
+        var v; // The member value.
+        var length;
+        var mind = gap;
+        var partial;
+        var value = holder[key];
+
+        // If the value has a toJSON method, call it to obtain a replacement value.
+
+        if (value && (typeof value === "undefined" ? "undefined" : _typeof(value)) === "object" && typeof value.toJSON === "function") {
+            value = value.toJSON(key);
+        }
+
+        // If we were called with a replacer function, then call the replacer to
+        // obtain a replacement value.
+
+        if (typeof rep === "function") {
+            value = rep.call(holder, key, value);
+        }
+
+        // What happens next depends on the value's type.
+
+        switch (typeof value === "undefined" ? "undefined" : _typeof(value)) {
+            case "string":
+                return quote(value);
+
+            case "number":
+
+                // JSON numbers must be finite. Encode non-finite numbers as null.
+
+                return isFinite(value) ? String(value) : "null";
+
+            case "boolean":
+            case "null":
+
+                // If the value is a boolean or null, convert it to a string. Note:
+                // typeof null does not produce "null". The case is included here in
+                // the remote chance that this gets fixed someday.
+
+                return String(value);
+
+            // If the type is "object", we might be dealing with an object or an array or
+            // null.
+
+            case "object":
+
+                // Due to a specification blunder in ECMAScript, typeof null is "object",
+                // so watch out for that case.
+
+                if (!value) {
+                    return "null";
+                }
+
+                // Make an array to hold the partial results of stringifying this object value.
+
+                gap += indent;
+                partial = [];
+
+                // Is the value an array?
+
+                if (Object.prototype.toString.apply(value) === "[object Array]") {
+
+                    // The value is an array. Stringify every element. Use null as a placeholder
+                    // for non-JSON values.
+
+                    length = value.length;
+                    for (i = 0; i < length; i += 1) {
+                        partial[i] = str(i, value) || "null";
+                    }
+
+                    // Join all of the elements together, separated with commas, and wrap them in
+                    // brackets.
+
+                    v = partial.length === 0 ? "[]" : gap ? "[\n" + gap + partial.join(",\n" + gap) + "\n" + mind + "]" : "[" + partial.join(",") + "]";
+                    gap = mind;
+                    return v;
+                }
+
+                // If the replacer is an array, use it to select the members to be stringified.
+
+                if (rep && (typeof rep === "undefined" ? "undefined" : _typeof(rep)) === "object") {
+                    length = rep.length;
+                    for (i = 0; i < length; i += 1) {
+                        if (typeof rep[i] === "string") {
+                            k = rep[i];
+                            v = str(k, value);
+                            if (v) {
+                                partial.push(quote(k) + (gap ? ": " : ":") + v);
+                            }
+                        }
+                    }
+                } else {
+
+                    // Otherwise, iterate through all of the keys in the object.
+
+                    for (k in value) {
+                        if (Object.prototype.hasOwnProperty.call(value, k)) {
+                            v = str(k, value);
+                            if (v) {
+                                partial.push(quote(k) + (gap ? ": " : ":") + v);
+                            }
+                        }
+                    }
+                }
+
+                // Join all of the member texts together, separated with commas,
+                // and wrap them in braces.
+
+                v = partial.length === 0 ? "{}" : gap ? "{\n" + gap + partial.join(",\n" + gap) + "\n" + mind + "}" : "{" + partial.join(",") + "}";
+                gap = mind;
+                return v;
+        }
+    }
+
+    // If the JSON object does not yet have a stringify method, give it one.
+
+    if (typeof JSON.stringify !== "function") {
+        meta = { // table of character substitutions
+            "\b": "\\b",
+            "\t": "\\t",
+            "\n": "\\n",
+            "\f": "\\f",
+            "\r": "\\r",
+            "\"": "\\\"",
+            "\\": "\\\\"
+        };
+        JSON.stringify = function (value, replacer, space) {
+
+            // The stringify method takes a value and an optional replacer, and an optional
+            // space parameter, and returns a JSON text. The replacer can be a function
+            // that can replace values, or an array of strings that will select the keys.
+            // A default replacer method can be provided. Use of the space parameter can
+            // produce text that is more easily readable.
+
+            var i;
+            gap = "";
+            indent = "";
+
+            // If the space parameter is a number, make an indent string containing that
+            // many spaces.
+
+            if (typeof space === "number") {
+                for (i = 0; i < space; i += 1) {
+                    indent += " ";
+                }
+
+                // If the space parameter is a string, it will be used as the indent string.
+            } else if (typeof space === "string") {
+                indent = space;
+            }
+
+            // If there is a replacer, it must be a function or an array.
+            // Otherwise, throw an error.
+
+            rep = replacer;
+            if (replacer && typeof replacer !== "function" && ((typeof replacer === "undefined" ? "undefined" : _typeof(replacer)) !== "object" || typeof replacer.length !== "number")) {
+                throw new Error("JSON.stringify");
+            }
+
+            // Make a fake root object containing our value under the key of "".
+            // Return the result of stringifying the value.
+
+            return str("", { "": value });
+        };
+    }
+
+    // If the JSON object does not yet have a parse method, give it one.
+
+    if (typeof JSON.parse !== "function") {
+        JSON.parse = function (text, reviver) {
+
+            // The parse method takes a text and an optional reviver function, and returns
+            // a JavaScript value if the text is a valid JSON text.
+
+            var j;
+
+            function walk(holder, key) {
+
+                // The walk method is used to recursively walk the resulting structure so
+                // that modifications can be made.
+
+                var k;
+                var v;
+                var value = holder[key];
+                if (value && (typeof value === "undefined" ? "undefined" : _typeof(value)) === "object") {
+                    for (k in value) {
+                        if (Object.prototype.hasOwnProperty.call(value, k)) {
+                            v = walk(value, k);
+                            if (v !== undefined) {
+                                value[k] = v;
+                            } else {
+                                delete value[k];
+                            }
+                        }
+                    }
+                }
+                return reviver.call(holder, key, value);
+            }
+
+            // Parsing happens in four stages. In the first stage, we replace certain
+            // Unicode characters with escape sequences. JavaScript handles many characters
+            // incorrectly, either silently deleting them, or treating them as line endings.
+
+            text = String(text);
+            rx_dangerous.lastIndex = 0;
+            if (rx_dangerous.test(text)) {
+                text = text.replace(rx_dangerous, function (a) {
+                    return "\\u" + ("0000" + a.charCodeAt(0).toString(16)).slice(-4);
+                });
+            }
+
+            // In the second stage, we run the text against regular expressions that look
+            // for non-JSON patterns. We are especially concerned with "()" and "new"
+            // because they can cause invocation, and "=" because it can cause mutation.
+            // But just to be safe, we want to reject all unexpected forms.
+
+            // We split the second stage into 4 regexp operations in order to work around
+            // crippling inefficiencies in IE's and Safari's regexp engines. First we
+            // replace the JSON backslash pairs with "@" (a non-JSON character). Second, we
+            // replace all simple value tokens with "]" characters. Third, we delete all
+            // open brackets that follow a colon or comma or that begin the text. Finally,
+            // we look to see that the remaining characters are only whitespace or "]" or
+            // "," or ":" or "{" or "}". If that is so, then the text is safe for eval.
+
+            if (rx_one.test(text.replace(rx_two, "@").replace(rx_three, "]").replace(rx_four, ""))) {
+
+                // In the third stage we use the eval function to compile the text into a
+                // JavaScript structure. The "{" operator is subject to a syntactic ambiguity
+                // in JavaScript: it can begin a block or an object literal. We wrap the text
+                // in parens to eliminate the ambiguity.
+
+                j = eval("(" + text + ")");
+
+                // In the optional fourth stage, we recursively walk the new structure, passing
+                // each name/value pair to a reviver function for possible transformation.
+
+                return typeof reviver === "function" ? walk({ "": j }, "") : j;
+            }
+
+            // If the text is not JSON parseable, then a SyntaxError is thrown.
+
+            throw new SyntaxError("JSON.parse");
+        };
+    }
+})();
 
 },{}],12:[function(require,module,exports){
 /**

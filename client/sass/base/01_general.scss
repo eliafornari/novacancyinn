@@ -49,11 +49,12 @@
 html{
   box-sizing: border-box;
   font-family: $font-family-paragraph;
-  width: 100%;
+  width: 100vw;
   height: auto;
   margin: 0, 0;
   padding: 0, 0;
-  color:$red;
+  color:$black;
+  background-color: #FAFAFA;
   @include respond-to(phone-device){
     overflow-x: hidden;
     overflow-y: hidden;
@@ -92,7 +93,7 @@ p, a, li {
 
 p{
   @include paragraph();
-  color:$red;
+  color:$black;
 }
 
 /*........................A.................................*/
@@ -108,21 +109,25 @@ a:active {
 
 a{
   cursor: pointer;
-  color: $purple;
+  color: $black;
   @include h2();
-  @include hover-effect-glow($purple);
+  @include hover-effect-color($black, $blue);
 }
 
 
 /*.....................ACTIVE CLASSES......................*/
 
 .active{
-  text-shadow: 0 0 3px $purple;
+  color: $red;
   pointer-events: none;
 }
 
 input, textarea, select, a, li {
   text-decoration: none;
+}
+
+select, input, textarea{
+  line-height: normal;
 }
 
 
@@ -146,6 +151,7 @@ table{
 
 /*.........................MAIN............................*/
 main {
+  width: 100%;
   height: auto;
   position: relative;
   display: block;

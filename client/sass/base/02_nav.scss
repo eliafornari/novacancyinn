@@ -1,69 +1,22 @@
 .nav{
   z-index:$z-nav;
   position: fixed;
-  right:0;
-  height:200px;
-  top:50%;
-  margin-top: -100px;
-}
-
-.nav-container{
-  height:400px;
-  width:120px;
-  position: relative;
-  .nav-logo{
-    width:100%;
-    position: absolute;
-    right:$margin-sides;
-    svg{
-      width:100%;
-      height:auto;
-      display: block;
-      position: absolute;
-      z-index:11;
-    }
-    .nav-logo-blur{
-      width:100%;
-      display: block;
-      opacity:0;
-      z-index:10;
-      -webkit-transition: opacity $transition-medium;
-      -moz-transition: opacity $transition-medium;
-      -ms-transition: opacity $transition-medium;
-      transition: opacity $transition-medium;
-
+  left:0;
+  height:100px;
+  bottom:0;
+  width: 70vw;
+  left: 50%;
+  margin-left: -35vw;
+  background-color: rgba(255,255,255,0.9);
+  a{
+    width:auto;
+    height:100px;
+    padding-right: 5vw;
+    display:inline-block;
+    line-height: 100px;
+    text-align: center;
+    &:nth-child(1){
+      padding-left: 5vw;
     }
   }
-  .nav-container-list{
-    position: absolute;
-    top:-150px;
-    right:0;
-    width:100%;
-    a{
-      width: 100%;
-      display: block;
-      text-align: center;
-    }
-  }
-
-}
-
-
-.nav-logo-blur.blur{
-  opacity:1 !important;
-}
-.nav-logo-blur.blur-add.blur-add-active{
-
-
-
-}
-
-
-
-.nav-logo svg:hover #glow { // stroke works fine, filter doesn't work
-  stroke: white;
-  filter: url(#blur-filter);
-}
-.nav-logo svg:hover #color {
-  stroke: white;
 }
