@@ -21,9 +21,7 @@
   width: 40px;
   height:40px;
   z-index: $z-cartclose;
-  @include respond-to(phone){
-    top:100px;
-  }
+
   a{
     display: block;
     width: 100%;
@@ -234,6 +232,7 @@
     border-radius: 0%;
     -webkit-border-radius: 0%;
     -moz-border-radius: 0%;
+    padding: 0;
     @include p();
     @include respond-to(phone){
       line-height: normal;
@@ -289,6 +288,7 @@ select{
   box-shadow: none;
   border-radius: none;
   line-height: normal;
+  padding: 0;
   @include respond-to(phone){
     width:100%;
   }

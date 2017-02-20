@@ -44,61 +44,104 @@ $rootScope.checkout = {
 
 //shipment
 
-$scope.shipmentLoading=false;
 
-  $rootScope.shipmentToPayment = () =>{
-
-    if(!$scope.shipmentLoading){
+// 1 check shipment form validity
+$scope.checkShipping=()=>{
+  if(!$scope.shipmentLoading){
+    if($scope.termsAndServices){
       if($scope.checkoutForm.$valid){
-        $scope.shipmentLoading=true;
-        $http.post('/cartToOrder', $rootScope.checkout)
-        .then(function(response) {
-          $rootScope.Order=response.data;
-          $scope.shipmentLoading=false;
-          // $rootScope.payment.id = response.data.id;
-          $location.path('/shop/payment', true);
-          // mailchimp.register($rootScope.checkout);
-        }, function(response) {
-          $rootScope.error = {value: true, text:response.data};
-
-          setTimeout(function(){
-            $rootScope.error = {value: false, text:''};
-            $rootScope.$apply();
-            $location.path('/shop', true);
-          }, 2000);
-            console.error("error in posting");
-        });
-
-
+        $scope.checkCapcha();
       }else{
         $rootScope.error = {value: true, text:'fill in the form correctly'};
-        setTimeout(function(){
-          $rootScope.error = {value: false, text:''};
-          $rootScope.$apply();
-        }, 2000);
+        $scope.removeError();
       }
+    }else{
+      $rootScope.error = {value: true, text:'accept our terms and services to proceed'};
+      $scope.removeError();
     }
+  }
+}
 
 
+
+// 2 check Capcha form validity
+  $scope.capchaRan=false;
+  setTimeout(function(){
+    if($scope.capchaRan){
+      grecaptcha.reset();
+      $scope.capchaRan=false;
+    }
+  }, 900);
+
+
+  $scope.checkCapcha=()=>{
+    $scope.capchaRan=true;
+    var key = grecaptcha.getResponse();
+    var url = '/capcha?key='+key
+    $http.post(url)
+    .then(function(response) {
+      if(response.data.success==true){
+        $rootScope.shipmentToPayment();
+      }else{
+        grecaptcha.reset();
+        $rootScope.error = {value: true, text:'please veryfy that you are a human'};
+        $scope.removeError();
+      }
+    }, function(response) {
+      $rootScope.error = {value: true, text:response.data};
+      $scope.removeError();
+    });
   }
 
 
-  // $scope.$watch('checkoutForm.$valid', function(newVal, oldVal){
-  //   if ($scope.checkoutForm.$valid){
-  //     $rootScope.shipment_forwardActive = true;
-  //   }else{
-  //     $rootScope.shipment_forwardActive = false;
-  //   }
-  // }, true);
+
+
+// 3 check shipment form validity
+$scope.shipmentLoading=false;
+
+$rootScope.shipmentToPayment = () =>{
+  $scope.shipmentLoading=true;
+  $http.post('/cartToOrder', $rootScope.checkout)
+  .then(function(response) {
+    $rootScope.Order=response.data;
+    $scope.shipmentLoading=false;
+    // $rootScope.payment.id = response.data.id;
+    $location.path('/shop/payment', true);
+    // mailchimp.register($rootScope.checkout);
+  }, function(response) {
+    $rootScope.error = {value: true, text:response.data};
+
+    setTimeout(function(){
+      $rootScope.error = {value: false, text:''};
+      $rootScope.$apply();
+      $location.path('/shop', true);
+    }, 2000);
+      console.error("error in posting");
+  });
+
+}
 
 
 
 
 
+
+
+
+
+    // $scope.$watch('checkoutForm.$valid', function(newVal, oldVal){
+    //   if ($scope.checkoutForm.$valid){
+    //     $rootScope.shipment_forwardActive = true;
+    //   }else{
+    //     $rootScope.shipment_forwardActive = false;
+    //   }
+    // }, true);
 
 
 $scope.phoneRegex = '^(\\+\\d{1,2}\s)?\\(?\\d{3}\\)?[\s.-]\\d{3}[\\s.-]\\d{4}$';
-$scope.postcodeRegex = '^\\d{5}-\\d{4}|\\d{5}|[A-Z]\\d[A-Z] \\d[A-Z]\\d$';
+// $scope.postcodeRegex = '^\\d{5}-\\d{4}|\\d{5}|[A-Z]\\d[A-Z] \\d[A-Z]\\d$';
+$scope.postcodeRegex = '[a-zA-Z0-9_.-]*$';
+// (^\\d{4,5}(-\\d{4})?$)|(^[A-Z]{1,2}\\d{1,2}[A-Z]{1,2} *\\d{1}[A-Z]{1}\\d{1}$)
 
 
 
@@ -116,8 +159,11 @@ $scope.$watch('isBillingDifferent', function(value){
 
 });
 
+
+var Domestic = ['CA','MX'];
+var NorthAmerica = ['CA','MX'];
 var Europe = ['AL','AD','AM','AT','AZ','BY','BA','BG','HR','CY','CZ','DK','EE','FI','FR','GE','DE','GR','HU','IS','IE','KZ','XK','LV','LI','LT','LU','MK','MT','MD','MC','ME','NL','NO','PL','PT','RO','RU','SM','RS','SK','SI','ES','SE','CH','TR','UA','GB'];
-var NorthAmerica = ['US','CA','MX'];
+var Asia = [];
 $scope.$watch('checkout', function(value){
   // $rootScope.checkout.customer.first_name = $rootScope.checkout.shipment.first_name;
   // $rootScope.checkout.customer.last_name = $rootScope.checkout.shipment.last_name;
@@ -174,53 +220,12 @@ $scope.clearCounty_billing=(country)=>{
 
 
 
-$scope.capchaRan=false;
-setTimeout(function(){
-  console.log('setTimeout');
-  if($scope.capchaRan){
-    console.log('setTimeout capcha ran');
-    grecaptcha.reset();
-    $scope.capchaRan=false;
-  }
-}, 900);
 
 
-// $scope.$on('$routeChangeSuccess', function(){
-//   console.log('routeChangeSuccess');
-//   setTimeout(function(){
-//     grecaptcha.reset();
-//   }, 900);
-//   // if($scope.capchaRan){
-//   //   grecaptcha.reset();
-//   // }
-// });
 
 
-$scope.checkCapcha=()=>{
-  $scope.capchaRan=true;
-  var key = grecaptcha.getResponse();
-  console.log(key);
-  var url = '/capcha?key='+key
 
-  $http.post(url)
-  .then(function(response) {
-    console.log(response);
-    if(response.data.success==true){
-      $rootScope.shipmentToPayment();
 
-    }else{
-      grecaptcha.reset();
-      $rootScope.error = {value: true, text:'please veryfy that you are a human'};
-      $scope.removeError();
-
-    }
-  }, function(response) {
-    $rootScope.error = {value: true, text:response.data};
-    $scope.removeError();
-
-  });
-
-}
 
 
 

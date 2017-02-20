@@ -90,7 +90,9 @@ $sceProvider.enabled(false);
 
 
 
-
+        .when('/shop/terms', {
+          templateUrl: 'views/shop/terms.html'
+        })
 
         .when('/shop/cart', {
           templateUrl: 'views/shop/cart.html'
