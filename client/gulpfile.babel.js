@@ -4,10 +4,7 @@ import babelify from 'babelify';
 import source from "vinyl-source-stream";
 import buffer from 'vinyl-buffer';
 import sass from "gulp-ruby-sass";
-import connect from "gulp-connect";
-import minify from 'gulp-minify';
 import uglify from 'gulp-uglify';
-import gulpif from 'gulp-if';
 import concat from 'gulp-concat';
 import cleanCSS from 'gulp-clean-css';
 
@@ -56,7 +53,6 @@ gulp.task("sass", function() {
 	.pipe(cleanCSS({compatibility: 'ie8'}))
 	.pipe(concat('style.min.css')) // this is what was missing
   .pipe(gulp.dest('dist'))
-
 })
 
 

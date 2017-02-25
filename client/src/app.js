@@ -331,16 +331,28 @@ setTimeout(function(){
           //       }
         }).then(function(response){
           $rootScope.Cart = response.data;
+          $rootScope.Cart.totaWeight = 0;
           $rootScope.pageLoading = false;
+          $rootScope.calculateCartWeight();
+
           // if(!$rootScope.Cart.total_items==0){
           //   console.log("cart has some stuff");
           //   $rootScope.attachItemID($rootScope.Cart.contents);
           // }
+        },function(err){
+          console.log(err);
         });
   }//updateCart
 
 
 
+
+  $rootScope.calculateCartWeight =()=>{
+    for (var i in $rootScope.Cart.contents){
+      $rootScope.Cart.totaWeight = $rootScope.Cart.totaWeight + $rootScope.Cart.contents[i].weight;
+    }
+    $rootScope.Cart.totaWeight =$rootScope.Cart.totaWeight+0.1;
+  }
 
 
 
