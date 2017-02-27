@@ -18,49 +18,49 @@
         "type": "color",
         "id": "color_text",
         "label": "Headings and links",
-        "default": "#3d4246"
+        "default": "#000000"
       },
       {
         "type": "color",
         "id": "color_body_text",
         "label": "Body text",
-        "default": "#788188"
+        "default": "#000000"
       },
       {
         "type": "color",
         "id": "color_sale_text",
         "label": "Sale text",
-        "default": "#7796A8"
+        "default": "#000000"
       },
       {
         "type": "color",
         "id": "color_borders",
         "label": "Borders and lines",
-        "default": "#e8e9eb"
+        "default": "#000000"
       },
       {
         "type": "color",
         "id": "color_button",
         "label": "Buttons",
-        "default": "#7796A8"
+        "default": "transparent"
       },
       {
         "type": "color",
         "id": "color_button_text",
         "label": "Button text",
-        "default": "#fff"
+        "default": "#000000"
       },
       {
         "type": "color",
         "id": "color_small_button",
         "label": "Small buttons",
-        "default": "#fff"
+        "default": "transparent"
       },
       {
         "type": "color",
         "id": "color_small_button_text",
         "label": "Small button text",
-        "default": "#3d4246"
+        "default": "#000000"
       },
       {
         "type": "color",
@@ -72,7 +72,7 @@
         "type": "color",
         "id": "color_text_field_text",
         "label": "Text field text",
-        "default": "#000"
+        "default": "#000000"
       },
       {
         "type": "header",
@@ -94,8 +94,12 @@
         "type": "select",
         "id": "image_overlay_opacity",
         "label": "Opacity",
-        "default": "0.25",
+        "default": "1",
         "options": [
+          {
+            "label": "100%",
+            "value": "1"
+          },
           {
             "label": "90%",
             "value": "0.9"
@@ -170,7 +174,7 @@
         "type": "color",
         "id": "color_body_bg",
         "label": "Background color",
-        "default": "#fff"
+        "default": "#fffbfb"
       }
     ]
   },
@@ -188,10 +192,16 @@
         "default": "Google_Work+Sans_600_sans",
         "options": [
           {
+            "value": "'sabonroman', sabonroman, 'helvetica', helvetica, 'AppleGothic', sans-serif",
+            "label": "sabonroman",
+            "group": "serif"
+          },
+          {
             "value": "'Avant Garde', Avantgarde, 'Century Gothic', CenturyGothic, 'AppleGothic', sans-serif",
             "label": "Avant Garde",
             "group": "Sans-serif"
           },
+
           {
             "value": "'Gill Sans', 'Gill Sans MT', Calibri, sans-serif",
             "label": "Gill Sans",
@@ -733,19 +743,19 @@
         "type": "checkbox",
         "id": "share_facebook",
         "label": "Share on Facebook",
-        "default": true
+        "default": false
       },
       {
         "type": "checkbox",
         "id": "share_twitter",
         "label": "Tweet on Twitter",
-        "default": true
+        "default": false
       },
       {
         "type": "checkbox",
         "id": "share_pinterest",
         "label": "Pin on Pinterest",
-        "default": true
+        "default": false
       },
       {
         "type": "header",
