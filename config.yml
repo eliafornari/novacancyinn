@@ -1,12 +1,7 @@
----
-:api_key: a503331f5c656938fe3348c8c937746c
-:password: fc0b7dda2ef001112a9d620166a152cc
-:store: novacancyinn.myshopify.com
-:theme_id: 167864718
-:whitelist_files:
-- layout/
-- assets/
-- config/
-- snippets/
-- templates/
-- locales/
+development:
+  password: fc0b7dda2ef001112a9d620166a152cc
+  store: novacancyinn.myshopify.com
+  theme_id: 167864718
+  whitelist_files:
+    config/settings_data.json
+    config/settings_schema.json

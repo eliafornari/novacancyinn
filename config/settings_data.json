@@ -50,7 +50,7 @@
         "type": "header",
         "settings": {
           "align_logo": "left",
-          "logo": "",
+          "logo": "shopify:\/\/shop_images\/novacacnyinn_logo_e8c47ac2-a9ad-4d33-86b2-7e8c82a9f0de.jpg",
           "logo_max_width": "100",
           "main_linklist": "main-menu",
           "message": false,
@@ -111,13 +111,16 @@
       "featured-collections": {
         "type": "collection",
         "settings": {
-          "title": "Featured collection",
-          "collection": "frontpage",
+          "title": "",
+          "collection": "all",
           "grid": "3",
-          "rows": "2",
+          "rows": "10",
           "show_vendor": false,
           "show_view_all": false
         }
+      },
+      "collection-template":{
+        "type": "collection-template"
       },
       "feature-row": {
         "type": "feature-row",
@@ -140,13 +143,15 @@
         }
       }
     },
-    "content_for_index": [
+    "content_for_index":
+    [
       "hero",
       "featured-collections",
       "feature-row",
       "slideshow"
     ]
   },
+  "content_for_all":"collection-template",
   "presets": {
     "Default": {
       "color_text": "#3d4246",
@@ -174,8 +179,7 @@
       "sections": {
         "header": {
           "type": "header",
-          "settings": {
-          }
+          "settings": {}
         },
         "hero": {
           "type": "hero",
@@ -188,32 +192,28 @@
           "blocks": {
             "slideshow-0": {
               "type": "image",
-              "settings": {
-              }
+              "settings": {}
             },
             "slideshow-1": {
               "type": "image",
-              "settings": {
-              }
+              "settings": {}
             }
           },
           "block_order": [
             "slideshow-0",
             "slideshow-1"
           ],
-          "settings": {
-          }
+          "settings": {}
         },
         "featured-collections": {
           "type": "collection",
           "settings": {
-            "collection": "frontpage"
+            "collection": "all"
           }
         },
         "feature-row": {
           "type": "feature-row",
-          "settings": {
-          }
+          "settings": {}
         },
         "footer": {
           "type": "footer",
@@ -228,6 +228,7 @@
         "feature-row",
         "slideshow"
       ]
+
     }
   }
 }

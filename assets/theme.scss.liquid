@@ -950,7 +950,7 @@ $grid-breakpoints: (
   .#{$grid-breakpoint-type}one-half { width: percentage(1 / 2); }
 
   /* Thirds */
-  .#{$grid-breakpoint-type}one-third { width: percentage(1 / 3); }
+  .#{$grid-breakpoint-type}one-third { width: 100%; }
   .#{$grid-breakpoint-type}two-thirds { width: percentage(2 / 3); }
 
   /* Quarters */
@@ -2569,6 +2569,7 @@ hr {
 
 .grid-view-item__link {
   display: block;
+  opacity:1 !important;
 }
 
 .grid-view-item__vendor {
@@ -2585,9 +2586,10 @@ hr {
 .grid-view-item__image {
   display: block;
   margin: 0 auto 15px;
+  max-height: 600px; //
 
   .grid-view-item--sold-out & {
-    opacity: 0.5;
+    opacity: 1;
   }
 }
 
@@ -3527,7 +3529,7 @@ h1.product-single__title {
   padding: 0 $gutter-site;
 
   @include media-query($small) {
-    border-bottom: 1px solid $color-border;
+    // border-bottom: 1px solid $color-border;
     padding: 0;
   }
 
@@ -3642,7 +3644,7 @@ h1.product-single__title {
   font-weight: bold;
   background-color: $color-btn-primary;
   color: $color-btn-primary-text;
-  border-radius: 9px;
+  // border-radius: 9px;
   min-width: 16px;
   height: 16px;
 
@@ -3670,7 +3672,7 @@ h1.product-single__title {
   .site-header__cart-count {
     top: 14px;
     left: 22px;
-    border-radius: 11px;
+    // border-radius: 11px;
     min-width: 19px;
     height: 19px;
 
@@ -5529,4 +5531,3 @@ $toolbar-height-small: 46px;
     margin-top: -($section-spacing * 2);
   }
 }
-
