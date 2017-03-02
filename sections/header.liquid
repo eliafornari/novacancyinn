@@ -102,10 +102,14 @@
           {% if section.settings.logo %}
             <a href="/" itemprop="url" class="site-header__logo-image{% if section.settings.align_logo == 'center' %} site-header__logo-image--centered{% endif %}">
               {% capture image_size %}{{ section.settings.logo_max_width }}x{% endcapture %}
-              <img src="{{ section.settings.logo | img_url: image_size }}"
+              <div class="site-header__logo-svg">
+                {% include 'icon-logo' %}
+              </div>
+
+              <!-- <img src="{{ section.settings.logo | img_url: image_size }}"
                    srcset="{{ section.settings.logo | img_url: image_size }} 1x, {{ section.settings.logo | img_url: image_size, scale: 2 }} 2x"
                    alt="{{ section.settings.logo.alt | default: shop.name }}"
-                   itemprop="logo">
+                   itemprop="logo"> -->
                    <!--  -->
             </a>
           {% else %}
@@ -152,7 +156,8 @@
           {% endif %}
 
           <a href="/cart" class="site-header__cart">
-            {% include 'icon-cart' %}
+            <!-- {% include 'icon-cart' %} -->
+            <h2 class="site-header__cart-h2">Cart</h2>
             <span class="visually-hidden">{{ 'layout.cart.title' | t }}</span>
             <span class="icon__fallback-text">{{ 'layout.cart.title' | t }}</span>
             {% if cart.item_count > 0 %}

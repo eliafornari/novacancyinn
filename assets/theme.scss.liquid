@@ -361,7 +361,7 @@ $gutter-site: 55px;
 $gutter-site-mobile: 22px;
 $section-spacing: 55px;
 $section-spacing-small: 35px;
-$border-radius: 2px;
+$border-radius: 0px;
 
 /*================ Z-Index ================*/
 $z-index-dropdown : 7;
@@ -417,7 +417,7 @@ $font-bold-titles: {{ settings.type_bold_product_titles }};
 $font-stack-body: {{ base_family }};
 $font-size-base: {{ settings.type_base_size }}; // Henseforth known as 1em
 
-$font-stack-cart-notification: "HelveticaNeue","Helvetica Neue",Helvetica,Arial,sans-serif;
+$font-stack-cart-notification: {{ base_family }};
 
 $font-size-mobile-input: 16px; // min 16px to prevent zooming
 
@@ -1266,6 +1266,7 @@ h6 {
   line-height: 1.2;
   overflow-wrap: break-word;
   word-wrap: break-word;
+  text-transform: capitalize;
 
   a {
     color: inherit;
@@ -1286,8 +1287,8 @@ h1 {
 
 h2 {
   font-size: em(floor($font-size-header * 0.78));
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  // text-transform: uppercase;
+  letter-spacing: 0.02em;
 
   @include media-query($small) {
     font-size: em(floor(($font-size-header * 0.78) * 0.9));
@@ -3070,8 +3071,8 @@ h1.product-single__title {
 /*================ Product Images ================*/
 .product-single__thumbnail {
   display: block;
-  margin: -2px 0 8px;
-  border: 2px solid transparent;
+  // margin: -2px 0 8px;
+  // border: 2px solid transparent;
 
   &.active-thumb {
     border-color: $color-text;
@@ -3554,6 +3555,15 @@ h1.product-single__title {
   }
 }
 
+.site-header__logo-svg{
+  width: 100%;
+  height: 100%;
+  svg{
+    width: 100%;
+    height: 100%;
+  }
+}
+
 .site-header__logo-link {
   display: inline-block;
   word-break: break-word;
@@ -3603,7 +3613,7 @@ h1.product-single__title {
 }
 
 .site-header__search {
-  padding-right: 45px;
+  padding-right: 65px; //e
 
   .site-header__icons--plus & {
     padding-right: 90px;
@@ -3637,12 +3647,17 @@ h1.product-single__title {
   margin-right: 3px;
 }
 
+.site-header__cart-h2{
+  display: inline-block;
+  position: relative;
+  // e
+}
+
 .site-header__cart-count {
-  display: block;
-  position: absolute;
-  top: -1px;
+  display: inline-block; //e
+  position: block;
   font-weight: bold;
-  background-color: $color-btn-primary;
+  // background-color: $color-btn-primary;
   color: $color-btn-primary-text;
   // border-radius: 9px;
   min-width: 16px;
@@ -3721,6 +3736,7 @@ h1.product-single__title {
     .site-header__icons--plus & {
       padding: 18px 6px;
     }
+
   }
 
   .site-header__logo {
