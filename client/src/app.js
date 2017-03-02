@@ -75,59 +75,61 @@ $sceProvider.enabled(false);
 
   // $locationChangeStart
 
-    .when('/shop/product/:detail', {
-      templateUrl: 'views/shop/shop.html',
-      // controller: 'detailCtrl',
-      reloadOnSearch: false
-    })
+    // .when('/shop/product/:detail', {
+    //   templateUrl: 'views/shop/shop.html',
+    //   // controller: 'detailCtrl',
+    //   reloadOnSearch: false
+    // })
 
-    .when('/shop', {
-      templateUrl: 'views/shop/shop.html',
-      controller: 'shopCtrl',
-      reloadOnSearch: false
-    })
-
-
+    // .when('/shop', {
+    //   templateUrl: 'views/shop/shop.html',
+    //   controller: 'shopCtrl',
+    //   reloadOnSearch: false
+    // })
 
 
-        .when('/shop/terms', {
-          templateUrl: 'views/shop/terms.html'
+
+
+        // .when('/shop/terms', {
+        //   templateUrl: 'views/shop/terms.html'
+        // })
+
+        // .when('/shop/cart', {
+        //   templateUrl: 'views/shop/cart.html'
+        // })
+        //
+        // .when('/shop/shipment', {
+        //   templateUrl: 'views/shop/shipment.html',
+        //   controller: 'checkoutCtrl'
+        // })
+        //
+        // .when('/shop/shipment/terms', {
+        //   templateUrl: 'views/shop/shipment.html',
+        // })
+        //
+        // .when('/shop/choice', {
+        //   templateUrl: 'views/shop/choice.html'
+        // })
+        //
+        // .when('/shop/payment', {
+        //   templateUrl: 'views/shop/payment.html',
+        //   controller: 'paymentCtrl'
+        // })
+        //
+        // .when('/shop/processed/:order/:method', {
+        //   templateUrl: 'views/shop/processed.html',
+        //   controller: 'processedCtrl'
+        // })
+        //
+        // .when('/shop/processed/:order/:method/canceled', {
+        //   templateUrl: 'views/shop/processed-canceled.html',
+        // })
+
+
+
+        .when('/shop', {
+          redirectTo: 'https://shop.novacancyinn.com'
         })
-
-        .when('/shop/cart', {
-          templateUrl: 'views/shop/cart.html'
-        })
-
-        .when('/shop/shipment', {
-          templateUrl: 'views/shop/shipment.html',
-          controller: 'checkoutCtrl'
-        })
-
-        .when('/shop/shipment/terms', {
-          templateUrl: 'views/shop/shipment.html',
-        })
-
-        .when('/shop/choice', {
-          templateUrl: 'views/shop/choice.html'
-        })
-
-        .when('/shop/payment', {
-          templateUrl: 'views/shop/payment.html',
-          controller: 'paymentCtrl'
-        })
-
-        .when('/shop/processed/:order/:method', {
-          templateUrl: 'views/shop/processed.html',
-          controller: 'processedCtrl'
-        })
-
-        .when('/shop/processed/:order/:method/canceled', {
-          templateUrl: 'views/shop/processed-canceled.html',
-        })
-
-
-
-
 
 
 
