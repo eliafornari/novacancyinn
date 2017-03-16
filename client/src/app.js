@@ -226,29 +226,29 @@ $rootScope.Home;
       //   console.log();
       // })
     }
-    $rootScope.getProductsFN(0);
+    // $rootScope.getProductsFN(0);
 
 
 
 
 
 
-setTimeout(function(){
-  angular.element($window).bind("scroll", function() {
-      var windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
-      var body = document.body, html = document.documentElement;
-      var docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight,  html.scrollHeight, html.offsetHeight);
-      var windowBottom = windowHeight + window.pageYOffset;
-
-      if (windowBottom >= docHeight) {
-          // alert('bottom reached');
-          if($rootScope.Pagination.offsets.next){
-            $rootScope.getProductsFN($rootScope.Pagination.offsets.next);
-          }
-
-      }
-  });
-}, 600);
+// setTimeout(function(){
+//   angular.element($window).bind("scroll", function() {
+//       var windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
+//       var body = document.body, html = document.documentElement;
+//       var docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight,  html.scrollHeight, html.offsetHeight);
+//       var windowBottom = windowHeight + window.pageYOffset;
+//
+//       if (windowBottom >= docHeight) {
+//           // alert('bottom reached');
+//           if($rootScope.Pagination.offsets.next){
+//             $rootScope.getProductsFN($rootScope.Pagination.offsets.next);
+//           }
+//
+//       }
+//   });
+// }, 600);
 
 
 
@@ -309,7 +309,7 @@ setTimeout(function(){
         }, 2000);
       });
     };
-    $rootScope.getCountries();
+    // $rootScope.getCountries();
 
 
 
