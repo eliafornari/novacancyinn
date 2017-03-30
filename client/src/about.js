@@ -5,7 +5,115 @@ angular.module('myApp')
 $rootScope.pageLoading = false;
 
 $scope.aboutText = [
+
   {
+    x:"30",
+    y:"40",
+    text:"Disco Please",
+    type:"Helvetica",
+    size:30,
+    point: 1
+  },
+  {
+    x:"50",
+    y:"40",
+    text:"There is some life left in New York after all…",
+    type:"folio",
+    size:30,
+    point: 1
+  },
+  {
+    x:"2",
+    y:"40",
+    text:"It’s all about @younglord new tattoo & @prettyvacantcyde New boots…",
+    type:"sabon",
+    size:30,
+    point: 1
+  },
+  {
+    x:"20",
+    y:"80",
+    text:"LADIES NIGHT TM…The Dress Code is ‘PIA’",
+    type:"Book Antiqua",
+    size:30,
+    point: 1
+  },
+  {
+    x:"50",
+    y:"33",
+    text:"THE LINE UP IS NUUUUTTTTSSSSS",
+    type:"Times New Roman",
+    size:30,
+    point: 1
+  },
+  {
+    x:"60",
+    y:"40",
+    text:"PRAY FOR US IF THE ADDY LEAKS",
+    type:"Arial Black",
+    size:30,
+    point: 1
+  },
+  {
+    x:"54",
+    y:"50",
+    text:"No Vacancy Inn + Know Wave = #COMMUNIVERSITY",
+    type:"Courier",
+    size:30,
+    point: 1
+  },
+  {
+    x:"50",
+    y:"50",
+    text:"Heron was smart he wore sunglasses",
+    type:"Monaco",
+    size:30,
+    point: 1
+  },
+  {
+    x:"10",
+    y:"20",
+    text:"How a three man group chat turned in a made in Italy capsule collection",
+    type:"monospace",
+    size:30,
+    point: 1
+  },
+  {
+    x:"20",
+    y:"40",
+    text:"A celebration of taking it from tee shirts to shearling coats…",
+    type:"Impact",
+    size:30,
+    point: 1
+  },
+  {
+    x:"2",
+    y:"40",
+    text:"OFF-WHITE™ c/o A®T DAD LLC",
+    type:"Tahoma",
+    size:30,
+    point: 1
+  },
+  {
+    x:"40",
+    y:"10",
+    text:"Late nights early mornings",
+    type:"Geneva",
+    size:30,
+    point: 1
+  },
+  {
+    x:"80",
+    y:"30",
+    text:"Just trying to leave behind more than we got from this thing called life #OnlyJobTitleIveEverCaredFor",
+    type:"Arial",
+    size:30,
+    point: 1
+  },
+
+
+
+{
     x:"2",
     y:"40",
     text:"THE AFTER/AFTER PARTY AKA THENITESHOW",
@@ -306,40 +414,35 @@ $scope.aboutText = [
     y:"80",
     text:"AT THE DOLLA-NOL MEAN THE DELANO, I MEAN….PHARRELL'LL KNOW'",
     type:"Helvetica",
-    size:25,
-    point: 36
+    size:25
   },
   {
     x:"80",
     y:"30",
     text:"YOU KNOW PROGRAM HIT ME OFF THE GRID FOR THE ADDY OR HOLLA AT YOUR PLUG",
     type:"Geneva",
-    size:25,
-    point: 37
+    size:25
   },
   {
     x:"20",
     y:"90",
     text:"EXIT '00' OFF THE LOST HIGHWAY",
     type:"Courier",
-    size:25,
-    point: 38
+    size:25
   },
   {
     x:"70",
     y:"70",
     text:"YOU DO WHAT YOU WANT WHEN YOU POPPIN",
     type:"Sabon",
-    size:25,
-    point: 40
+    size:25
   },
   {
     x:"60",
     y:"90",
     text:"SHANGHAI SMASH",
     type:"Impact",
-    size:25,
-    point: 41
+    size:25
   }
 
 
