@@ -1,7 +1,7 @@
 <div class="about" ng-controller="aboutCtrl">
 
 
-  <ul class="about-text" ng-click="playPause()">
+  <ul class="about-text" ng-click="playPause()" ng-if="!isMobile">
 
     <li class="about-text-li" ng-repeat="t in aboutText" ng-show="$index==view_about" style="top:{{t.y}}%; left:{{t.x}}%">
       <p class="about-text-p" style="font-family:{{t.type}};font-size:{{t.size}}px;" ng-class="{'stretch-horizontal': stretchX, 'stretch-vertical': stretchY,}">{{t.text}}</p>
