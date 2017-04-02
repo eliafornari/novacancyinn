@@ -7,7 +7,7 @@
          <td>
            <div class="nav-container" >
              <div class="nav-left" ng-hide="isCheckout()">
-               <a class="nav-left-a" href="https://novacancyinn.myshopify.com" ng-class="{'active': isLocation('/shop') || isShopDetail()}">Shop</a>
+               <a class="nav-left-a" href="https://novacancyinn.myshopify.com" ng-class="{'active': (isLocation('/shop') || isShopDetail()) }">Shop</a>
                <!-- <a class="nav-left-a" href="/archive" ng-class="{'active': isLocation('/archive')}">Archive</a> -->
                <a class="nav-left-a" href="/radio" ng-class="{'active': isLocation('/radio')}">Radio</a>
              </div>
